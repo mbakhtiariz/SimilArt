@@ -45,3 +45,7 @@ Optional Modalities:
 1. Timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
 2. Filters: artist, type, color, etc.
 3. Favorites section
+
+## Links
+- Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
+

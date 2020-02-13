@@ -24,7 +24,7 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 - modalities: what happens when you change timeline, explain what each component does, what does it mean
     - center image is query image, others are answer
     - timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
-    - artist, 
+    - filters: artist, 
     - random button to pick center image
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - 

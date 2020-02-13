@@ -15,11 +15,15 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 - design is very important
 - 3 questions that user can answer with visualisation (motivation to open tool)
     - What paintings are similar to this specific painting?
-    - How similar are two different paintings?
+    - How similar are two different paintings (similarity scores, attributes)?
     - What paintings are not that similar but still have the same criteria?
+- goals:
     - find new pictures that I like (similar to what I already know I like), with specific criteria
     - exploring new pictures
-    - compare similar pictures
-- modalities: what happens when you change timeline, explain what each component does, what does it mean (center image is query image, others are answer
+    - compare similar pictures)
+- modalities: what happens when you change timeline, explain what each component does, what does it mean
+    - center image is query image, others are answer
+    - timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
+    - artist, 
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - 

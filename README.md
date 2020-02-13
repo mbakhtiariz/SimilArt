@@ -27,4 +27,5 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
     - (2. filters: artist, etc.)
     - random button to pick center image
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
-- 
+- Focus is on the center part of the design sketch and not on other windows and features
+- Meeting next week: choose a subset (portraits or other genre), discuss model

@@ -14,25 +14,18 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 ### Meeting 1, 13 February 2020
 - design is very important
 - 3 questions that user can answer with visualisation (motivation to open tool)
-    - What paintings are similar to this specific painting?
-    - How similar are two different paintings (similarity scores, attributes)?
-    - What paintings are not that similar but still have the same criteria?
 - goals:
     - find new pictures that I like (similar to what I already know I like), with specific criteria
     - exploring new pictures
     - compare similar pictures)
 - modalities: what happens when you change timeline, explain what each component does, what does it mean
-    - center image is query image, others are answer
-    - (1. timeline: you can pick time period by dragging bars, all paintings shown are from within this time period)
-    - (2. filters: artist, etc.)
-    - random button to pick center image
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - Focus is on the center part of the design sketch and not on other windows and features
 - Meeting next week: choose a subset (portraits or other genre), discuss model
 
 Questions:
 - What paintings are similar to this specific painting?
-- How similar are two different paintings?
+- How similar are two different paintings (similarity scores, attributes)?
 - What paintings are not that similar but still have the same criteria?
 
 Modalities:

@@ -7,6 +7,8 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
   - Barry Hendriks
   - Iulia Ionescu
   - Martine Toering
+### TA / supervisor
+  - Gjorgji Strezoski
 
 
 ## Meeting notes
@@ -17,7 +19,7 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 - goals:
     - find new pictures that I like (similar to what I already know I like), with specific criteria
     - exploring new pictures
-    - compare similar pictures)
+    - compare similar pictures
 - modalities: what happens when you change timeline, explain what each component does, what does it mean
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - Focus is on the center part of the design sketch and not on other windows and features

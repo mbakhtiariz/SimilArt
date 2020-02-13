@@ -14,8 +14,8 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 ### Meeting 1, 13 February 2020
 - design is very important
 - 3 questions that user can answer with visualisation (motivation to open tool)
-    - find new pictures that I like (similar to what I already know I like)
-    -
+    - find new pictures that I like (similar to what I already know I like), with specific criteria
+    - 
 - modalities: what happens when you change timeline, explain what each component does, what does it mean (center image is query image, others are answer
 - make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - 

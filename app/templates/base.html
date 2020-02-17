@@ -34,16 +34,113 @@
 
 	<!-- Layout stylesheet -->
 	<link rel="stylesheet" type="text/css" href="base.css">
+	<style>
+		html, body {
+	        height: 100%;
+	        margin: 0px;
+	    }
+
+		div {
+			border: 1px solid black;
+		}
+
+		.div_img1 {
+			width: 50px;
+			height: 80px;
+		}
+
+		.div_img2 {
+			width: 150px;
+			height: 110px;
+		}
+
+		.div_img3 {
+			width: 70px;
+			height: 70px;
+		}
+
+		#container {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		#content {
+			flex: 4;
+		}
+
+		#dissimilar_artworks_container {
+			width: 100%;
+			height: 100%;
+			background-color: #B4B4B4;
+			display: flex;
+		}
+					
+		#similar_artworks_container {
+			width: 60%;
+			height: 60%;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-top: -30%;
+			margin-left: -30%;
+			background-color: #779872;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-items: baseline;
+			align-content: stretch;
+		}
+
+		#dissimilar_artworks_container .div_img1, .div_img2, .div_img3 {
+			background-color: #F0B27D;
+		}
+
+		#similar_artworks_container .div_img1, .div_img2, .div_img3 {
+			background-color: #A8BF9C;
+		}
+
+		#bar {
+			flex: 1;
+			display: flex;
+		}
+
+		#search_bar {
+			flex: 7;
+			height: 100%;
+			float: left;
+			background-color: #96985D;
+		}
+					
+
+		#info_bar {
+			flex: 3;
+			height: 100%;
+			float: left;
+			background-color: #C8461D;
+		}
+	</style>
 </head>
 <body>
-	<h1>Our InfoVis project</h1>
+	<!-- <h1>Our InfoVis project</h1> -->
 	<div id="container">
 		<div id="content">
 			<div id="dissimilar_artworks_container">
 				Dissimilar artworks
-			</div>
-			<div id="similar_artworks_container">
-				Similar artworks
+				<div class="div_img1"></div>
+				<div class="div_img2"></div>
+				<div class="div_img3"></div>
+				<div class="div_img2"></div>
+				<div class="div_img1"></div>
+
+				<div id="similar_artworks_container">
+					Similar artworks
+					<div class="div_img1"></div>
+					<div class="div_img2"></div>
+					<div class="div_img3"></div>
+					<div class="div_img2"></div>
+					<div class="div_img1"></div>
+				</div>
 			</div>
 		</div>
 		<div id="bar">

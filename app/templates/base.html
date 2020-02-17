@@ -38,6 +38,7 @@
 		html, body {
 	        height: 100%;
 	        margin: 0px;
+	        background-color: #B4B4B4;
 	    }
 
 		div {
@@ -50,13 +51,14 @@
 		}
 
 		.div_img2 {
-			width: 150px;
-			height: 110px;
+			width: 120px;
+			height: 90px;
 		}
 
 		.div_img3 {
 			width: 70px;
 			height: 70px;
+			flex: 0 0 auto;
 		}
 
 		#container {
@@ -66,24 +68,18 @@
 		}
 
 		#content {
-			flex: 4;
+			height: 80%;
+			flex: 4 0 auto;
 		}
 
 		#dissimilar_artworks_container {
 			width: 100%;
 			height: 100%;
-			background-color: #B4B4B4;
 			display: flex;
+			flex-direction: column;
 		}
 					
 		#similar_artworks_container {
-			width: 60%;
-			height: 60%;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-top: -30%;
-			margin-left: -30%;
 			background-color: #779872;
 			display: flex;
 			flex-wrap: wrap;
@@ -92,16 +88,42 @@
 			align-content: stretch;
 		}
 
-		#dissimilar_artworks_container .div_img1, .div_img2, .div_img3 {
+		.dissimilar_artworks_container_horizontal > div,
+		.dissimilar_artworks_container_vertical > div {
 			background-color: #F0B27D;
 		}
 
-		#similar_artworks_container .div_img1, .div_img2, .div_img3 {
+		#similar_artworks_container > div {
 			background-color: #A8BF9C;
+			display: flex;
+			flex-direction: row;
+			flex: 9 0 auto;
+		}
+
+		.dissimilar_artworks_container_horizontal {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+		}
+
+		.dissimilar_artworks_container_horizontal_middle {
+			display: flex;
+			flex-direction: row;
+			flex: 9 0 auto;
+		}
+
+		.dissimilar_artworks_container_vertical {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			align-items: center;
 		}
 
 		#bar {
-			flex: 1;
+			height: 20%;
+			flex: 1 0 auto;
 			display: flex;
 		}
 
@@ -127,14 +149,39 @@
 		<div id="content">
 			<div id="dissimilar_artworks_container">
 				Dissimilar artworks
-				<div class="div_img1"></div>
-				<div class="div_img2"></div>
-				<div class="div_img3"></div>
-				<div class="div_img2"></div>
-				<div class="div_img1"></div>
-
-				<div id="similar_artworks_container">
-					Similar artworks
+				<div class="dissimilar_artworks_container_horizontal">
+					<div class="div_img1"></div>
+					<div class="div_img2"></div>
+					<div class="div_img3"></div>
+					<div class="div_img2"></div>
+					<div class="div_img1"></div>
+				</div>
+				<div class="dissimilar_artworks_container_horizontal_middle">
+					<div class="dissimilar_artworks_container_vertical">
+						<div class="div_img1"></div>
+						<div class="div_img2"></div>
+						<div class="div_img3"></div>
+					</div>
+					<div id="similar_artworks_container">
+						Similar artworks
+						<div class="div_img1"></div>
+						<div class="div_img2"></div>
+						<div class="div_img3"></div>
+						<div class="div_img2"></div>
+						<div class="div_img1"></div>
+						<div class="div_img1"></div>
+						<div class="div_img2"></div>
+						<div class="div_img3"></div>
+						<div class="div_img2"></div>
+						<div class="div_img1"></div>
+					</div>
+					<div class="dissimilar_artworks_container_vertical">
+						<div class="div_img1"></div>
+						<div class="div_img2"></div>
+						<div class="div_img3"></div>
+					</div>
+				</div>
+				<div class="dissimilar_artworks_container_horizontal">
 					<div class="div_img1"></div>
 					<div class="div_img2"></div>
 					<div class="div_img3"></div>

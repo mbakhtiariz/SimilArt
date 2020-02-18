@@ -32,7 +32,7 @@ if dl_or_copy == "dl":
     src_path = "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/img_300x/"
 else:
     # please modify this line to your local path of the whole dataset:
-    src_path = local_root_path / "300x"
+    src_path = local_root_path / "data" / "300x"
 
 # please modify this line to your local metadata path:
 metadata_path = local_root_path / Path(r'artsight_csvs\metadatas.csv')

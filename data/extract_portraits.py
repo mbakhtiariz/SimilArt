@@ -18,7 +18,7 @@ def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path
                 # copy from local directory
                 src = src_path / file_name
                 copyfile(src, dst)
-            print(file_name)
+            # print(file_name)
 
 
 dl_or_copy = "dl"  # download directly from given ominarts url

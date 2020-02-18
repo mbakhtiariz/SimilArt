@@ -41,24 +41,26 @@
 	        background-color: #B4B4B4;
 	    }
 
-		div {
-			border: 1px solid black;
-		}
-
 		.div_img1 {
-			width: 50px;
-			height: 80px;
+			width: 40px;
+			height: 60px;
+			border: 1px solid grey;
+			margin: 5px;
 		}
 
 		.div_img2 {
-			width: 120px;
-			height: 90px;
+			width: 100px;
+			height: 70px;
+			border: 1px solid grey;
+			margin: 5px;
 		}
 
 		.div_img3 {
-			width: 70px;
-			height: 70px;
+			width: 50px;
+			height: 50px;
 			flex: 0 0 auto;
+			border: 1px solid grey;
+			margin: 5px;
 		}
 
 		#container {
@@ -82,10 +84,8 @@
 		#similar_artworks_container {
 			background-color: #779872;
 			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			align-items: baseline;
-			align-content: stretch;
+			flex-direction: column;
+			border: 2px solid grey;
 		}
 
 		.dissimilar_artworks_container_horizontal > div,
@@ -102,7 +102,6 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-around;
-			border: 1px dashed white;
 		}
 
 		.dissimilar_artworks_container_horizontal_middle {
@@ -117,7 +116,44 @@
 			flex-direction: column;
 			justify-content: space-around;
 			align-items: center;
-			border: 1px dashed white;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+
+		.similar_artworks_container_horizontal {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+		}
+
+		.similar_artworks_container_horizontal_middle {
+			display: flex;
+			flex-direction: row;
+			flex: 1 0 auto;
+		}
+
+		.similar_artworks_container_vertical {
+			flex-wrap: wrap;
+			justify-content: space-around;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+		}
+
+		.center_image {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			align-items: center;
+			text-align: center;
+		}
+
+		.center_image > div {
+			border: 2px solid white;
+			background-color: #DC0202;
 		}
 
 		#bar {
@@ -131,6 +167,8 @@
 			height: 100%;
 			float: left;
 			background-color: #96985D;
+			border-top: 4px solid black;
+			border-right: 4px solid black;
 		}
 					
 
@@ -139,11 +177,11 @@
 			height: 100%;
 			float: left;
 			background-color: #C8461D;
+			border-top: 4px solid black;
 		}
 	</style>
 </head>
 <body>
-	<!-- <h1>Our InfoVis project</h1> -->
 	<div id="container">
 		<div id="content">
 			<div id="dissimilar_artworks_container">
@@ -162,17 +200,48 @@
 						<div class="div_img3"></div>
 					</div>
 					<div id="similar_artworks_container">
-						Similar artworks
-						<div class="div_img1"></div>
-						<div class="div_img2"></div>
-						<div class="div_img3"></div>
-						<div class="div_img2"></div>
-						<div class="div_img1"></div>
-						<div class="div_img1"></div>
-						<div class="div_img2"></div>
-						<div class="div_img3"></div>
-						<div class="div_img2"></div>
-						<div class="div_img1"></div>
+						<div class="similar_artworks_container_horizontal">
+							Similar artworks
+							<div class="div_img1"></div>
+							<div class="div_img2"></div>
+							<div class="div_img3"></div>
+							<div class="div_img2"></div>
+							<div class="div_img1"></div>
+							<div class="div_img1"></div>
+							<div class="div_img2"></div>
+						</div>
+						<div class="similar_artworks_container_horizontal_middle">
+							<div class="similar_artworks_container_vertical">
+								<div class="div_img1"></div>
+								<div class="div_img2"></div>
+								<div class="div_img3"></div>
+								<div class="div_img3"></div>
+								<div class="div_img1"></div>
+								<div class="div_img2"></div>
+							</div>
+							<div class="center_image">
+								<div class="div_img2">
+									Center artwork
+								</div>
+							</div>
+							<div class="similar_artworks_container_vertical">
+								<div class="div_img1"></div>
+								<div class="div_img2"></div>
+								<div class="div_img3"></div>
+								<div class="div_img3"></div>
+								<div class="div_img1"></div>
+								<div class="div_img2"></div>
+							</div>
+						</div>
+						<div class="similar_artworks_container_horizontal">
+							<div class="div_img1"></div>
+							<div class="div_img2"></div>
+							<div class="div_img3"></div>
+							<div class="div_img2"></div>
+							<div class="div_img2"></div>
+							<div class="div_img3"></div>
+							<div class="div_img2"></div>
+						</div>
 					</div>
 					<div class="dissimilar_artworks_container_vertical">
 						<div class="div_img1"></div>

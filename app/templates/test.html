@@ -24,7 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="base.css">
 	<style>
 		body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
-		
+
 		svg {
 		  background-color: #fffbef;
 		}
@@ -44,15 +44,15 @@
 			var svg = d3.select("body").append("svg")
 			  .attr("width", svgwidth)
 			  .attr("height", svgheight)
-			
+
 			var image = {
 			  size: 100
 			}
 
 			console.log(d3.select('svg').node().getBBox())
-			
+
 			var defs = svg.append("defs");
-			
+
 			// var clipPath = defs.append("clipPath")
 			//   .attr("id", "clip")
 			//   .append("rect")
@@ -60,35 +60,35 @@
 			//   .attr("y", image.size)
 			//   .attr("width", 100)
 			//   .attr("height", 100);
-			
+
 			// var glow = defs.append("filter")
 			// 	.attr("id", "glow");
 			// glow.append("feGaussianBlur")
 			//   .attr("class", "blur")
 			//   .attr("stdDeviation", 3.5)
 			//   .attr("result","coloredBlur");
-			
+
 			// var feMergeGlow = glow.append("feMerge");
 			// feMergeGlow.append("feMergeNode")
 			//   .attr("in","coloredBlur");
 			// feMergeGlow.append("feMergeNode")
 			//   .attr("in","SourceGraphic");
-			
+
 			var doctorUrl1 = "../../data/images/11027946.jpg",
 				doctorUrl2 = "https://curbsideprophecies.files.wordpress.com/2007/08/davidolder.thumbnail.png",
 				doctorUrl3 = "https://68.media.tumblr.com/avatar_fde0361fb75d_128.png",
 				doctorUrl4 = "https://68.media.tumblr.com/avatar_91eba9afde80_128.png";
-			
+
 			appendDraggableImage(doctorUrl1, [70, 175]);
 			appendDraggableImage(doctorUrl2, [310, 175]);
 			appendDraggableImage(doctorUrl3, [550, 175]);
 			appendDraggableImage(doctorUrl4, [20, 175]);
-			
+
 			function appendDraggableImage(url, position) {
 			  var imageGroup = svg.append("g")
 				  .datum({position: position})
 				.attr("transform", d => "translate(" + d.position + ")");
-		
+
 			  var circleFill = imageGroup.append("rect")
 				  .attr("class", "circle-fill")
 				.attr("x", image.size)
@@ -96,7 +96,7 @@
 				.attr("width", image.size)
 				.attr("height", image.size)
 				.attr("filter", "url(#glow");
-		
+
 			  var imageElem = imageGroup.append("image")
 				.attr("xlink:href", url )
 				.attr("x", image.size)
@@ -104,45 +104,45 @@
 				.attr("height", image.size)
 				.attr("width", image.size)
 				.attr("clip-path", "url(#clip)");
-			
+
 			  var circleOutline = imageGroup.append("rect")
 				.attr("class", "circle-outline")
 				.attr("x", image.size)
 				.attr("y", image.size )
 				.attr("width", image.size)
 				.attr("height", image.size);
-		
+
 			  imageGroup.call(d3.drag()
 						.on("start", dragstarted)
 						.on("drag", dragged)
 						.on("end", dragended));
-			  
+
 			}
-			
+
 			function dragstarted(d) {
 		//       d3.select(this).raise();
-			  
+
 		//       d3.select(this).select(".circle-outline")
 		//       	.transition()
 		//       	.attr("r", 1 + image.size / 3);
-			  
+
 		//       d3.select(this).select(".circle-fill")
 		//       	.transition()
 		//       	.attr("r", 1 + image.size / 3);
-			  
+
 		//       d3.select(this).select("image")
 		//       	.attr("x", image.size / 6)
 		//       	.attr("y", image.size / 6)
 		//       	.attr("height", image.size * 2 / 3)
 		//         .attr("width", image.size * 2 / 3)
-			  
+
 		//       clipPath.attr("r", image.size / 3)
 			}
-			
+
 			function dragged(d) {
 				var newX = d3.event.x - image.size * 1.5,
-					newY = d3.event.y - image.size * 1.5; 
-				
+					newY = d3.event.y - image.size * 1.5;
+
 				xborder = d3.event.x
 				if (xborder + image.size*0.5  > d3.selectAll('svg').attr('width')) {
 					newX = d3.selectAll('svg').attr('width') - image.size*2
@@ -155,17 +155,23 @@
 				} else if (yborder - image.size*0.5  < d3.selectAll('svg').attr('height')-d3.selectAll('svg').attr('height')){
 					newY = - image.size
 				}
-				
+
 				d3.select(this)
 					.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
 			}
-			
+
 			function dragended(d) {
 			  d3.select(this).lower();
-			  
+
 			}
-			
+
 		  </script>
 	</div>
 </body>
+
+<script type="text/javascript">
+	var data = {{ data |safe }};
+	var available_ids = {{ available_ids |safe }};
+</script>
+
 </html>

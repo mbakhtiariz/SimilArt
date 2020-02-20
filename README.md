@@ -14,6 +14,8 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 ## Meeting notes
 
 ### Meeting 1, 13 February 2020
+
+Notes Meeting
 - Design is very important
 - 3 questions that user can answer with visualisation (motivation to open tool)
 - Goals:
@@ -32,6 +34,7 @@ Questions:
 
 Question answered with optional modalities:
 - What paintings are not that similar but still have the same criteria?
+
 Modalities:
 - Center image is query image
 - Center square contains center image and similar images
@@ -52,6 +55,18 @@ Optional Modalities:
 
 
 ### Meeting 2, 20 February 2020
+
+Notes Meeting
+- Store the images or retrieve from url? -> Use the resized / lowres image, if user wants highres, pull, link to new tab 
+- Portraits: 15000, Landscape: 15000. Is amount and diversity right? -> Take multiple artwork types. Also take portraits, sketches, drawings. Maybe use genre attribute: Take 10 genres. Not more then 150.000.
+- ResNet 18, extract features 64 dim and use similarity function, like Knn sklearn: Can it work? -> Try with 128 dim for now, higher the dim and better feature maps, the better but do not focus too much on it. Try to see how fast it is.
+- Current idea is simple to implement. Idea: Creating small neighbourhoods of artworks. Drag and make your own neighbourhoods. Don’t have to let the model change it automatically, would be hard.
+- Next Week meeting Wednesday at 10. Try to have a prototype ready. 
+
+Questions next Meeting
+- 
+
+### Meeting 3, 26 February 2020
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration

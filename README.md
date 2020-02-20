@@ -14,37 +14,58 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 ## Meeting notes
 
 ### Meeting 1, 13 February 2020
-- design is very important
+
+Notes Meeting
+- Design is very important
 - 3 questions that user can answer with visualisation (motivation to open tool)
-- goals:
+- Goals:
     - find new pictures that I like (similar to what I already know I like), with specific criteria
     - exploring new pictures
     - compare similar pictures
-- modalities: what happens when you change timeline, explain what each component does, what does it mean
-- make model to compare images (Machine Leaning, similarities, features) (pretrained)
+- Modalities: what happens when you change timeline, explain what each component does, what does it mean
+- Make model to compare images (Machine Leaning, similarities, features) (pretrained)
 - Focus is on the center part of the design sketch and not on other windows and features
 - Meeting next week: choose a subset (portraits or other genre), discuss model
 
 Questions:
 - What paintings are similar to this specific painting?
-- How similar are two different paintings (similarity scores, attributes)?
+- How similar are two different paintings?
+- What paintings are entirely different from this specific painting?
+
+Question answered with optional modalities:
 - What paintings are not that similar but still have the same criteria?
 
 Modalities:
 - Center image is query image
 - Center square contains center image and similar images
-  Images around center are similar according to model, when clicked they become center image
-- Explore area
+- Images around center are similar according to model, when clicked they become center image
+  These two are possibly going to be combined into a bokeh plot with images.
+- Explore area: dragable
   Images outside of center square are completely random, when clicked they become center image
-- Undo / redo button for selected center image
+- Undo / redo button for selected center image restores center image to previous one
 - Refresh / random button to refresh the entire explore area
-- Tooltips for every painting with info about painting, artist
+- Tooltips for every painting with info about painting, artist, similarity to center painting
 - Title, artist, year, (technique) of selected painting: maybe below painting?
 
 Optional Modalities:
-1. Timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
-2. Filters: artist, type, color, etc.
-3. Favorites section
+- Timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
+- Filters: artist, type, color, etc.
+- Favorites section
+
+
+
+### Meeting 2, 20 February 2020
+
+Notes Meeting
+- Store the images or retrieve from url? -> Use the resized / lowres image, if user wants highres, pull, link to new tab 
+- Portraits: 15000, Landscape: 15000. Is amount and diversity right? -> Take multiple artwork types. Also take portraits, sketches, drawings. Maybe use genre attribute: Take 10 genres. Not more then 150.000.
+- ResNet 18, extract features 64 dim and use similarity function, like Knn sklearn: Can it work? -> Try with 128 dim for now, higher the dim and better feature maps, the better but do not focus too much on it. Try to see how fast it is.
+- Current idea is simple to implement. Idea: Creating small neighbourhoods of artworks. Drag and make your own neighbourhoods. Don’t have to let the model change it automatically, would be hard.
+- Next Week meeting Wednesday at 10. Try to have a prototype ready. 
+
+Questions next meeting
+
+### Meeting 3, 26 February 2020
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration

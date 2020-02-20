@@ -27,24 +27,28 @@ This repository contains the code and meeting notes for **group 16** of the *Inf
 
 Questions:
 - What paintings are similar to this specific painting?
-- How similar are two different paintings (similarity scores, attributes)?
-- What paintings are not that similar but still have the same criteria?
+- How similar are two different paintings?
+- What paintings are entirely different from this specific painting?
 
+Question answered with optional modalities:
+- What paintings are not that similar but still have the same criteria?
 Modalities:
 - Center image is query image
 - Center square contains center image and similar images
-  Images around center are similar according to model, when clicked they become center image
+- Images around center are similar according to model, when clicked they become center image
+  These two are possibly going to be combined into a bokeh plot with images.
 - Explore area
   Images outside of center square are completely random, when clicked they become center image
-- Undo / redo button for selected center image
+- Undo / redo button for selected center image restores center image to previous one
 - Refresh / random button to refresh the entire explore area
-- Tooltips for every painting with info about painting, artist
+- Tooltips for every painting with info about painting, artist, similarity to center painting
 - Title, artist, year, (technique) of selected painting: maybe below painting?
 
 Optional Modalities:
-1. Timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
-2. Filters: artist, type, color, etc.
-3. Favorites section
+- Timeline: you can pick time period by dragging bars, all paintings shown are from within this time period
+- Filters: artist, type, color, etc.
+- Favorites section
+
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration

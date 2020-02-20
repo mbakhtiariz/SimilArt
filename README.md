@@ -50,6 +50,9 @@ Optional Modalities:
 - Favorites section
 
 
+
+### Meeting 2, 20 February 2020
+
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
 

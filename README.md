@@ -40,7 +40,7 @@ Modalities:
 - Center square contains center image and similar images
 - Images around center are similar according to model, when clicked they become center image
   These two are possibly going to be combined into a bokeh plot with images.
-- Explore area
+- Explore area: dragable
   Images outside of center square are completely random, when clicked they become center image
 - Undo / redo button for selected center image restores center image to previous one
 - Refresh / random button to refresh the entire explore area

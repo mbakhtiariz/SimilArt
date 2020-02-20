@@ -1,62 +1,36 @@
-import torch
-import torch.nn as nn
-from torchvision.models import resnet18
-from torchvision import transforms
-
-from PIL import Image
-
-import numpy as np
 import pandas as pd
-import requests
+from sklearn.neighbors import NearestNeighbors
 
-from io import BytesIO
+class Features(object):
+    def __init__(self, filename=None):
+        self.ids = None
+        self.id2i = None # Maps id to feature index
+        self.features = None
+        self.neigh = None # Nearest neighbor sklearn object
+        if filename:
+            self.read_csv(filename)
 
-device = torch.device('cuda:0')
-num_imgs = 100
+    def read_csv(self, filename, n=50):
+        features_df = pd.read_csv(filename)
+        ids = features_df['id'].to_list()
+        self.id2i = {id: i for i, id in enumerate(ids)}
+        features = features_df.drop(['id'], axis=1).to_numpy()
+        neigh = NearestNeighbors(n)
+        neigh.fit(features)
 
-# Create the resnet18 base model
-resnet = resnet18(pretrained=True)
-model = nn.Sequential(*list(resnet.children())[:5], nn.AvgPool2d(56))
-model.eval().to(device)
-del resnet
-print(model)
+        self.ids = ids
+        self.features = features
+        self.neigh = neigh
 
+    def nearest(self, id, n=50):
+        assert self.neigh is not None, "No features stored"
+        img_idx = self.id2i[id]
+        vec = self.features[img_idx].reshape(1, -1)
+        dist, ind = self.neigh.kneighbors(vec, n_neighbors=n)
+        return list(dist[0]), [self.ids[i] for i in ind[0]]
 
-# Load the data (resized images to drastically reduce download time)
-data_url = 'http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/img_300x/'
-data = pd.read_csv('app/data/reproductions.csv', dtype=str, nrows=num_imgs)
-
-# Each image is resized, cast to Tensor and normalized
-transform = transforms.Compose([
-    transforms.Resize((224,224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.225, 0.225, 0.225])
-])
-
-# Create empty Tensor to store features
-features = torch.empty(0, 64)
-ids = []
-
-# For each data entry, load the image and extract features
-for index, row in data.iterrows():
-    id = row['metadata_id_id']
-    ids.append(str(id))
-    url = data_url + row['filename'].split('/')[-1]
-
-    # Retrieve image through url (could possibly also load from disk if stored)
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content)).convert('RGB')
-    img = transform(img).unsqueeze(0).to(device)
-    print(index)
-    # Extract features
-    with torch.no_grad():
-        feature = model(img).squeeze()
-        features = torch.cat((features, feature.cpu().unsqueeze(0)), 0)
-
-
-# Cast to pandas dataframe
-features = pd.DataFrame(features.numpy())
-ids = pd.DataFrame(np.array(ids).reshape((num_imgs, -1)))
-features.insert(0, 'id', ids)
-print(features)
-features.to_csv('features.csv', index=False)
+if __name__ == '__main__':
+    features = Features('features.csv')
+    dist, ind = features.nearest(11042916)
+    for d, i in zip(dist, ind):
+        print(f'{i}\t{d}')

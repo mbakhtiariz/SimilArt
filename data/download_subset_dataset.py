@@ -9,7 +9,7 @@ import argparse
 def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path, dl_or_copy):
     counter = 0
     for index in tqdm(range(len(omni_ds))):
-        if counter < 15000:
+        if counter < 25000:
             if omni_ds[selected_column][index] == sub_cat_name:
                 counter += 1
                 file_name = str(omni_ds['omni_id'][index]) + ".jpg"
@@ -25,6 +25,7 @@ def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path
                     copyfile(src, dst)
                 # print(file_name)
         else:
+            print(sub_cat_name," loaded ...")
             break
 
 

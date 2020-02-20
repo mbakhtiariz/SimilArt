@@ -63,8 +63,7 @@ Notes Meeting
 - Current idea is simple to implement. Idea: Creating small neighbourhoods of artworks. Drag and make your own neighbourhoods. Don’t have to let the model change it automatically, would be hard.
 - Next Week meeting Wednesday at 10. Try to have a prototype ready. 
 
-Questions next Meeting
-- 
+Questions next meeting
 
 ### Meeting 3, 26 February 2020
 

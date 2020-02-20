@@ -1,4 +1,4 @@
-# run: python extract_features.py ----dataset_path \path\to\image\dataset\directory
+# run: python extract_features.py --dataset_path \path\to\image\dataset\directory
 
 import torch
 import torch.nn as nn

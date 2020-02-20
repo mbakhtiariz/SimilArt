@@ -14,7 +14,7 @@ def extract_features(num_imgs, img_folder, outfile):
 
     # Create the resnet18 base model
     resnet = resnet18(pretrained=True)
-    model = nn.Sequential(*list(resnet.children())[:5], nn.AvgPool2d(56))
+    model = nn.Sequential(*list(resnet.children())[:6], nn.AvgPool2d(28))
     model.eval().to(device)
     del resnet
 
@@ -27,7 +27,7 @@ def extract_features(num_imgs, img_folder, outfile):
     ])
 
     # Create empty Tensor to store features
-    features = torch.empty(0, 64)
+    features = torch.empty(0, 128)
     ids = []
     failed_ids = []
 

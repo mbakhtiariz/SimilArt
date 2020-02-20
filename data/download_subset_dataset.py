@@ -34,7 +34,7 @@ def main(opt):
 
     if not opt.dl_dataset:
         if opt.complete_dataset == '':
-            print("---- Error: You should specify the path to the pre-dowloaded dataset by using \"--complete_dataset\", since you did not use the \"--dl_dataset option\"")
+            print("---- Error: You should specify the path to the pre-dowloaded dataset by using \"--complete_dataset\", since you did not use the \"--dl_dataset\" option")
             assert False
     # Categories that you want to download:
     # selected_column = "artwork_type"  # It contains 520 categories!!
@@ -54,7 +54,7 @@ def main(opt):
             Path(metadata_path).mkdir(parents=True, exist_ok=True)
             urllib.request.urlretrieve(
                 "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/csv/omniart_v3_datadump.csv",
-                metadata_path / Path('metadatas.csv'))
+                metadata_path / Path('omniart_v3_datadump.csv'))
     else:
         src_path = Path(opt.complete_dataset)
 
@@ -74,7 +74,7 @@ def main(opt):
 # ---------------------------
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Process run time args.')
     parser.add_argument('--data_root', required=True,
                         help='path to save subset images')
 

@@ -9,6 +9,7 @@ def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path
     for index in tqdm(range(len(omni_ds))):
         if omni_ds[selected_column][index] == sub_cat_name:
             file_name = str(omni_ds['omni_id'][index]) + ".jpg"
+            # if file_name not in ["11034064.jpg", "11038913.jpg", "11041471.jpg"]:
             dst = dst_path / file_name
             if dl_or_copy == "dl":
                 # download from the official omniart url of low resolution images:
@@ -21,11 +22,11 @@ def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path
             # print(file_name)
 
 
-dl_or_copy = "dl"  # download directly from given ominarts url
-# dl_or_copy = "copy" # copy from pre-downloaded dataset from the local path
+# dl_or_copy = "dl"  # download directly from given ominarts url
+dl_or_copy = "copy" # copy from pre-downloaded dataset from the local path
 
 # please modify this line to your local path of the dataset:
-local_root_path = Path(r"C:\Users\mbakh\Desktop\Courses\InfoVis\Datasets\omniarts")
+local_root_path = Path(r"C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Datasets\omniarts")
 
 if dl_or_copy == "dl":
     # official omniart url of low resolution images:

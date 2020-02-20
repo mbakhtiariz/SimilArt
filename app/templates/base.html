@@ -80,7 +80,7 @@
 			display: flex;
 			flex-direction: column;
 		}
-					
+
 		#similar_artworks_container {
 			background-color: #779872;
 			display: flex;
@@ -170,7 +170,7 @@
 			border-top: 4px solid black;
 			border-right: 4px solid black;
 		}
-					
+
 
 		#info_bar {
 			flex: 3;
@@ -268,4 +268,10 @@
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+	var data = {{ data |safe }};
+	var available_ids = {{ available_ids |safe }};
+</script>
+
 </html>

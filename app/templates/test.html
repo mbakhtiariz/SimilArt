@@ -38,13 +38,18 @@
 <body>
 	<div class=test>
 		<script>
+			var svgwidth = 960
+			var svgheight = 500
+
 			var svg = d3.select("body").append("svg")
-			  .attr("width", 960)
-			  .attr("height", 500)
+			  .attr("width", svgwidth)
+			  .attr("height", svgheight)
 			
 			var image = {
 			  size: 100
 			}
+
+			console.log(d3.select('svg').node().getBBox())
 			
 			var defs = svg.append("defs");
 			
@@ -56,18 +61,18 @@
 			//   .attr("width", 100)
 			//   .attr("height", 100);
 			
-			var glow = defs.append("filter")
-				.attr("id", "glow");
-			glow.append("feGaussianBlur")
-			  .attr("class", "blur")
-			  .attr("stdDeviation", 3.5)
-			  .attr("result","coloredBlur");
+			// var glow = defs.append("filter")
+			// 	.attr("id", "glow");
+			// glow.append("feGaussianBlur")
+			//   .attr("class", "blur")
+			//   .attr("stdDeviation", 3.5)
+			//   .attr("result","coloredBlur");
 			
-			var feMergeGlow = glow.append("feMerge");
-			feMergeGlow.append("feMergeNode")
-			  .attr("in","coloredBlur");
-			feMergeGlow.append("feMergeNode")
-			  .attr("in","SourceGraphic");
+			// var feMergeGlow = glow.append("feMerge");
+			// feMergeGlow.append("feMergeNode")
+			//   .attr("in","coloredBlur");
+			// feMergeGlow.append("feMergeNode")
+			//   .attr("in","SourceGraphic");
 			
 			var doctorUrl1 = "../../data/images/11027946.jpg",
 				doctorUrl2 = "https://curbsideprophecies.files.wordpress.com/2007/08/davidolder.thumbnail.png",
@@ -77,7 +82,7 @@
 			appendDraggableImage(doctorUrl1, [70, 175]);
 			appendDraggableImage(doctorUrl2, [310, 175]);
 			appendDraggableImage(doctorUrl3, [550, 175]);
-			appendDraggableImage(doctorUrl4, [790, 175]);
+			appendDraggableImage(doctorUrl4, [20, 175]);
 			
 			function appendDraggableImage(url, position) {
 			  var imageGroup = svg.append("g")
@@ -135,11 +140,24 @@
 			}
 			
 			function dragged(d) {
-			  var newX = d3.event.x - image.size * 1.5,
-				  newY = d3.event.y - image.size * 1.5; 
-			  
-			  d3.select(this)
-				.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
+				var newX = d3.event.x - image.size * 1.5,
+					newY = d3.event.y - image.size * 1.5; 
+				
+				xborder = d3.event.x
+				if (xborder + image.size*0.5  > d3.selectAll('svg').attr('width')) {
+					newX = d3.selectAll('svg').attr('width') - image.size*2
+				} else if (xborder - image.size*0.5  < d3.selectAll('svg').attr('width')-d3.selectAll('svg').attr('width')){
+					newX = - image.size
+				}
+				yborder = d3.event.y
+				if (yborder + image.size*0.5  > d3.selectAll('svg').attr('height')) {
+					newY = d3.selectAll('svg').attr('height') - image.size*2
+				} else if (yborder - image.size*0.5  < d3.selectAll('svg').attr('height')-d3.selectAll('svg').attr('height')){
+					newY = - image.size
+				}
+				
+				d3.select(this)
+					.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
 			}
 			
 			function dragended(d) {

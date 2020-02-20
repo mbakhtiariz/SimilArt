@@ -127,27 +127,40 @@
 					newY = - image.size
 				}
 
-				console.log(d3.select('.middle').attr('y')+d3.select('.middle').attr('height'))
+				
+				// Middle area
 
-				// TODO fix the hardcoded x+width and y+height, somehow can't add them,
-				// see console 
-				if ((xborder + image.size*0.5  > middle.attr("x")) && (xborder - image.size*0.5  < (svgwidth/2))) {
-					if ((yborder - image.size*0.5 < (365)) && (yborder + image.size*0.5 > middle.attr("y"))) {
-						newX = middle.attr("x") - image.size*2
+				middle_w = +middle.attr("width")
+				middle_x = +middle.attr("x")
+				middle_y = +middle.attr("y")
+				middle_h = +middle.attr("height")
+
+				// Left border
+				if ((xborder + image.size*0.5  > middle_x) && (xborder - image.size*0.5  < (middle_x-5))) {
+					if ((yborder - image.size*0.5 < (365)) && (yborder + image.size*0.5 > middle_y)) {
+						newX = middle_x - image.size*2
 					} 
 				} 
-				else if ((xborder - image.size*0.5 < (720)) && (xborder + image.size*0.5  > svgwidth/2)) {
-					if ((yborder - image.size*0.5 < (365)) && (yborder + image.size*0.5 > middle.attr("y"))) {
-						newX = 720 - image.size
+
+				// Right border
+				else if ((xborder - image.size*0.5 < (middle_w+middle_x)) && (xborder + image.size*0.5  > middle_x+middle_w+5)) {
+					if ((yborder - image.size*0.5 < (middle_y+middle_h)) && (yborder + image.size*0.5 > middle_y)) {
+						newX = middle_x+middle_w - image.size
 					}
 				}
 
-				// TODO y borders
-				// if (yborder + image.size*0.5  > middle.attr("y")) {
-				// 	newY = (d3.middle.attr("y")+middle.attr("height")) - image.size*2
-				// } else if (yborder - image.size*0.5  < (middle.attr("y")+middle.attr("height"))){
-				// 	newY = - image.size
-				// }
+				// Top border
+				else if ((yborder + image.size*0.5  > middle_y) && (yborder - image.size*0.5 < (svgheight/2))) {
+					if ((xborder + image.size*0.5 > middle.attr("x") && (xborder - image.size*0.5 < middle_x+middle_w))) {
+						newY = middle_y - image.size*2
+					}
+				}
+				// Bottom border
+				else if ((yborder - image.size*0.5  < (middle_y+middle_h)) && (yborder + image.size*0.5 > (svgheight/2)))  {
+					if ((xborder + image.size*0.5 > middle_x) && (xborder - image.size*0.5 < (middle_x+middle_w))) {
+						newY = (middle_y+middle_h) - image.size
+					}
+				}
 
 				d3.select(this)
 					.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");

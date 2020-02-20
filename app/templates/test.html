@@ -13,19 +13,7 @@
 	<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- D3 package -->
-	<script src="https://d3js.org/d3.v5.min.js"></script>
-
-	<!-- Bokeh CSS -->
-	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.css" type="text/css" />
-	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-1.4.0.min.css" type="text/css" />
-	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-tables-1.4.0.min.css" type="text/css">
-
-	<!-- Bokeh scripts -->
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.js"></script>
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-1.4.0.min.js"></script>
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-1.4.0.min.js"></script>
-
+	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<style>
 		p, .txt {  text-align: justify;
 			 	text-justify: inter-word;
@@ -35,14 +23,17 @@
 	<!-- Layout stylesheet -->
 	<link rel="stylesheet" type="text/css" href="base.css">
 	<style>
-		html, body {
-	        height: 100%;
-	        margin: 0px;
-	        background-color: rgba(97, 179, 179, 0.945);
-	    }
-
+		body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
 		
-	</style>
+		svg {
+		  background-color: #fffbef;
+		}
+		.circle-outline {
+		  fill: none;
+		  stroke: #dbdbdb;
+		  stroke-width: 2;
+		}
+	  </style>
 </head>
 <body>
 	<div class=test>
@@ -57,12 +48,13 @@
 			
 			var defs = svg.append("defs");
 			
-			var clipPath = defs.append("clipPath")
-			  .attr("id", "clip")
-			  .append("circle")
-			  .attr("cx", image.size / 2)
-			  .attr("cy", image.size / 2)
-			  .attr("r", image.size / 2);
+			// var clipPath = defs.append("clipPath")
+			//   .attr("id", "clip")
+			//   .append("rect")
+			//   .attr("x", image.size)
+			//   .attr("y", image.size)
+			//   .attr("width", 100)
+			//   .attr("height", 100);
 			
 			var glow = defs.append("filter")
 				.attr("id", "glow");
@@ -77,7 +69,7 @@
 			feMergeGlow.append("feMergeNode")
 			  .attr("in","SourceGraphic");
 			
-			var doctorUrl1 = "praise.jpg",
+			var doctorUrl1 = "../../data/images/11027946.jpg",
 				doctorUrl2 = "https://curbsideprophecies.files.wordpress.com/2007/08/davidolder.thumbnail.png",
 				doctorUrl3 = "https://68.media.tumblr.com/avatar_fde0361fb75d_128.png",
 				doctorUrl4 = "https://68.media.tumblr.com/avatar_91eba9afde80_128.png";
@@ -92,24 +84,28 @@
 				  .datum({position: position})
 				.attr("transform", d => "translate(" + d.position + ")");
 		
-			  var circleFill = imageGroup.append("circle")
+			  var circleFill = imageGroup.append("rect")
 				  .attr("class", "circle-fill")
-				.attr("cx", image.size / 2)
-				.attr("cy", image.size / 2 )
-				.attr("r", image.size / 2)
+				.attr("x", image.size)
+				.attr("y", image.size)
+				.attr("width", image.size)
+				.attr("height", image.size)
 				.attr("filter", "url(#glow");
 		
 			  var imageElem = imageGroup.append("image")
-				.attr("xlink:href", url)
+				.attr("xlink:href", url )
+				.attr("x", image.size)
+			 	.attr("y", image.size)
 				.attr("height", image.size)
 				.attr("width", image.size)
 				.attr("clip-path", "url(#clip)");
 			
-			  var circleOutline = imageGroup.append("circle")
+			  var circleOutline = imageGroup.append("rect")
 				.attr("class", "circle-outline")
-				.attr("cx", image.size / 2)
-				.attr("cy", image.size / 2 )
-				.attr("r", 1 + image.size / 2);
+				.attr("x", image.size)
+				.attr("y", image.size )
+				.attr("width", image.size)
+				.attr("height", image.size);
 		
 			  imageGroup.call(d3.drag()
 						.on("start", dragstarted)
@@ -139,8 +135,8 @@
 			}
 			
 			function dragged(d) {
-			  var newX = d3.event.x - image.size / 2,
-				  newY = d3.event.y - image.size / 2; 
+			  var newX = d3.event.x - image.size * 1.5,
+				  newY = d3.event.y - image.size * 1.5; 
 			  
 			  d3.select(this)
 				.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");

@@ -50,11 +50,11 @@ def main(opt):
 
     if opt.dl_dataset:
         # official omniart url of low resolution images:
-        src_path = "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/img_300x/"
+        src_path = opt.url_root + "/data/img_300x/"
         if opt.dl_metadata:
             Path(metadata_path).mkdir(parents=True, exist_ok=True)
             urllib.request.urlretrieve(
-                "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/csv/omniart_v3_datadump.csv",
+                opt.url_root + "/data/csv/omniart_v3_datadump.csv",
                 metadata_path / Path('omniart_v3_datadump.csv'))
     else:
         src_path = Path(opt.complete_dataset)
@@ -76,6 +76,10 @@ def main(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process run time args.')
+
+    parser.add_argument('--url_root', required=True,
+                        help='url path to parent directory (omniart_v3)')
+
     parser.add_argument('--data_root', required=True,
                         help='path to save subset images')
 

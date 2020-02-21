@@ -14,10 +14,31 @@ def download_images(metadata_path, url_path, dst_path):
         urllib.request.urlretrieve(src, dst)
 
 # ------------------------------------------
-url_path = "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/img_300x/"
+def main(opt):
+    print(opt, '\n')
 
-# modify these 2 lines:
-dst_path = Path(r"C:\Users\mbakh\Desktop\Courses\InfoVis\Datasets\omniarts\data\300x")
-metadata_path = Path(r'C:\Users\mbakh\Desktop\Courses\InfoVis\Datasets\omniarts\data\csv\omniart_v3_datadump.csv')
+    url_path = opt.url_root + "/data/img_300x/"
+    dst_path = opt.data_root / Path(r"data\img_300x")
+    metadata_path = opt.metadata_root / Path(r'omniart_v3_datadump.csv')
+    download_images(metadata_path, url_path, dst_path)
 
-download_images(metadata_path, url_path, dst_path)
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Process run time args.')
+
+    parser.add_argument('--url_root', required=True,
+                        help='url path to parent directory (omniart_v3)')
+
+    parser.add_argument('--metadata_root', required=True,
+                        help='path to load/save the metadata file (omniart_v3_datadump.csv)')
+
+    parser.add_argument('--data_root', type=str, default='',
+                        help='path to save whole dataset')
+
+    parser.add_argument('--dl_metadata', action='store_true',
+                        help='if specified, download metadata directly from the url, '
+                             'otherwise you have to pass the location of your metadata to the command line.')
+
+    args = parser.parse_args()
+    main(args)

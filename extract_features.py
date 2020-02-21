@@ -60,7 +60,8 @@ def extract_features(img_folder, outfile, num_imgs=-1):
 
         try:
             ids.append(id)
-            img = Image.open(os.path.join(img_folder, file)).convert('RGB')
+            # img = Image.open(os.path.join(img_folder, file)).convert('RGB')
+            img = Image.open(Path(img_folder) / Path(file)).convert('RGB')
             img = transform(img).unsqueeze(0).to(device)
 
         except:

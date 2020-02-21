@@ -1,3 +1,9 @@
+# run: python download_subset_dataset.py --data_root \path\to\dirctory\to\save\dataset --metadata_root \path\to\dirctory\to\save\or\load\metadata --url_root http:\\url\path\to\omniart_v3 --dl_dataset --dl_metadata
+
+# Example
+# python download_subset_dataset.py --data_root C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data --metadata_root C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data\csv --url_root http:\\...\omniart_v3 --dl_dataset --dl_metadata
+
+
 from pathlib import Path
 import pandas as pd
 import urllib.request
@@ -84,7 +90,7 @@ if __name__ == '__main__':
                         help='path to save subset images')
 
     parser.add_argument('--metadata_root', required=True,
-                        help='path to load/save the metadata file (omniart_v3_datadump.csv)')
+                        help='path to load/save the metadata file (csv)')
 
     parser.add_argument('--complete_dataset', type=str, default='',
                         help='path of predownload whole dataset')

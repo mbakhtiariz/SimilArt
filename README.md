@@ -43,7 +43,17 @@ please upload/save dataset and files with this structure:
 
 ```
 
+## Data downloading/preproccessing:
 
+#### Download 150'000 images from 10 subsets of "general_type" category:
+```
+python data\download_subset_dataset.py --data_root \path\to\dirctory\to\save\dataset --metadata_root \path\to\dirctory\to\save\or\load\metadata --url_root http:\\url\path\to\omniart_v3 --dl_dataset --dl_metadata
+```
+
+#### Extract features from the pretrained Resnet18:
+```
+python extract_features.py --dataset_path \path\to\image\dataset\directory --feature_path \path\the\directory\to\save\features
+```
 
 ## Meeting notes
 

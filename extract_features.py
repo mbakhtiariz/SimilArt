@@ -1,4 +1,7 @@
-# run: python extract_features.py --dataset_path \path\to\image\dataset\directory
+# run: python extract_features.py --dataset_path \path\to\image\dataset\directory --feature_path \path\the\directory\to\save\features
+
+# Example:
+# python extract_features.py --dataset_path C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data\subset --feature_path C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data
 
 import torch
 import torch.nn as nn
@@ -85,13 +88,19 @@ def main(opt):
     print(opt, '\n')
     # Change folder below to what you need
     #     extract_features(15000, r'C:\Users\kylia\Documents\Msc AI jaar 1\Information Visualization\Infovis\imgs', 'features.csv')
-    extract_features(Path(opt.dataset_path), 'features.csv',-1)
+    extract_features(Path(opt.dataset_path), Path(opt.feature_path) / Path('features.csv'), opt.num_imgs)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process run-time args.')
     parser.add_argument('--dataset_path', required=True,
                         help='path of the directory of subset images')
+
+    parser.add_argument('--feature_path', required=True,
+                        help='path of the directory to save features')
+
+    parser.add_argument('--num_imgs', type=int, default=-1,
+                        help='It specifies number of images that we need want to calculate the features (for debuging purpose). -1 if you want to calc for all images')
 
     args = parser.parse_args()
     main(args)

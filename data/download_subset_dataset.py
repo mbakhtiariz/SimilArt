@@ -1,3 +1,9 @@
+# run: python download_subset_dataset.py --data_root \path\to\dirctory\to\save\dataset --metadata_root \path\to\dirctory\to\save\or\load\metadata --url_root http:\\url\path\to\omniart_v3 --dl_dataset --dl_metadata
+
+# Example
+# python download_subset_dataset.py --data_root C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data --metadata_root C:\Users\mbakh\Desktop\Courses\InfoVis\omni-exploration-project\Dataset\data\csv --url_root http:\\...\omniart_v3 --dl_dataset --dl_metadata
+
+
 from pathlib import Path
 import pandas as pd
 import urllib.request
@@ -50,11 +56,11 @@ def main(opt):
 
     if opt.dl_dataset:
         # official omniart url of low resolution images:
-        src_path = "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/img_300x/"
+        src_path = opt.url_root + "/data/img_300x/"
         if opt.dl_metadata:
             Path(metadata_path).mkdir(parents=True, exist_ok=True)
             urllib.request.urlretrieve(
-                "http://isis-data.science.uva.nl/strezoski/omniart/omniart_v3/data/csv/omniart_v3_datadump.csv",
+                opt.url_root + "/data/csv/omniart_v3_datadump.csv",
                 metadata_path / Path('omniart_v3_datadump.csv'))
     else:
         src_path = Path(opt.complete_dataset)
@@ -76,11 +82,15 @@ def main(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process run time args.')
+
+    parser.add_argument('--url_root', required=True,
+                        help='url path to parent directory (omniart_v3)')
+
     parser.add_argument('--data_root', required=True,
                         help='path to save subset images')
 
     parser.add_argument('--metadata_root', required=True,
-                        help='path to load/save the metadata file (omniart_v3_datadump.csv)')
+                        help='path to load/save the metadata file (csv)')
 
     parser.add_argument('--complete_dataset', type=str, default='',
                         help='path of predownload whole dataset')

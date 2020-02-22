@@ -33,6 +33,11 @@
 		  stroke: #dbdbdb;
 		  stroke-width: 2;
 		}
+		.middle {
+		  fill: none;
+		  stroke: #dbdbdb;
+		  stroke-width: 2;
+		}
 	  </style>
 </head>
 <body>
@@ -53,36 +58,22 @@
 
 			var defs = svg.append("defs");
 
-			// var clipPath = defs.append("clipPath")
-			//   .attr("id", "clip")
-			//   .append("rect")
-			//   .attr("x", image.size)
-			//   .attr("y", image.size)
-			//   .attr("width", 100)
-			//   .attr("height", 100);
-
-			// var glow = defs.append("filter")
-			// 	.attr("id", "glow");
-			// glow.append("feGaussianBlur")
-			//   .attr("class", "blur")
-			//   .attr("stdDeviation", 3.5)
-			//   .attr("result","coloredBlur");
-
-			// var feMergeGlow = glow.append("feMerge");
-			// feMergeGlow.append("feMergeNode")
-			//   .attr("in","coloredBlur");
-			// feMergeGlow.append("feMergeNode")
-			//   .attr("in","SourceGraphic");
+			var middle = svg.append("rect")
+				.attr("class", "middle")
+				.attr("x", svgwidth*0.25)
+				.attr("y", svgheight*0.25)
+				.attr("width", svgwidth*0.5)
+				.attr("height", svgwidth*0.25);
 
 			var doctorUrl1 = "../../data/images/11027946.jpg",
-				doctorUrl2 = "https://curbsideprophecies.files.wordpress.com/2007/08/davidolder.thumbnail.png",
-				doctorUrl3 = "https://68.media.tumblr.com/avatar_fde0361fb75d_128.png",
-				doctorUrl4 = "https://68.media.tumblr.com/avatar_91eba9afde80_128.png";
+				doctorUrl2 = "../../data/images/11027927.jpg",
+				doctorUrl3 = "../../data/images/11027939.jpg",
+				doctorUrl4 = "../../data/images/11027953.jpg";
 
-			appendDraggableImage(doctorUrl1, [70, 175]);
-			appendDraggableImage(doctorUrl2, [310, 175]);
-			appendDraggableImage(doctorUrl3, [550, 175]);
-			appendDraggableImage(doctorUrl4, [20, 175]);
+			appendDraggableImage(doctorUrl1, [550, 280]);
+			appendDraggableImage(doctorUrl2, [310, 280]);
+			appendDraggableImage(doctorUrl3, [650, 280]);
+			appendDraggableImage(doctorUrl4, [10, 80]);
 
 			function appendDraggableImage(url, position) {
 			  var imageGroup = svg.append("g")
@@ -113,30 +104,9 @@
 				.attr("height", image.size);
 
 			  imageGroup.call(d3.drag()
-						.on("start", dragstarted)
 						.on("drag", dragged)
 						.on("end", dragended));
 
-			}
-
-			function dragstarted(d) {
-		//       d3.select(this).raise();
-
-		//       d3.select(this).select(".circle-outline")
-		//       	.transition()
-		//       	.attr("r", 1 + image.size / 3);
-
-		//       d3.select(this).select(".circle-fill")
-		//       	.transition()
-		//       	.attr("r", 1 + image.size / 3);
-
-		//       d3.select(this).select("image")
-		//       	.attr("x", image.size / 6)
-		//       	.attr("y", image.size / 6)
-		//       	.attr("height", image.size * 2 / 3)
-		//         .attr("width", image.size * 2 / 3)
-
-		//       clipPath.attr("r", image.size / 3)
 			}
 
 			function dragged(d) {
@@ -149,11 +119,47 @@
 				} else if (xborder - image.size*0.5  < d3.selectAll('svg').attr('width')-d3.selectAll('svg').attr('width')){
 					newX = - image.size
 				}
+
 				yborder = d3.event.y
 				if (yborder + image.size*0.5  > d3.selectAll('svg').attr('height')) {
 					newY = d3.selectAll('svg').attr('height') - image.size*2
 				} else if (yborder - image.size*0.5  < d3.selectAll('svg').attr('height')-d3.selectAll('svg').attr('height')){
 					newY = - image.size
+				}
+
+				
+				// Middle area
+
+				middle_w = +middle.attr("width")
+				middle_x = +middle.attr("x")
+				middle_y = +middle.attr("y")
+				middle_h = +middle.attr("height")
+
+				// Left border
+				if ((xborder + image.size*0.5  > middle_x) && (xborder - image.size*0.5  < (middle_x-5))) {
+					if ((yborder - image.size*0.5 < (365)) && (yborder + image.size*0.5 > middle_y)) {
+						newX = middle_x - image.size*2
+					} 
+				} 
+
+				// Right border
+				else if ((xborder - image.size*0.5 < (middle_w+middle_x)) && (xborder + image.size*0.5  > middle_x+middle_w+5)) {
+					if ((yborder - image.size*0.5 < (middle_y+middle_h)) && (yborder + image.size*0.5 > middle_y)) {
+						newX = middle_x+middle_w - image.size
+					}
+				}
+
+				// Top border
+				else if ((yborder + image.size*0.5  > middle_y) && (yborder - image.size*0.5 < (svgheight/2))) {
+					if ((xborder + image.size*0.5 > middle.attr("x") && (xborder - image.size*0.5 < middle_x+middle_w))) {
+						newY = middle_y - image.size*2
+					}
+				}
+				// Bottom border
+				else if ((yborder - image.size*0.5  < (middle_y+middle_h)) && (yborder + image.size*0.5 > (svgheight/2)))  {
+					if ((xborder + image.size*0.5 > middle_x) && (xborder - image.size*0.5 < (middle_x+middle_w))) {
+						newY = (middle_y+middle_h) - image.size
+					}
 				}
 
 				d3.select(this)
@@ -164,6 +170,8 @@
 			  d3.select(this).lower();
 
 			}
+
+
 
 		  </script>
 	</div>

@@ -30,7 +30,7 @@ class Features(object):
         return list(dist[0]), [self.ids[i] for i in ind[0]]
 
 if __name__ == '__main__':
-    features = Features('features.csv')
-    dist, ind = features.nearest(11042916)
+    features = Features('data/features.csv')
+    dist, ind = features.nearest(11042971)
     for d, i in zip(dist, ind):
         print(f'{i}\t{d}')

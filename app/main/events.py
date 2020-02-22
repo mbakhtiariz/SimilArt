@@ -3,8 +3,12 @@ from .. import socketio
 import os
 
 from ..features import Features
+from pathlib import Path
 
-features_path = os.path.join(os.path.abspath(__file__), r'..\..\data\features.csv')
+current_path = Path.cwd()
+data_path = current_path.parent / Path(r"Dataset")
+
+features_path = data_path / Path(r"data") / Path(r"features.csv") #os.path.join(os.path.abspath(__file__), r'..\..\data\features.csv')
 features = Features(features_path)
 
 @socketio.on('connect')

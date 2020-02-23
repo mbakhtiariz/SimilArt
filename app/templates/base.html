@@ -16,15 +16,15 @@
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 
 	<!-- Bokeh CSS -->
-	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.css" type="text/css" />
+	<!-- <link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.css" type="text/css" />
 	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-1.4.0.min.css" type="text/css" />
-	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-tables-1.4.0.min.css" type="text/css">
+	<link rel="stylesheet" href="https://cdn.bokeh.org/bokeh/release/bokeh-tables-1.4.0.min.css" type="text/css"> -->
 
 	<!-- Bokeh scripts -->
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+	<!-- <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-1.4.0.min.js"></script>
 	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
 	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-1.4.0.min.js"></script>
-	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-1.4.0.min.js"></script>
+	<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-1.4.0.min.js"></script> -->
 
 	<style>
 		p, .txt {  text-align: justify;
@@ -269,9 +269,16 @@
 	</div>
 </body>
 
+<!-- Imports for the backend connection + nearest neighbor querying -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="../static/js/nearest_neighbors.js"></script>
+
 <script type="text/javascript">
 	var data = {{ data |safe }};
 	var available_ids = {{ available_ids |safe }};
+
+	// Nearest neighbor example, check web console for output
+	nearest_neighbors(11042946, 10);
 </script>
 
 </html>

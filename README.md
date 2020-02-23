@@ -22,8 +22,8 @@ please upload/save dataset and files with this structure:
 │   ├── README.md
 │   ├── requirements.txt
 │   ├── start_app.sh
-│   ├── run.py
-│   └── extract_features.py           # !!!!! I suggest to move this file to ./data/ folder, since it is a preprocessing step.
+│   └── run.py
+│
 │
 │
 ├── Dataset                           # Dataset root directory it contains omniart_v3 images and csv files
@@ -37,7 +37,7 @@ please upload/save dataset and files with this structure:
 │   └── artsight_csvs                 # This directory contains 3 different kinds of metadata file each covers a few dataset attributes.
 │       ├── metadatas.csv             
 │       ├── metalevelmeta.csv         
-│       └── reproductions.csv 
+│       └── reproductions.csv
 └── ...
 
 
@@ -101,11 +101,11 @@ Optional Modalities:
 ### Meeting 2, 20 February 2020
 
 Notes Meeting
-- Store the images or retrieve from url? -> Use the resized / lowres image, if user wants highres, pull, link to new tab 
+- Store the images or retrieve from url? -> Use the resized / lowres image, if user wants highres, pull, link to new tab
 - Portraits: 15000, Landscape: 15000. Is amount and diversity right? -> Take multiple artwork types. Also take portraits, sketches, drawings. Maybe use genre attribute: Take 10 genres. Not more then 150.000.
 - ResNet 18, extract features 64 dim and use similarity function, like Knn sklearn: Can it work? -> Try with 128 dim for now, higher the dim and better feature maps, the better but do not focus too much on it. Try to see how fast it is.
 - Current idea is simple to implement. Idea: Creating small neighbourhoods of artworks. Drag and make your own neighbourhoods. Don’t have to let the model change it automatically, would be hard.
-- Next Week meeting Wednesday at 10. Try to have a prototype ready. 
+- Next Week meeting Wednesday at 10. Try to have a prototype ready.
 
 Questions next meeting
 
@@ -113,4 +113,3 @@ Questions next meeting
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
-

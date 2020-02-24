@@ -13,12 +13,14 @@ import argparse
 
 
 def extract_portraits(omni_ds, selected_column, sub_cat_name, src_path, dst_path, dl_or_copy):
-    sub_dataframe = omni_ds.loc[omni_ds[selected_column] == sub_cat_name].head(10)
+    sub_dataframe = omni_ds.loc[omni_ds[selected_column] == sub_cat_name].head(25000)
     indices = list(sub_dataframe.index.values)
     for index in tqdm(indices):
         file_name = str(sub_dataframe['omni_id'][index]) + ".jpg"
         # if file_name not in ["11034064.jpg", "11038913.jpg", "11041471.jpg"]:
         dst = dst_path / file_name
+        if dst.exists():
+            continue
         if dl_or_copy:
             # download from the official omniart url of low resolution images:
             src = src_path + file_name

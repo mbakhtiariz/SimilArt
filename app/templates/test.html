@@ -15,20 +15,22 @@
 	<!-- D3 package -->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<style>
-		p, .txt {  text-align: justify;
-			 	text-justify: inter-word;
-				}
+
 	</style>
 
 	<!-- Layout stylesheet -->
 	<link rel="stylesheet" type="text/css" href="base.css">
 	<style>
+		p, .txt {  text-align: justify;
+			text-justify: inter-word;
+		}
+
 		body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
 
 		svg {
 		  background-color: #fffbef;
 		}
-		.circle-outline {
+		.rect-outline {
 		  fill: none;
 		  stroke: #dbdbdb;
 		  stroke-width: 2;
@@ -41,143 +43,48 @@
 	  </style>
 </head>
 <body>
-	<div class=test>
-		<script>
-			var svgwidth = 960
-			var svgheight = 500
 
-			var svg = d3.select("body").append("svg")
-			  .attr("width", svgwidth)
-			  .attr("height", svgheight)
-
-			var image = {
-			  size: 100
-			}
-
-			console.log(d3.select('svg').node().getBBox())
-
-			var defs = svg.append("defs");
-
-			var middle = svg.append("rect")
-				.attr("class", "middle")
-				.attr("x", svgwidth*0.25)
-				.attr("y", svgheight*0.25)
-				.attr("width", svgwidth*0.5)
-				.attr("height", svgwidth*0.25);
-
-			var doctorUrl1 = "../../data/images/11027946.jpg",
-				doctorUrl2 = "../../data/images/11027927.jpg",
-				doctorUrl3 = "../../data/images/11027939.jpg",
-				doctorUrl4 = "../../data/images/11027953.jpg";
-
-			appendDraggableImage(doctorUrl1, [550, 280]);
-			appendDraggableImage(doctorUrl2, [310, 280]);
-			appendDraggableImage(doctorUrl3, [650, 280]);
-			appendDraggableImage(doctorUrl4, [10, 80]);
-
-			function appendDraggableImage(url, position) {
-			  var imageGroup = svg.append("g")
-				  .datum({position: position})
-				.attr("transform", d => "translate(" + d.position + ")");
-
-			  var circleFill = imageGroup.append("rect")
-				  .attr("class", "circle-fill")
-				.attr("x", image.size)
-				.attr("y", image.size)
-				.attr("width", image.size)
-				.attr("height", image.size)
-				.attr("filter", "url(#glow");
-
-			  var imageElem = imageGroup.append("image")
-				.attr("xlink:href", url )
-				.attr("x", image.size)
-			 	.attr("y", image.size)
-				.attr("height", image.size)
-				.attr("width", image.size)
-				.attr("clip-path", "url(#clip)");
-
-			  var circleOutline = imageGroup.append("rect")
-				.attr("class", "circle-outline")
-				.attr("x", image.size)
-				.attr("y", image.size )
-				.attr("width", image.size)
-				.attr("height", image.size);
-
-			  imageGroup.call(d3.drag()
-						.on("drag", dragged)
-						.on("end", dragended));
-
-			}
-
-			function dragged(d) {
-				var newX = d3.event.x - image.size * 1.5,
-					newY = d3.event.y - image.size * 1.5;
-
-				xborder = d3.event.x
-				if (xborder + image.size*0.5  > d3.selectAll('svg').attr('width')) {
-					newX = d3.selectAll('svg').attr('width') - image.size*2
-				} else if (xborder - image.size*0.5  < d3.selectAll('svg').attr('width')-d3.selectAll('svg').attr('width')){
-					newX = - image.size
-				}
-
-				yborder = d3.event.y
-				if (yborder + image.size*0.5  > d3.selectAll('svg').attr('height')) {
-					newY = d3.selectAll('svg').attr('height') - image.size*2
-				} else if (yborder - image.size*0.5  < d3.selectAll('svg').attr('height')-d3.selectAll('svg').attr('height')){
-					newY = - image.size
-				}
-
-				
-				// Middle area
-
-				middle_w = +middle.attr("width")
-				middle_x = +middle.attr("x")
-				middle_y = +middle.attr("y")
-				middle_h = +middle.attr("height")
-
-				// Left border
-				if ((xborder + image.size*0.5  > middle_x) && (xborder - image.size*0.5  < (middle_x-5))) {
-					if ((yborder - image.size*0.5 < (365)) && (yborder + image.size*0.5 > middle_y)) {
-						newX = middle_x - image.size*2
-					} 
-				} 
-
-				// Right border
-				else if ((xborder - image.size*0.5 < (middle_w+middle_x)) && (xborder + image.size*0.5  > middle_x+middle_w+5)) {
-					if ((yborder - image.size*0.5 < (middle_y+middle_h)) && (yborder + image.size*0.5 > middle_y)) {
-						newX = middle_x+middle_w - image.size
-					}
-				}
-
-				// Top border
-				else if ((yborder + image.size*0.5  > middle_y) && (yborder - image.size*0.5 < (svgheight/2))) {
-					if ((xborder + image.size*0.5 > middle.attr("x") && (xborder - image.size*0.5 < middle_x+middle_w))) {
-						newY = middle_y - image.size*2
-					}
-				}
-				// Bottom border
-				else if ((yborder - image.size*0.5  < (middle_y+middle_h)) && (yborder + image.size*0.5 > (svgheight/2)))  {
-					if ((xborder + image.size*0.5 > middle_x) && (xborder - image.size*0.5 < (middle_x+middle_w))) {
-						newY = (middle_y+middle_h) - image.size
-					}
-				}
-
-				d3.select(this)
-					.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
-			}
-
-			function dragended(d) {
-			  d3.select(this).lower();
-
-			}
-
-
-
-		  </script>
-	</div>
 </body>
 
+<!-- Imports for the backend connection + nearest neighbor querying -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="../static/js/nearest_neighbors.js"></script>
+<!-- Import dragable images code -->
+<script src="../static/js/drag_imgs.js"></script>
 <script type="text/javascript">
+	var svgwidth = 960
+	var svgheight = 500
+
+	var svg = d3.select("body").append("svg")
+	  .attr("width", svgwidth)
+	  .attr("height", svgheight)
+
+	var image = {
+	  size: 100
+	}
+
+	console.log(d3.select('svg').node().getBBox())
+
+	var defs = svg.append("defs");
+
+	var middle = svg.append("rect")
+		.attr("class", "middle")
+		.attr("x", svgwidth*0.25)
+		.attr("y", svgheight*0.25)
+		.attr("width", svgwidth*0.5)
+		.attr("height", svgwidth*0.25);
+
+	var imgs_path = "static/subset/"
+	var doctorUrl1 = imgs_path + "16.jpg";
+		doctorUrl2 = imgs_path + "252.jpg";
+		doctorUrl3 = imgs_path + "329.jpg";
+		doctorUrl4 = imgs_path + "360.jpg";
+
+	appendDraggableImage(doctorUrl1, [720, 120]);
+	appendDraggableImage(doctorUrl2, [310, 280]);
+	appendDraggableImage(doctorUrl3, [650, 280]);
+	appendDraggableImage(doctorUrl4, [-50, 80]);
+
 	var data = {{ data |safe }};
 	var available_ids = {{ available_ids |safe }};
 </script>

@@ -9,14 +9,14 @@ from pathlib import Path
 @main.route('/', methods=['GET'])
 def index():
 	current_path = Path.cwd()
-	data_path = current_path.parent / Path(r"Dataset") # os.path.join(os.path.abspath(__file__), r'..\..\data')
+	data_path = current_path.parent / Path(r"Dataset")
 
 	# Based on feature data, extract available ids
-	feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv")) # pd.read_csv(os.path.join(data_path, 'features.csv'))
+	feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv"))
 	ids = feature_data['id'].to_list()
 
 	# From metadata, extract data with available ids
-	data = pd.read_csv(data_path / Path(r"artsight_csvs") / Path(r"metadatas.csv")) # pd.read_csv(os.path.join(data_path, r"metadatas.csv"))
+	data = pd.read_csv(data_path / Path(r"data/csv") / Path(r"subset.csv"))
 	data = data.set_index('omni_id')
 	data = data.loc[ids].to_json(orient='index')
 
@@ -27,14 +27,14 @@ def index():
 @main.route('/test', methods=['GET'])
 def test():
 	current_path = Path.cwd()
-	data_path = current_path.parent / Path(r"Dataset")  # os.path.join(os.path.abspath(__file__), r'..\..\data')
+	data_path = current_path.parent / Path(r"Dataset")
 
 	# Based on feature data, extract available ids
-	feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv"))  # pd.read_csv(os.path.join(data_path, 'features.csv'))
+	feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv"))
 	ids = feature_data['id'].to_list()
 
 	# From metadata, extract data with available ids
-	data = pd.read_csv(data_path / Path(r"artsight_csvs") / Path(r"metadatas.csv"))  # pd.read_csv(os.path.join(data_path, 'metadatas.csv'))
+	data = pd.read_csv(data_path / Path(r"data/csv") / Path(r"subset.csv"))
 	data = data.set_index('omni_id')
 	data = data.loc[ids].to_json(orient='index')
 

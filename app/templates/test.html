@@ -183,17 +183,17 @@
         // --- selecting location of dis-similar layer and plotting those images:
         for (i = 0; i < outside_subset.length; i++) {
             appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
-        }
+        };
         console.log("dissimilar")
         // --- selecting location of similar layer and plotting those images:
         for (i = 0; i < nearest_ids.length; i++) {
             appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i]);
-        }
+        };
         console.log("similar")
 
 
         console.log(available_ids)
-    })
+    });
 </script>
 
 <script type="text/javascript">

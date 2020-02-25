@@ -56,19 +56,19 @@ function dragged(d) {
 		newY = d3.event.y - height * 1.5;
 
 	xborder = d3.event.x
-	if (xborder + width*0.5  > d3.selectAll('svg').attr('width')) {
-		newX = d3.selectAll('svg').attr('width') - width*2
-	} else if (xborder - width*0.5  < d3.selectAll('svg').attr('width')-d3.selectAll('svg').attr('width')){
+	if (xborder + width*0.5  > d3.selectAll('svg').style('width')) {
+		newX = d3.selectAll('svg').style('width') - width*2
+	} else if (xborder - width*0.5  < d3.selectAll('svg').style('width')-d3.selectAll('svg').style('width')){
 		newX = - width
 	}
 
 	yborder = d3.event.y
-	if (yborder + height*0.5  > d3.selectAll('svg').attr('height')) {
-		newY = d3.selectAll('svg').attr('height') - height*2
-	} else if (yborder - height*0.5  < d3.selectAll('svg').attr('height')-d3.selectAll('svg').attr('height')){
+	if (yborder + height*0.5  > d3.selectAll('svg').style('height')) {
+		newY = d3.selectAll('svg').style('height') - height*2
+	} else if (yborder - height*0.5  < d3.selectAll('svg').style('height')-d3.selectAll('svg').style('height')){
 		newY = - height
 	}
-
+	console.log(xborder)
 	// Middle area
 	middle_w = +middle.attr("width")
 	middle_x = +middle.attr("x")

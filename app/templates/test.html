@@ -40,6 +40,11 @@
 		  stroke: #dbdbdb;
 		  stroke-width: 2;
 		}
+		.rect-fill{
+			fill:aqua;
+			stroke:aquamarine;
+			stroke-width: 2;
+		}
 	  </style>
 </head>
 <body>
@@ -73,6 +78,40 @@
 		.attr("y", svgheight*0.25)
 		.attr("width", svgwidth*0.5)
 		.attr("height", svgwidth*0.25);
+	
+	var backbutton = svg.append("rect")
+		.attr("class", "rect-fill")
+		.attr("x", svgwidth*0.25 + svgwidth*0.025 )
+		.attr("y", svgheight*0.25)
+		.attr("width", svgwidth*0.025)
+		.attr("height", svgwidth*0.025);
+	var redobutton = svg.append("rect")
+		.attr("class", "rect-fill")
+		.attr("x", svgwidth*0.25)
+		.attr("y", svgheight*0.25)
+		.attr("width", svgwidth*0.025)
+		.attr("height", svgwidth*0.025);
+	
+	backbutton.on('click', function() {
+  		console.log('go back to previous image');
+	});
+	redobutton.on('click', function() {
+  		console.log('redo images');
+	});
+	var test = svg.append("g")
+		.datum({position: [0, 0], height: 35, width: 55})
+		.attr("transform", d => "translate(" + d.position + ")");
+
+	var randomizebutton = test.append("rect")
+		.attr("class", "rect-fill")
+		.attr("x", 0)
+		.attr("y", 0)
+		.attr("width", 50)
+		.attr("height", 30)
+	
+	randomizebutton.on('click', function() {
+  		console.log('randomize all outside images');
+	});
 
 	var imgs_path = "static/subset/"
 	var doctorUrl1 = imgs_path + "16.jpg";
@@ -80,7 +119,7 @@
 		doctorUrl3 = imgs_path + "329.jpg";
 		doctorUrl4 = imgs_path + "360.jpg";
 
-	appendDraggableImage(doctorUrl1, [720, 120]);
+	appendDraggableImage(doctorUrl1, [0, 0]);
 	appendDraggableImage(doctorUrl2, [310, 280]);
 	appendDraggableImage(doctorUrl3, [650, 280]);
 	appendDraggableImage(doctorUrl4, [-50, 80]);

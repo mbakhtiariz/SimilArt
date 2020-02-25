@@ -4,7 +4,7 @@ function appendDraggableImage(url, position) {
 	img_width = img.width;
 	img_height = img.height;
 
-	var x = position[0], y = position[1];
+	// var x = position[0], y = position[1];
 	var ratio = img_width / img_height;
 	// If image width > height
 	if (ratio > 1) {

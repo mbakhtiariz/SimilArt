@@ -186,7 +186,8 @@
         };
         console.log("dissimilar")
         // --- selecting location of similar layer and plotting those images:
-        for (i = 0; i < nearest_ids.length; i++) {
+        // Start i from 1 to filter-out central image:
+        for (i = 1; i < nearest_ids.length; i++) {
             appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i]);
         };
         console.log("similar")

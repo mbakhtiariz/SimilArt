@@ -65,7 +65,7 @@ python data\extract_features.py --dataset_path \path\to\image\dataset\directory 
 ## Running script
 ```
 cd app
-python run.py
+python ..\run.py
 ```
 
 ## Meeting notes

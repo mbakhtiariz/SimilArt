@@ -67,19 +67,45 @@
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
     var image = {
-        size: 100
+        size: 50
     }
 
     console.log(d3.select('svg').node().getBBox())
 
     var defs = svg.append("defs");
+    var middle_x = svgwidth*0.25;
+    var middle_y = svgwidth*0.25;
 
     var middle = svg.append("rect")
         .attr("class", "middle")
-        .attr("x", svgwidth*0.25)
-        .attr("y", svgheight*0.25)
+        .attr("x", middle_x)
+        .attr("y", middle_y)
         .attr("width", svgwidth*0.5)
         .attr("height", svgwidth*0.25);
+
+    var i;
+    // var j;
+    // var grid = [];
+    // var grid_similar = [];
+    // var grid_dissimilar = [];
+    //
+    // for (i = 0; i < svgwidth; i += image.size) {
+    //     for (j = 0; j < svgheight; i += image.size) {
+    //         grid.concat([i, j]);
+    //     }
+    // }
+    //
+    // for (i = middle_x; i < middle_x + svgwidth; i += image.size) {
+    //     for (j = middle_y; j < middle_y + svgheight; i += image.size) {
+    //         grid_similar.concat([i, j]);
+    //     }
+    // }
+    //
+    // grid_dissimilar = grid.filter(n => !grid_similar.includes(n));
+    // console.log("grid");
+    // console.log(grid);
+    // console.log("grid_sim")
+    // console.log(grid_similar)
 
     var backbutton = svg.append("rect")
         .attr("class", "rect-fill")
@@ -115,39 +141,38 @@
         console.log('randomize all outside images');
     });
 
-    var imgs_path = "static/subset/"
-
+    var data = {{ data |safe }};
+    var available_ids = {{ available_ids |safe }};
+    var imgs_path = "static/subset/";
     var middle_image = 2005927;
     var n_neighbours = 5;
+    var nr_images_outside = 5;
+    var outside_images = [];
+    var outside_subset = [];
+    var dissimilar_locs = [];
+    var similar_locs = [];
+    nearest_neighbors(middle_image, n_neighbours);
 
-
-    var doctorUrl1, doctorUrl2, doctorUrl3, doctorUrl4, doctorUrl5, doctorUrl6, doctorUrl7, doctorUrl8;
-    doctorUrl1 = doctorUrl2 = doctorUrl3 = doctorUrl4 = doctorUrl5 = doctorUrl6 = doctorUrl7 = doctorUrl8 = "0";
-
-
-    nearest_neighbors(middle_image, n_neighbours)
-
-
+    // Sleep for 500 ms until neighbouring images is found
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
     sleep(500).then(() => {
-        nearest_neighbors(middle_image, n_neighbours);
-        doctorUrls_locs = [[0, 0], [310, 280], [650, 280], [-50, 80], [400, 100], [460, 90], [500, 120], [550, 130]];
-        var i;
-        for (i = 1; i < nearest_ids.length; i++) {
-            // doctorUrls.concat(imgs_path + nearest_ids[1].toString() + ".jpg");
-            console.log(imgs_path + nearest_ids[i].toString() + ".jpg");
-            console.log(doctorUrls_locs[i]);
-            appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", doctorUrls_locs[i]);
+        outside_images = available_ids.filter(n => !nearest_ids.includes(n));
+        outside_images = outside_images.sort(() => Math.random() - 0.5);
+        outside_subset = outside_images.slice(0, nr_images_outside);
+        dissimilar_locs = [[0, 0], [310, 280], [650, 280], [-50, 80], [400, 100]];
+        similar_locs = [[100, 80], [200, 100], [460, 90], [500, 120], [550, 130]];
+
+        // --- selecting location of dis-similar layer and plotting those images:
+        for (i = 1; i < outside_subset.length; i++) {
+            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
         }
-        console.log("test before nn");
-        console.log(nearest_ids);
 
-        console.log("test ctrl");
-
-        var data = {{ data |safe }};
-        var available_ids = {{ available_ids |safe }};
+        // --- selecting location of similar layer and plotting those images:
+        for (i = 1; i < nearest_ids.length; i++) {
+            appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i]);
+        }
 
         console.log(available_ids)
     })

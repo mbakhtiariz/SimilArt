@@ -18,9 +18,10 @@ function set_center(center_obj, img_id) {
 	};
 
 
-	center_obj.attr("xlink:href", url)
+	center_obj.attr("href", url)
 		.attr("x",  svgwidth*0.5*0.5 - 50)
 		.attr("y", svgwidth*0.25*0.5 - 50)
 		.attr("height", 100)
 		.attr("width", 100)
+		.attr("id", 'center')
 };

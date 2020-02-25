@@ -22,24 +22,22 @@ function appendDraggableImage(url, position) {
 
 	var rectFill = imageGroup.append("rect")
 		.attr("class", "rect-fill")
-		.attr("x", img_width)
-		.attr("y", img_height)
 		.attr("width", img_width)
 		.attr("height", img_height)
-		.attr("filter", "url(#glow)");
+		.attr("filter", "url(#glow)")
+		.on('click', function(url) {
+			console.log(img.src)
+			d3.select('image#center').attr('href', img.src);
+		});
 
 	var imageElem = imageGroup.append("image")
-		.attr("xlink:href", url)
-		.attr("x", img_width)
-		.attr("y", img_height)
+		.attr("href", url)
 		.attr("height", img_height)
 		.attr("width", img_width)
 		.attr("clip-path", "url(#clip)");
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "rect-outline")
-		.attr("x", img_width)
-		.attr("y", img_height)
 		.attr("width", img_width)
 		.attr("height", img_height);
 
@@ -52,21 +50,21 @@ function appendDraggableImage(url, position) {
 function dragged(d) {
 	var height = d.height;
 	var width = d.width;
-	var newX = d3.event.x - width * 1.5,
-		newY = d3.event.y - height * 1.5;
+	var newX = d3.event.x - width * 0.5,
+		newY = d3.event.y - height * 0.5;
 
 	xborder = d3.event.x
-	if (xborder + width*0.5  > d3.selectAll('svg').style('width')) {
-		newX = d3.selectAll('svg').style('width') - width*2
-	} else if (xborder - width*0.5  < d3.selectAll('svg').style('width')-d3.selectAll('svg').style('width')){
-		newX = - width
+	if (xborder + width*0.5  > 960 ){
+		newX = 960 - width
+	} else if (xborder - width*0.5  < 0){
+		newX = 0
 	}
 
 	yborder = d3.event.y
-	if (yborder + height*0.5  > d3.selectAll('svg').style('height')) {
-		newY = d3.selectAll('svg').style('height') - height*2
-	} else if (yborder - height*0.5  < d3.selectAll('svg').style('height')-d3.selectAll('svg').style('height')){
-		newY = - height
+	if (yborder + height*0.5  > 500) {
+		newY = 500 - height
+	} else if (yborder - height*0.5  < 0){
+		newY = 0
 	}
 	console.log(xborder)
 	// Middle area
@@ -78,25 +76,25 @@ function dragged(d) {
 	// Left border
 	if ((xborder + width*0.5  > middle_x) && (xborder - width*0.5  < (middle_x-5))) {
 		if ((yborder - height*0.5 < (365)) && (yborder + height*0.5 > middle_y)) {
-			newX = middle_x - width*2
+			newX = middle_x - width
 		}
 	}
 	// Right border
 	else if ((xborder - width*0.5 < (middle_w+middle_x)) && (xborder + width*0.5  > middle_x+middle_w+5)) {
 		if ((yborder - height*0.5 < (middle_y+middle_h)) && (yborder + height*0.5 > middle_y)) {
-			newX = middle_x+middle_w - width
+			newX = middle_x+middle_w 
 		}
 	}
 	// Top border
 	else if ((yborder + height*0.5  > middle_y) && (yborder - height*0.5 < (svgheight/2))) {
 		if ((xborder + width*0.5 > middle.attr("x") && (xborder - width*0.5 < middle_x+middle_w))) {
-			newY = middle_y - height*2
+			newY = middle_y - height
 		}
 	}
 	// Bottom border
 	else if ((yborder - height*0.5  < (middle_y+middle_h)) && (yborder + height*0.5 > (svgheight/2)))  {
 		if ((xborder + width*0.5 > middle_x) && (xborder - width*0.5 < (middle_x+middle_w))) {
-			newY = (middle_y+middle_h) - height
+			newY = (middle_y+middle_h)
 		}
 	}
 

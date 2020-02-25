@@ -14,12 +14,9 @@
 
     <!-- D3 package -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <style>
-
-    </style>
 
     <!-- Layout stylesheet -->
-<!--    <link rel="stylesheet" type="text/css" href="base.css">-->
+<!--   <link rel="stylesheet" type="text/css" href="base.css">-->
     <style>
         p, .txt {  text-align: justify;
             text-justify: inter-word;
@@ -39,6 +36,7 @@
             fill: none;
             stroke: #dbdbdb;
             stroke-width: 2;
+			background-color: none;
         }
         .rect-fill{
             fill:aqua;
@@ -54,36 +52,49 @@
 <div id="container"></div>
 </body>
 
+<!-- Import dragable images code -->
+<script src="../static/js/drag_imgs.js"></script>
+<!-- Import set_center image function -->
+<script src="../static/js/center_image.js"></script>
 <!-- Imports for the backend connection + nearest neighbor querying -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script src="../static/js/nearest_neighbors.js"></script>
-<!-- Import dragable images code -->
-<script src="../static/js/drag_imgs.js"></script>
+
 <script type="text/javascript">
-    var svgwidth = 960
-    var svgheight = 500
+    var svgwidth = 960;
+    var svgheight = 500;
 
     var svg = d3.select("#container").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
+        .attr("viewBox", "0 0 " + svgwidth + " " + svgheight);
+
     var image = {
         size: 50
     }
 
-    console.log(d3.select('svg').node().getBBox())
+    console.log(d3.select('svg').node().getBBox());
 
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
-    var middle_y = svgwidth*0.25;
+    var middle_y = svgheight*0.25;
 
-    var middle = svg.append("rect")
+    var middle = svg.append("svg")
         .attr("class", "middle")
         .attr("x", middle_x)
         .attr("y", middle_y)
         .attr("width", svgwidth*0.5)
         .attr("height", svgwidth*0.25);
 
-    var i;
+    middle.append("rect")
+        .attr("class", "middle")
+        .attr("width", svgwidth*0.5)
+        .attr("height", svgwidth*0.25);
+
+    var center = middle.append("svg")
+        .append("image")
+        .attr("clip-path", "url(#clip)");
+
+
     // var j;
     // var grid = [];
     // var grid_similar = [];
@@ -113,6 +124,7 @@
         .attr("y", svgheight*0.25)
         .attr("width", svgwidth*0.025)
         .attr("height", svgwidth*0.025);
+
     var redobutton = svg.append("rect")
         .attr("class", "rect-fill")
         .attr("x", svgwidth*0.25)
@@ -126,6 +138,7 @@
     redobutton.on('click', function() {
         console.log('redo images');
     });
+
     var test = svg.append("g")
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
@@ -151,6 +164,7 @@
     var outside_subset = [];
     var dissimilar_locs = [];
     var similar_locs = [];
+    set_center(center, middle_image);
     nearest_neighbors(middle_image, n_neighbours);
 
     // Sleep for 500 ms until neighbouring images is found
@@ -158,24 +172,32 @@
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
     sleep(500).then(() => {
+
         outside_images = available_ids.filter(n => !nearest_ids.includes(n));
         outside_images = outside_images.sort(() => Math.random() - 0.5);
         outside_subset = outside_images.slice(0, nr_images_outside);
         dissimilar_locs = [[0, 0], [310, 280], [650, 280], [-50, 80], [400, 100]];
         similar_locs = [[100, 80], [200, 100], [460, 90], [500, 120], [550, 130]];
 
+        var i;
         // --- selecting location of dis-similar layer and plotting those images:
         for (i = 1; i < outside_subset.length; i++) {
             appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
         }
-
+        console.log("dissimilar")
         // --- selecting location of similar layer and plotting those images:
         for (i = 1; i < nearest_ids.length; i++) {
             appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i]);
         }
+        console.log("similar")
+
 
         console.log(available_ids)
     })
 </script>
 
+<script type="text/javascript">
+	nearest_neighbors(2005927, 10);
+	console.log(nearest_ids);
+</script>
 </html>

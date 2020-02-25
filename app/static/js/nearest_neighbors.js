@@ -13,6 +13,7 @@ function nearest_neighbors(id, n_neighbors) {
 	console.log('Getting nearest neighbors...');
 	socket.emit('nearest_neighbors', {id: id, n: n_neighbors});
 }
+
 socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;

@@ -45,10 +45,13 @@
 			stroke:aquamarine;
 			stroke-width: 2;
 		}
+		#container{
+			width: 100%
+		}
 	  </style>
 </head>
 <body>
-
+<div id="container"></div>
 </body>
 
 <!-- Imports for the backend connection + nearest neighbor querying -->
@@ -60,10 +63,9 @@
 	var svgwidth = 960
 	var svgheight = 500
 
-	var svg = d3.select("body").append("svg")
-	  .attr("width", svgwidth)
-	  .attr("height", svgheight)
-
+	var svg = d3.select("#container").append("svg")
+		.attr("preserveAspectRatio", "xMinYMin meet")
+		.attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
 	var image = {
 	  size: 100
 	}

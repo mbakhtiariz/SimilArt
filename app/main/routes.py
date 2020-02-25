@@ -30,14 +30,13 @@ def test():
 	data_path = current_path.parent / Path(r"Dataset")
 
 	# Based on feature data, extract available ids
-	feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv"))
-	ids = feature_data['id'].to_list()
+	# feature_data = pd.read_csv(data_path / Path(r"data") / Path(r"features.csv"))
+	# ids = feature_data['id'].to_list()
 
 	# From metadata, extract data with available ids
 	data = pd.read_csv(data_path / Path(r"data/csv") / Path(r"subset.csv"))
-	data = data.set_index('omni_id')
-	data = data.loc[ids].to_json(orient='index')
+	ids = data['omni_id'].to_list()
+	data = data.set_index('omni_id').to_json(orient='index')
 
 	ids = json.dumps(ids)
-
 	return render_template("test.html", data=data, available_ids=ids)

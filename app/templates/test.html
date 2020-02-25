@@ -14,9 +14,6 @@
 
 	<!-- D3 package -->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<style>
-
-	</style>
 
 	<!-- Layout stylesheet -->
 	<link rel="stylesheet" type="text/css" href="base.css">
@@ -27,7 +24,7 @@
 
 		body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
 
-		svg {
+		.main {
 		  background-color: #fffbef;
 		}
 		.rect-outline {
@@ -36,11 +33,11 @@
 		  stroke-width: 2;
 		}
 		.middle {
-		  fill: none;
-		  stroke: #dbdbdb;
+		  fill:none;
+		  stroke:#dbdbdb;
 		  stroke-width: 2;
 		}
-		.rect-fill{
+		.rect-fill {
 			fill:aqua;
 			stroke:aquamarine;
 			stroke-width: 2;
@@ -51,47 +48,54 @@
 
 </body>
 
-<!-- Imports for the backend connection + nearest neighbor querying -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-<script src="../static/js/nearest_neighbors.js"></script>
 <!-- Import dragable images code -->
 <script src="../static/js/drag_imgs.js"></script>
+<!-- Import set_center image function -->
+<script src="../static/js/center_image.js"></script>
 <script type="text/javascript">
-	var svgwidth = 960
-	var svgheight = 500
+	var svgwidth = 960;
+	var svgheight = 500;
 
 	var svg = d3.select("body").append("svg")
-	  .attr("width", svgwidth)
-	  .attr("height", svgheight)
+		.attr("class", "main")
+		.attr("width", svgwidth)
+		.attr("height", svgheight);
 
 	var image = {
 	  size: 100
 	}
 
-	console.log(d3.select('svg').node().getBBox())
-
-	var defs = svg.append("defs");
-
-	var middle = svg.append("rect")
-		.attr("class", "middle")
+	var middle = svg.append("svg")
 		.attr("x", svgwidth*0.25)
 		.attr("y", svgheight*0.25)
 		.attr("width", svgwidth*0.5)
 		.attr("height", svgwidth*0.25);
-	
+
+	middle.append("rect")
+		.attr("class", "middle")
+		.attr("width", svgwidth*0.5)
+		.attr("height", svgwidth*0.25);
+
+	var center = middle.append("svg")
+		.append("image")
+			.attr("clip-path", "url(#clip)");
+
+	set_center(center, 239);
+
 	var backbutton = svg.append("rect")
 		.attr("class", "rect-fill")
 		.attr("x", svgwidth*0.25 + svgwidth*0.025 )
 		.attr("y", svgheight*0.25)
 		.attr("width", svgwidth*0.025)
 		.attr("height", svgwidth*0.025);
+
 	var redobutton = svg.append("rect")
 		.attr("class", "rect-fill")
 		.attr("x", svgwidth*0.25)
 		.attr("y", svgheight*0.25)
 		.attr("width", svgwidth*0.025)
 		.attr("height", svgwidth*0.025);
-	
+
 	backbutton.on('click', function() {
   		console.log('go back to previous image');
 	});
@@ -108,7 +112,7 @@
 		.attr("y", 0)
 		.attr("width", 50)
 		.attr("height", 30)
-	
+
 	randomizebutton.on('click', function() {
   		console.log('randomize all outside images');
 	});
@@ -128,4 +132,12 @@
 	var available_ids = {{ available_ids |safe }};
 </script>
 
+<!-- Imports for the backend connection + nearest neighbor querying -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="../static/js/nearest_neighbors.js"></script>
+
+<script type="text/javascript">
+	nearest_neighbors(2005927, 10);
+	console.log(nearest_ids);
+</script>
 </html>

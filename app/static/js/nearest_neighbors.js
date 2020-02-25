@@ -7,7 +7,6 @@ socket.on('connect', function() {
 // distances and nearest neighbor ids are stored in variables below
 var dists = []
 var nearest_ids = []
-console.log(nearest_ids);
 
 // Functions needed for the nearest neighbor queries
 function nearest_neighbors(id, n_neighbors) {

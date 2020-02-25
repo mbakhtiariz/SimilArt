@@ -33,18 +33,18 @@ please upload/save dataset and files with this structure:
 │   └── run.py
 |   | 
 |   | 
-|   | 
-|   ├── Dataset                           # Dataset root directory it contains omniart_v3 images and csv files
-|   │   ├── data                          # This folder is the main directory that we read data from it/ save related preprocing files in it
-|   │   │   ├── img_300x                  # It containes low res images. If you have downloaded the whole dataset it should be save here
-|   │   │   ├── csv                       # This folder contains the metadatas (including artwork_tpye and general_type) for low res images
-|   │   │   │   └── omniart_v3_datadump.csv
-|   │   │   └── features.csv              # This file is the calculated features of all images by running ../Infovis/extract_features.py
-|   │   │
-|   │   └── artsight_csvs                 # This directory contains 3 different kinds of metadata file each covers a few dataset attributes.
-|   │       ├── metadatas.csv             
-|   │       ├── metalevelmeta.csv         
-|   └──     └── reproductions.csv
+| 
+├── Dataset                           # Dataset root directory it contains omniart_v3 images and csv files
+│   ├── data                          # This folder is the main directory that we read data from it/ save related preprocing files in it
+│   │   ├── img_300x                  # It containes low res images. If you have downloaded the whole dataset it should be save here
+│   │   ├── csv                       # This folder contains the metadatas (including artwork_tpye and general_type) for low res images
+│   │   │   └── omniart_v3_datadump.csv
+│   │   └── features.csv              # This file is the calculated features of all images by running ../Infovis/extract_features.py
+│   │
+│   └── artsight_csvs                 # This directory contains 3 different kinds of metadata file each covers a few dataset attributes.
+│       ├── metadatas.csv             
+│       ├── metalevelmeta.csv         
+│       └── reproductions.csv
 └── ...
 
 
@@ -64,8 +64,7 @@ python data\extract_features.py --dataset_path \path\to\image\dataset\directory 
 
 ## Running script
 ```
-cd app
-python ..\run.py
+python run.py
 ```
 
 ## Meeting notes

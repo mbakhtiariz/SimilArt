@@ -2,16 +2,18 @@ function appendDraggableImage(url, position) {
 	var img = new Image();
 	img.src = url;
 	img_width = img.width;
-	img_height = img.height
+	img_height = img.height;
+
+	var x = position[0], y = position[1];
 	var ratio = img_width / img_height;
+	// If image width > height
+	if (ratio > 1) {
+		img_width = image.size;
+		img_height = image.size / ratio;
 	// If image height > width
-	if (ratio > 0) {
+	} else {
 		img_width = image.size * ratio;
 		img_height = image.size;
-	// If image width > height
-	} else {
-		img_width = image.size;
-		img_height = image.size * ratio;
 	};
 
 	var imageGroup = svg.append("g")
@@ -19,7 +21,7 @@ function appendDraggableImage(url, position) {
 		.attr("transform", d => "translate(" + d.position + ")");
 
 	var rectFill = imageGroup.append("rect")
-			.attr("class", "rect-fill")
+		.attr("class", "rect-fill")
 		.attr("x", img_width)
 		.attr("y", img_height)
 		.attr("width", img_width)

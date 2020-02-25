@@ -19,6 +19,14 @@ please upload/save dataset and files with this structure:
 ├── Infovis                           # Code files
 │   ├── data                          # This folder contains the codes for downloading and preprocessing of the dataset
 │   ├── app
+|   |   ├── data
+|   |   ├── main                      # Flask routes and events
+|   |   ├── templates                 # HTML templates for the app
+|   |   ├── static
+|   |   |   ├── css                   # Css style files
+|   |   |   ├── js                    # Javascript files
+|   |   |   └── subset                # The selected subset of low resolution images should be saved in this folder.
+|   |   └── ...
 │   ├── README.md
 │   ├── requirements.txt
 │   ├── start_app.sh
@@ -28,7 +36,6 @@ please upload/save dataset and files with this structure:
 │
 ├── Dataset                           # Dataset root directory it contains omniart_v3 images and csv files
 │   ├── data                          # This folder is the main directory that we read data from it/ save related preprocing files in it
-│   │   ├── subset                    # The seleceted subset of low resolution images should be saved in this folder.
 │   │   ├── img_300x                  # It containes low res images. If you have downloaded the whole dataset it should be save here
 │   │   ├── csv                       # This folder contains the metadatas (including artwork_tpye and general_type) for low res images
 │   │   │   └── omniart_v3_datadump.csv

@@ -156,6 +156,7 @@
 
     randomizebutton.on('click', function() {
         console.log('randomize all outside images');
+        change_dissimilar_images()
     });
 
     var data = {{ data |safe }};
@@ -169,40 +170,49 @@
     var dissimilar_locs = [];
     var similar_locs = [];
     set_center(center, middle_image);
-    nearest_neighbors(middle_image, n_neighbours);
 
+    function change_dissimilar_images() {
+        outside_images = available_ids.filter(n => !nearest_ids.includes(n));
+        outside_images = outside_images.sort(() => Math.random() - 0.5);
+        outside_subset = outside_images.slice(0, nr_images_outside);
+        dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
+
+        // --- selecting location of dis-similar layer and plotting those images:
+        var i;
+        for (i = 0; i < outside_subset.length; i++) {
+            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
+        };
+
+        console.log("change dissimilar");
+    }
+
+    function change_similar_images() {
+        nearest_neighbors(middle_image, n_neighbours);
+        similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
+
+        // Sleep for 500 ms until neighbouring images is found
+        const sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+        sleep(500).then(() => {
+            // --- selecting location of similar layer and plotting those images:
+            // Start i from 1 to filter-out central image:
+            var i;
+            for (i = 1; i < nearest_ids.length; i++) {
+                appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
+            };
+            console.log("change similar");
+        });
+    }
+
+    change_similar_images()
     // Sleep for 500 ms until neighbouring images is found
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
     sleep(500).then(() => {
-
-        outside_images = available_ids.filter(n => !nearest_ids.includes(n));
-        outside_images = outside_images.sort(() => Math.random() - 0.5);
-        outside_subset = outside_images.slice(0, nr_images_outside);
-        dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
-        similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
-
-        var i;
-        // --- selecting location of dis-similar layer and plotting those images:
-        for (i = 0; i < outside_subset.length; i++) {
-            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
-        };
-        console.log("dissimilar")
-        // --- selecting location of similar layer and plotting those images:
-        // Start i from 1 to filter-out central image:
-        for (i = 1; i < nearest_ids.length; i++) {
-            appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
-        };
-        console.log("similar")
-
-
-        console.log(available_ids)
+        change_dissimilar_images()
     });
-</script>
-
-<script type="text/javascript">
-	nearest_neighbors(2005927, 5);
-	console.log(nearest_ids);
+    // console.log(available_ids)
 </script>
 </html>

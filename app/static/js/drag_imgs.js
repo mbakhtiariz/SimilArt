@@ -4,7 +4,7 @@ function appendDraggableImage(url, position) {
 	img_width = img.width;
 	img_height = img.height;
 
-	var x = position[0], y = position[1];
+	// var x = position[0], y = position[1];
 	var ratio = img_width / img_height;
 	// If image width > height
 	if (ratio > 1) {
@@ -19,21 +19,20 @@ function appendDraggableImage(url, position) {
 	var imageGroup = svg.append("g")
 		.datum({position: position, height: img_height, width: img_width})
 		.attr("transform", d => "translate(" + d.position + ")");
-
-	var rectFill = imageGroup.append("rect")
-		.attr("width", img_width)
-		.attr("height", img_height)
-		.attr("filter", "url(#glow)")
-		.on('click', function(url) {
-			console.log(img.src)
-			d3.select('image#center').attr('href', img.src);
-		});
-
+	
 	var imageElem = imageGroup.append("image")
 		.attr("href", url)
 		.attr("height", img_height)
 		.attr("width", img_width)
 		.attr("clip-path", "url(#clip)");
+		
+	var rectFill = imageGroup.append("rect")
+		.attr("width", img_width)
+		.attr("height", img_height)
+		.attr("filter", "url(#glow)")
+		.on('click', function() {
+			d3.select('image#center').attr('href', img.src);
+		});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")
@@ -65,7 +64,7 @@ function dragged(d) {
 	} else if (yborder - height*0.5  < 0){
 		newY = 0
 	}
-	console.log(xborder)
+	// console.log(xborder)
 	// Middle area
 	middle_w = +middle.attr("width")
 	middle_x = +middle.attr("x")

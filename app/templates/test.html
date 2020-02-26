@@ -180,28 +180,29 @@
         outside_images = available_ids.filter(n => !nearest_ids.includes(n));
         outside_images = outside_images.sort(() => Math.random() - 0.5);
         outside_subset = outside_images.slice(0, nr_images_outside);
-        dissimilar_locs = [[0, 0], [310, 280], [650, 280], [-50, 80], [400, 100]];
-        similar_locs = [[100, 80], [200, 100], [460, 90], [500, 120], [550, 130]];
+        dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
+        similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
 
         var i;
         // --- selecting location of dis-similar layer and plotting those images:
-        for (i = 1; i < outside_subset.length; i++) {
+        for (i = 0; i < outside_subset.length; i++) {
             appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
-        }
+        };
         console.log("dissimilar")
         // --- selecting location of similar layer and plotting those images:
+        // Start i from 1 to filter-out central image:
         for (i = 1; i < nearest_ids.length; i++) {
             appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i]);
-        }
+        };
         console.log("similar")
 
 
         console.log(available_ids)
-    })
+    });
 </script>
 
 <script type="text/javascript">
-	nearest_neighbors(2005927, 10);
+	nearest_neighbors(2005927, 5);
 	console.log(nearest_ids);
 </script>
 </html>

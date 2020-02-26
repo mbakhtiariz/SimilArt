@@ -179,6 +179,9 @@
         outside_subset = outside_images.slice(0, nr_images_outside);
         dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
 
+        // Remove all current images
+        d3.selectAll("g#outside_image").remove()
+
         // --- selecting location of dis-similar layer and plotting those images:
         var i;
         for (i = 0; i < outside_subset.length; i++) {
@@ -192,8 +195,9 @@
         nearest_neighbors(middle_image, n_neighbours);
         similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
         
+        // Remove all current images
         d3.selectAll("g#middle_image").remove()
-        console.log(d3.select("g#middle_image"))
+
         // Sleep for 500 ms until neighbouring images is found
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))

@@ -22,6 +22,7 @@ function appendImageHelper(url, position, img) {
 
 	var imageGroup = svg.append("g")
 		.datum({position: position, height: img_height, width: img_width})
+		.attr('id', 'outside_image')
 		.attr("transform", d => "translate(" + d.position + ")");
 
 	var imageElem = imageGroup.append("image")

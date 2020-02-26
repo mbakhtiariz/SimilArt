@@ -180,14 +180,24 @@
         dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
 
         // Remove all current images
-        d3.selectAll("g#outside_image").remove()
+        d3.selectAll("g#outside_image")
+            .transition()
+            .duration(2000)
+            .style("opacity", 0)
+            .remove();
 
         // --- selecting location of dis-similar layer and plotting those images:
         var i;
         for (i = 0; i < outside_subset.length; i++) {
-            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
-        };
+            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i])
+        };   
 
+        // d3.selectAll("g#outside_image")
+        //     .style('opacity', 0)
+        //     .transition()
+        //     .duration(4000)
+        //     .style("opacity", 1);
+        
         console.log("change dissimilar");
     }
 
@@ -196,7 +206,11 @@
         similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
         
         // Remove all current images
-        d3.selectAll("g#middle_image").remove()
+        d3.selectAll("g#middle_image")
+            .transition()
+            .duration(2000)
+            .style("opacity", 0)
+            .remove()
 
         // Sleep for 500 ms until neighbouring images is found
         const sleep = (milliseconds) => {

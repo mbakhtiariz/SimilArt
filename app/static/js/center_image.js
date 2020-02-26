@@ -23,5 +23,11 @@ function set_center(center_obj, img_id) {
 		.attr("y", svgwidth*0.25*0.5 - 50)
 		.attr("height", 100)
 		.attr("width", 100)
-		.attr("id", 'center')
+		.attr("id", 'center');
+
+	center_obj
+        .style('opacity', 0)
+        .transition()
+	    .duration(4500)
+        .style("opacity", 1);
 };

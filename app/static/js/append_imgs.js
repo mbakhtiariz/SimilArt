@@ -36,9 +36,25 @@ function middleImageHelper(url, position, img) {
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
-			d3.select('image#center').attr('href', img.src);
+            d3.select('image#center')
+                .transition()
+                .duration(1000)
+                .style('opacity', 0);
+            setTimeout(function(){
+                d3.select("image#center").attr('href', img.src);}, 1000);
+            setTimeout(function(){d3.select("image#center")
+            .transition()
+            .duration(1000)
+            .style('opacity', 1);}, 1000);
+ 
 			// change middle_image variable and call function, both from test.html
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 			change_similar_images()
-		});
+        });
+        
+    middleGroup
+        .style('opacity', 0)
+        .transition()
+	    .duration(4500)
+        .style("opacity", 1);
 }

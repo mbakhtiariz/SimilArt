@@ -21,7 +21,8 @@ function middleImageHelper(url, position, img) {
 	};
 
 	var middleGroup = svg.append("g")
-		.datum({position: position, height: img_height, width: img_width})
+        .datum({position: position, height: img_height, width: img_width})
+        .attr('id', 'middle_image')
 		.attr("transform", d => "translate(" + d.position + ")");
 
 	var imageElem = middleGroup.append("image")
@@ -36,5 +37,8 @@ function middleImageHelper(url, position, img) {
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
 			d3.select('image#center').attr('href', img.src);
+			// change middle_image variable and call function, both from test.html
+			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+			change_similar_images()
 		});
 }

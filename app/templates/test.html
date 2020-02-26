@@ -191,7 +191,9 @@
     function change_similar_images() {
         nearest_neighbors(middle_image, n_neighbours);
         similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
-
+        
+        d3.selectAll("g#middle_image").remove()
+        console.log(d3.select("g#middle_image"))
         // Sleep for 500 ms until neighbouring images is found
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -201,7 +203,7 @@
             // Start i from 1 to filter-out central image:
             var i;
             for (i = 1; i < nearest_ids.length; i++) {
-                appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
+                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
             };
             
             console.log("change similar");

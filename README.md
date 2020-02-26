@@ -120,8 +120,22 @@ Notes Meeting
 - Next Week meeting Wednesday at 10. Try to have a prototype ready.
 
 Questions next meeting
+- Loading time; mainly feature loading is slow. 
+- Training; do we want to train a model instead of image features.
+
 
 ### Meeting 3, 26 February 2020
+
+Notes Meeting
+- Do we want random images or dissimilar images in the explore area -> We can also use variance and change the variance to somewhere midway. Add variance control
+- Loading question: Use the local storage in browser. Local caching (key-value based storage entity. Store upto 100mb per key. If have key, load from storage not from RAM. 
+- Loading bar would be nice. Mosaic of images, have them flip one by one first time loading. 
+- Training; maybe later still possible but for now we will not focus on it.
+
+Questions Next Meeting
+
+
+### Meeting 3, March 5 2020
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration

@@ -17,30 +17,37 @@
 
     <!-- Layout stylesheet -->
 <!--   <link rel="stylesheet" type="text/css" href="base.css">-->
+<!-- For shuffle/undo/redo button icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         p, .txt {  text-align: justify;
             text-justify: inter-word;
         }
 
-        body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+        body {
+			margin: 0;
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: #02090d;
+		}
 
-        svg {
-            background-color: #fffbef;
-        }
-        .rect-outline {
+        .image-outline {
             fill: none;
             stroke: #dbdbdb;
             stroke-width: 2;
         }
         .middle {
-            fill: none;
+            fill: #3e5869;
             stroke: #dbdbdb;
             stroke-width: 2;
-			background-color: none;
         }
-        .rect-fill{
-            fill:aqua;
-            stroke:aquamarine;
+        .button {
+            fill: #0b3c5d;
+            stroke: #dbdbdb;
             stroke-width: 2;
         }
         #container{
@@ -118,17 +125,14 @@
     // console.log("grid_sim")
     // console.log(grid_similar)
 
-    var backbutton = svg.append("rect")
-        .attr("class", "rect-fill")
-        .attr("x", svgwidth*0.25 + svgwidth*0.025 )
-        .attr("y", svgheight*0.25)
+    var backbutton = middle.append("rect")
+        .attr("class", "button")
         .attr("width", svgwidth*0.025)
         .attr("height", svgwidth*0.025);
 
-    var redobutton = svg.append("rect")
-        .attr("class", "rect-fill")
-        .attr("x", svgwidth*0.25)
-        .attr("y", svgheight*0.25)
+    var redobutton = middle.append("rect")
+        .attr("class", "button")
+        .attr("x", svgwidth*0.025)
         .attr("width", svgwidth*0.025)
         .attr("height", svgwidth*0.025);
 
@@ -144,7 +148,7 @@
         .attr("transform", d => "translate(" + d.position + ")");
 
     var randomizebutton = test.append("rect")
-        .attr("class", "rect-fill")
+        .attr("class", "button")
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", 50)

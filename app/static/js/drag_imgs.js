@@ -21,7 +21,6 @@ function appendDraggableImage(url, position) {
 		.attr("transform", d => "translate(" + d.position + ")");
 
 	var rectFill = imageGroup.append("rect")
-		.attr("class", "rect-fill")
 		.attr("width", img_width)
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
@@ -37,7 +36,7 @@ function appendDraggableImage(url, position) {
 		.attr("clip-path", "url(#clip)");
 
 	var rectOutline = imageGroup.append("rect")
-		.attr("class", "rect-outline")
+		.attr("class", "image-outline")
 		.attr("width", img_width)
 		.attr("height", img_height);
 
@@ -82,7 +81,7 @@ function dragged(d) {
 	// Right border
 	else if ((xborder - width*0.5 < (middle_w+middle_x)) && (xborder + width*0.5  > middle_x+middle_w+5)) {
 		if ((yborder - height*0.5 < (middle_y+middle_h)) && (yborder + height*0.5 > middle_y)) {
-			newX = middle_x+middle_w 
+			newX = middle_x+middle_w
 		}
 	}
 	// Top border

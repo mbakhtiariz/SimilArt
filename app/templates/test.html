@@ -63,6 +63,8 @@
 <script src="../static/js/drag_imgs.js"></script>
 <!-- Import set_center image function -->
 <script src="../static/js/center_image.js"></script>
+<!-- Import non dragable images code-->
+<script src="../static/js/append_imgs.js"></script>
 <!-- Imports for the backend connection + nearest neighbor querying -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script src="../static/js/nearest_neighbors.js"></script>
@@ -192,7 +194,7 @@
         // --- selecting location of similar layer and plotting those images:
         // Start i from 1 to filter-out central image:
         for (i = 1; i < nearest_ids.length; i++) {
-            appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
+            appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
         };
         console.log("similar")
 

@@ -50,7 +50,10 @@ function appendImageHelper(url, position, img) {
 			// change middle_image variable and call function, both from test.html
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 			change_similar_images()
-        });
+		})
+		.on("mouseover", function(){return tooltip.style("visibility", "visible");})
+		.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+		.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")

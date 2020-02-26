@@ -126,7 +126,17 @@
     // console.log(grid);
     // console.log("grid_sim")
     // console.log(grid_similar)
+    
+    // toolip
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style('color', 'white')
+        .style("visibility", "hidden")
+        .text("Wow this is a tooltip.");
 
+    // buttons
     var backbutton = middle.append("rect")
         .attr("class", "button")
         .attr("width", svgwidth*0.025)

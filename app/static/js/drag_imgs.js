@@ -1,11 +1,14 @@
 function appendDraggableImage(url, position) {
 	var img = new Image();
+	img.onload = function () {
+		appendImageHelper(url, position, img);
+	}
 	img.src = url;
+}
+
+function appendImageHelper(url, position, img) {
 	img_width = img.width;
 	img_height = img.height;
-	console.log("WIDTH");
-	console.log(img_height);
-	// var x = position[0], y = position[1];
 	var ratio = img_width / img_height;
 	// If image width > height
 	if (ratio > 1) {
@@ -41,12 +44,13 @@ function appendDraggableImage(url, position) {
 		.attr("height", img_height);
 
 	imageGroup.call(
-	d3.drag()
-	.on("drag", dragged)
-	.on("end", dragended));
+		d3.drag()
+		.on("drag", dragged)
+	);
 }
 
 function dragged(d) {
+	d3.select(this).raise();
 	var height = d.height;
 	var width = d.width;
 	var newX = d3.event.x - width * 0.5,
@@ -99,8 +103,4 @@ function dragged(d) {
 
 	d3.select(this)
 		.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
-}
-
-function dragended(d) {
-  d3.select(this).lower();
 }

@@ -166,7 +166,7 @@
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
-    // create grid as possible locations of images
+    // create grid for possible locations of images
     var i;
     var j;
     var grid_similar = [];
@@ -188,12 +188,13 @@
     
     for (i = middle_x; i < middle_x + middle_width - image.size; i += image.size) {
         for (j = middle_y; j < middle_y + middle_height - image.size; j += image.size) {
-            console.log("center image")
-            console.log(center_image_size)
+  
             // skip action buttons and center image
             if ((i < middle_x + actionbuttons_size && j < middle_y + actionbuttons_size) ||
-                    (i + image.size > center_image_x && i < center_image_x + center_image_size &&
-                    j + image.size > center_image_y && j < center_image_y + center_image_size))
+                    (i + image.size > middle_x + center_image_x &&
+                     i < middle_x + center_image_x + center_image_size &&
+                     j + image.size > middle_y + center_image_y &&
+                     j < middle_y + center_image_y + center_image_size))
 
                 continue;
 

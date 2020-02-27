@@ -263,7 +263,7 @@
         // --- selecting location of dis-similar layer and plotting those images:
         var i;
         for (i = 0; i < images_ids_subset.length; i++) {
-            meta_data_painting = data[available_ids[i]]
+            meta_data_painting = data[images_ids_subset[i]]
             artwork_name = meta_data_painting['artwork_name']
             artist_full_name = meta_data_painting['artist_full_name']
             appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name)
@@ -297,7 +297,11 @@
             // Start i from 1 to filter-out central image:
             var i;
             for (i = 1; i < nearest_ids.length; i++) {
-                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
+                meta_data_painting = data[nearest_ids[i]]
+                artwork_name = meta_data_painting['artwork_name']
+                artist_full_name = meta_data_painting['artist_full_name']
+                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", 
+                    similar_locs[i-1], artwork_name, artist_full_name);
             };
 
             console.log("change similar");

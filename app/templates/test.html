@@ -79,8 +79,6 @@
         size: 50
     }
 
-    console.log(d3.select('svg').node().getBBox());
-
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
     var middle_y = svgheight*0.25;
@@ -158,8 +156,54 @@
         console.log('randomize all outside images');
     });
 
-    var data = {{ data |safe }};
-    var available_ids = {{ available_ids |safe }};
+    // Listener for if the json has been created
+    socket.on('json_loaded', function () {
+        console.log("JSON CREATED");
+        get_meta();
+    })
+
+    // This can be used to execute code once a flag become true
+    function TrueListener(callback) {
+        this.value = false;
+        this.onTrue = callback;
+        this.get = function() {
+            return this.value;
+        }
+        this.set = function(v) {
+            if (v == true) {
+                this.onTrue();
+            }
+        }
+    }
+
+    // Data loading from json
+    var data;
+    var available_ids;
+    // Define a listener for setting images when data is loaded
+    DATA_LOADED = new TrueListener(set_imgs);
+    function get_meta() {
+        fetch("static/subset_meta.json").then(response => {
+            if (response.ok) {
+                console.log("Loading json from disk");
+                return response.json();
+            } else {
+                console.log("JSON file missing");
+                console.log("Sending request to create json");
+                socket.emit('create_meta_json');
+            }
+        })
+        .then(json => {
+            if (json) {
+                data = json;
+                available_ids = Object.keys(data);
+                console.log("Data loaded");
+                DATA_LOADED.set(true);
+            }
+        });
+    }
+
+    get_meta();
+
     var imgs_path = "static/subset/";
     var middle_image = 2005927;
     var n_neighbours = 5;
@@ -175,30 +219,34 @@
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
-    sleep(500).then(() => {
 
-        outside_images = available_ids.filter(n => !nearest_ids.includes(n));
-        outside_images = outside_images.sort(() => Math.random() - 0.5);
-        outside_subset = outside_images.slice(0, nr_images_outside);
-        dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
-        similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
+    function set_imgs() {
+        console.log("Setting images");
+        sleep(1000).then(() => {
 
-        var i;
-        // --- selecting location of dis-similar layer and plotting those images:
-        for (i = 0; i < outside_subset.length; i++) {
-            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
-        };
-        console.log("dissimilar")
-        // --- selecting location of similar layer and plotting those images:
-        // Start i from 1 to filter-out central image:
-        for (i = 1; i < nearest_ids.length; i++) {
-            appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
-        };
-        console.log("similar")
+            outside_images = available_ids.filter(n => !nearest_ids.includes(n));
+            outside_images = outside_images.sort(() => Math.random() - 0.5);
+            outside_subset = outside_images.slice(0, nr_images_outside);
+            dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
+            similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
+
+            var i;
+            // --- selecting location of dis-similar layer and plotting those images:
+            for (i = 0; i < outside_subset.length; i++) {
+                appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i]);
+            };
+            console.log("dissimilar")
+            // --- selecting location of similar layer and plotting those images:
+            // Start i from 1 to filter-out central image:
+            for (i = 1; i < nearest_ids.length; i++) {
+                appendDraggableImage(imgs_path + nearest_ids[i].toString() + ".jpg", similar_locs[i-1]);
+            };
+            console.log("similar")
 
 
-        console.log(available_ids)
-    });
+            console.log(available_ids)
+        });
+    }
 </script>
 
 <script type="text/javascript">

@@ -1,6 +1,7 @@
-*.pyc 
+*.pyc
 app/.DS_Store
 **/Dataset/
 **/data/images/
 subset
 *.jpg
+*.json

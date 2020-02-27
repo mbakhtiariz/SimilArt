@@ -58,7 +58,10 @@
 <body>
 <div id="container"></div>
 </body>
-
+<script type="text/javascript">
+    var svgwidth = 960;
+    var svgheight = 500;
+</script>
 <!-- Import dragable images code -->
 <script src="../static/js/drag_imgs.js"></script>
 <!-- Import set_center image function -->
@@ -70,9 +73,6 @@
 <script src="../static/js/nearest_neighbors.js"></script>
 
 <script type="text/javascript">
-    var svgwidth = 960;
-    var svgheight = 500;
-
     var svg = d3.select("#container").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight);
@@ -86,13 +86,14 @@
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
     var middle_y = svgheight*0.25;
-
+    var middle_width = svgwidth*0.5;
+    var middle_height = svgwidth*0.25;
     var middle = svg.append("svg")
         .attr("class", "middle")
         .attr("x", middle_x)
         .attr("y", middle_y)
-        .attr("width", svgwidth*0.5)
-        .attr("height", svgwidth*0.25);
+        .attr("width", middle_width)
+        .attr("height", middle_height);
 
     middle.append("rect")
         .attr("class", "middle")
@@ -102,30 +103,6 @@
     var center = middle.append("svg")
         .append("image")
         .attr("clip-path", "url(#clip)");
-
-
-    // var j;
-    // var grid = [];
-    // var grid_similar = [];
-    // var grid_dissimilar = [];
-    //
-    // for (i = 0; i < svgwidth; i += image.size) {
-    //     for (j = 0; j < svgheight; i += image.size) {
-    //         grid.concat([i, j]);
-    //     }
-    // }
-    //
-    // for (i = middle_x; i < middle_x + svgwidth; i += image.size) {
-    //     for (j = middle_y; j < middle_y + svgheight; i += image.size) {
-    //         grid_similar.concat([i, j]);
-    //     }
-    // }
-    //
-    // grid_dissimilar = grid.filter(n => !grid_similar.includes(n));
-    // console.log("grid");
-    // console.log(grid);
-    // console.log("grid_sim")
-    // console.log(grid_similar)
     
     // tooltip
     var tooltip = d3.select("body")
@@ -137,16 +114,17 @@
         // .text("Wow this is a tooltip.");
 
     // buttons
+    var actionbuttons_size = svgwidth*0.025;
     var backbutton = middle.append("rect")
         .attr("class", "button")
-        .attr("width", svgwidth*0.025)
-        .attr("height", svgwidth*0.025);
+        .attr("width", actionbuttons_size)
+        .attr("height", actionbuttons_size);
 
     var redobutton = middle.append("rect")
         .attr("class", "button")
         .attr("x", svgwidth*0.025)
-        .attr("width", svgwidth*0.025)
-        .attr("height", svgwidth*0.025);
+        .attr("width", actionbuttons_size)
+        .attr("height", actionbuttons_size);
 
     backbutton.on('click', function() {
         console.log('go back to previous image');
@@ -159,15 +137,17 @@
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
 
+    var randomizebutton_width = 50;
+    var randomizebutton_height = 30;
     var randomizebutton = test.append("rect")
         .attr("class", "button")
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", 50)
-        .attr("height", 30)
+        .attr("width", randomizebutton_width)
+        .attr("height", randomizebutton_height)
 
     randomizebutton.on('click', function() {
-        console.log('randomize all outside images');
+        // randomize all outside images
         change_dissimilar_images()
     });
 
@@ -175,19 +155,59 @@
     var available_ids = {{ available_ids |safe }};
     var imgs_path = "static/subset/";
     var middle_image = 2005927;
-    var n_neighbours = 5;
-    var nr_images_outside = 5;
+    var nr_similar_images = 5;
+    var nr_dissimilar_images = 5;
     var outside_images = [];
     var outside_subset = [];
     var dissimilar_locs = [];
     var similar_locs = [];
     set_center(center, middle_image);
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    // create grid as possible locations of images
+    var i;
+    var j;
+    var grid_similar = [];
+    var grid_dissimilar = [];
+    
+    for (i = 0; i < svgwidth - image.size; i += image.size) {
+        for (j = 0; j < svgheight - image.size; j += image.size) {
+
+            // skip middle section and randomize button
+            if ((i + image.size > middle_x && i < (middle_x + middle_width)) &&
+                    (j + image.size > middle_y && j < (middle_y + middle_height)) ||
+                    (i < randomizebutton_width && j < randomizebutton_height))
+
+                continue;
+
+            grid_dissimilar.push([i, j]);
+        }
+    }
+    
+    for (i = middle_x; i < middle_x + middle_width - image.size; i += image.size) {
+        for (j = middle_y; j < middle_y + middle_height - image.size; j += image.size) {
+            console.log("center image")
+            console.log(center_image_size)
+            // skip action buttons and center image
+            if ((i < middle_x + actionbuttons_size && j < middle_y + actionbuttons_size) ||
+                    (i + image.size > center_image_x && i < center_image_x + center_image_size &&
+                    j + image.size > center_image_y && j < center_image_y + center_image_size))
+
+                continue;
+
+            grid_similar.push([i, j]);
+        }
+    }
 
     function change_dissimilar_images() {
-        outside_images = available_ids.filter(n => !nearest_ids.includes(n));
-        outside_images = outside_images.sort(() => Math.random() - 0.5);
-        outside_subset = outside_images.slice(0, nr_images_outside);
-        dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
+        images_ids = available_ids.filter(n => !nearest_ids.includes(n));
+        images_ids = images_ids.sort(() => Math.random() - 0.5);
+        images_ids_subset = images_ids.slice(0, nr_dissimilar_images);
+        grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
+        dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
+        // dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
 
         // Remove all current images
         d3.selectAll("g#outside_image")
@@ -215,8 +235,11 @@
     }
 
     function change_similar_images() {
-        nearest_neighbors(middle_image, n_neighbours);
-        similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
+        nearest_neighbors(middle_image, nr_similar_images);
+        console.log(grid_similar)
+        grid_similar = grid_similar.sort(() => Math.random() - 0.5);
+        similar_locs = grid_similar.slice(0, nr_similar_images);
+        // similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
         
         // Remove all current images
         d3.selectAll("g#middle_image")
@@ -226,9 +249,6 @@
             .remove()
 
         // Sleep for 500 ms until neighbouring images is found
-        const sleep = (milliseconds) => {
-            return new Promise(resolve => setTimeout(resolve, milliseconds))
-        }
         sleep(500).then(() => {
             // --- selecting location of similar layer and plotting those images:
             // Start i from 1 to filter-out central image:
@@ -241,13 +261,10 @@
         });
     }
 
-    change_similar_images()
+    change_similar_images();
     // Sleep for 500 ms until neighbouring images is found
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
     sleep(500).then(() => {
-        change_dissimilar_images()
+        change_dissimilar_images();
     });
     // console.log(available_ids)
 </script>

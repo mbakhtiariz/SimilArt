@@ -1,12 +1,12 @@
-function appendDraggableImage(url, position) {
+function appendDraggableImage(url, position, artwork_name, artist_full_name) {
 	var img = new Image();
 	img.onload = function () {
-		appendImageHelper(url, position, img);
+		appendImageHelper(url, position, img, artwork_name, artist_full_name);
 	}
 	img.src = url;
 }
 
-function appendImageHelper(url, position, img) {
+function appendImageHelper(url, position, img, artwork_name, artist_full_name) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -51,9 +51,14 @@ function appendImageHelper(url, position, img) {
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 			change_similar_images()
 		})
-		.on("mouseover", function(){return tooltip.style("visibility", "visible");})
-		.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-		.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+		.on("mouseover", function(){
+			tooltip.html("Artwork name:" + "<br/>" + artwork_name + "<br/>" +
+				"Artist full name:" + "<br/>" + artist_full_name)
+			return tooltip.style("visibility", "visible");})
+		.on("mousemove", function(){
+			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+		.on("mouseout", function(){
+			return tooltip.style("visibility", "hidden");});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")

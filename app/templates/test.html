@@ -104,14 +104,14 @@
         .append("image")
         .attr("clip-path", "url(#clip)");
     
-    // toolip
+    // tooltip
     var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
         .style("z-index", "10")
         .style('color', 'white')
         .style("visibility", "hidden")
-        .text("Wow this is a tooltip.");
+        // .text("Wow this is a tooltip.");
 
     // buttons
     var actionbuttons_size = svgwidth*0.025;
@@ -219,8 +219,11 @@
 
         // --- selecting location of dis-similar layer and plotting those images:
         var i;
-        for (i = 0; i < images_ids_subset.length; i++) {
-            appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i])
+        for (i = 0; i < outside_subset.length; i++) {
+            meta_data_painting = data[available_ids[i]]
+            artwork_name = meta_data_painting['artwork_name']
+            artist_full_name = meta_data_painting['artist_full_name']
+            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name)
         };   
 
         // d3.selectAll("g#outside_image")

@@ -81,7 +81,7 @@
         size: 50
     }
 
-    console.log(d3.select('svg').node().getBBox());
+    // console.log(d3.select('svg').node().getBBox());
 
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
@@ -219,11 +219,11 @@
 
         // --- selecting location of dis-similar layer and plotting those images:
         var i;
-        for (i = 0; i < outside_subset.length; i++) {
+        for (i = 0; i < images_ids_subset.length; i++) {
             meta_data_painting = data[available_ids[i]]
             artwork_name = meta_data_painting['artwork_name']
             artist_full_name = meta_data_painting['artist_full_name']
-            appendDraggableImage(imgs_path + outside_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name)
+            appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name)
         };   
 
         // d3.selectAll("g#outside_image")
@@ -237,7 +237,6 @@
 
     function change_similar_images() {
         nearest_neighbors(middle_image, nr_similar_images);
-        console.log(grid_similar)
         grid_similar = grid_similar.sort(() => Math.random() - 0.5);
         similar_locs = grid_similar.slice(0, nr_similar_images);
         // similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
@@ -259,6 +258,7 @@
             };
             
             console.log("change similar");
+        
         });
     }
 
@@ -267,6 +267,6 @@
     sleep(500).then(() => {
         change_dissimilar_images();
     });
-    // console.log(available_ids)
+
 </script>
 </html>

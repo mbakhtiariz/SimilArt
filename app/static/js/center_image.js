@@ -1,9 +1,6 @@
 var center_image_size = 100;
 var center_image_x = svgwidth * 0.5 * 0.5 - center_image_size / 2;
 var center_image_y = svgheight * 0.5 * 0.5 - center_image_size / 2;
-console.log(center_image_x)
-console.log(center_image_y)
-
 
 function set_center(center_obj, img_id) {
 	var img = new Image();

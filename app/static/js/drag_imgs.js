@@ -52,8 +52,8 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name) {
 			change_similar_images()
 		})
 		.on("mouseover", function(){
-			tooltip.html("Artwork name:" + "<br/>" + artwork_name + "<br/>" +
-				"Artist full name:" + "<br/>" + artist_full_name)
+			tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +
+				"<em>Artist full name:</em>" + "<br/>" + artist_full_name)
 			return tooltip.style("visibility", "visible");})
 		.on("mousemove", function(){
 			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})

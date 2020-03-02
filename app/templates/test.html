@@ -44,12 +44,22 @@
             fill: #3e5869;
             stroke: #dbdbdb;
             stroke-width: 2;
+
         }
         .button {
-            fill: #0b3c5d;
+            fill: #efa2a9;
             stroke: #dbdbdb;
             stroke-width: 2;
         }
+
+        .text {
+            stroke-width: 0;
+            color: #1e7e34;
+            font-size: 0.5em;
+            /*font-family: sans-serif;*/
+            text-anchor: start;
+        }
+
         #container{
             width: 100%
         }
@@ -64,7 +74,8 @@
 		    border: 0px;		
 		    border-radius: 8px;			
 		    pointer-events: none;			
-		}	
+		}
+
     </style>
 </head>
 <body>
@@ -92,6 +103,10 @@
     var image = {
         size: 50
     }
+
+    var undo_stack = [];
+    var redo_stack = [];
+    var old_middle_image = "";
 
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
@@ -126,22 +141,38 @@
 
     // buttons
     var actionbuttons_size = svgwidth*0.025;
-    var backbutton = middle.append("rect")
-        .attr("class", "button")
-        .attr("width", actionbuttons_size)
-        .attr("height", actionbuttons_size);
+    var undo_button = middle
+        .append("rect")
+            .attr("class", "button")
+            .attr("width", actionbuttons_size)
+            .attr("height", actionbuttons_size);
 
-    var redobutton = middle.append("rect")
-        .attr("class", "button")
-        .attr("x", svgwidth*0.025)
-        .attr("width", actionbuttons_size)
-        .attr("height", actionbuttons_size);
+    var undoText = middle.append("text").text('Undo')
+        .attr("class", "text")
+        .attr('x', actionbuttons_size/ 10)
+        .attr('y', actionbuttons_size/2);
 
-    backbutton.on('click', function() {
+
+    var redo_button = middle
+        .append("rect")
+            .attr("class", "button")
+            .attr("x", svgwidth*0.025)
+            .attr("width", actionbuttons_size)
+            .attr("height", actionbuttons_size);
+
+    var redoText = middle.append("text").text('Redo')
+        .attr("class", "text")
+        .attr('x', svgwidth*0.025 +  actionbuttons_size/ 10)
+        .attr('y', actionbuttons_size/2);
+    // .attr('fill', 'white');
+
+    undo_button.on('click', function() {
         console.log('go back to previous image');
+        undo();
     });
-    redobutton.on('click', function() {
+    redo_button.on('click', function() {
         console.log('redo images');
+        redo()
     });
 
     var test = svg.append("g")
@@ -155,7 +186,13 @@
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", randomizebutton_width)
-        .attr("height", randomizebutton_height)
+        .attr("height", randomizebutton_height);
+
+    var randText = test.append("text").text('Randomize')
+        .attr("class", "text")
+        .attr('x', randomizebutton_width / 10)
+        .attr('y', randomizebutton_height / 2);
+        // .attr('fill', 'white');
 
     randomizebutton.on('click', function() {
         // randomize all outside images
@@ -189,7 +226,8 @@
     }
 
     var imgs_path = "static/subset/";
-    var middle_image = 2005927;
+    var initial_img = 2005927;
+    var middle_image = initial_img;
     var nr_similar_images = 5;
     var nr_dissimilar_images = 5;
     var outside_images = [];
@@ -258,6 +296,29 @@
         }
     }
 
+    // ---------------- Functions -------------------
+    function redo() {
+        if (redo_stack.length === 0)
+            return;
+        undo_stack.push(middle_image);
+
+        // remove current image from undo stack:
+        middle_image = redo_stack.pop();
+        set_center(center, middle_image);
+        change_similar_images();
+    }
+
+    function undo() {
+        if (undo_stack.length === 0)
+            return;
+        redo_stack.push(middle_image);
+
+        // remove current image from undo stack:
+        middle_image = undo_stack.pop();
+        set_center(center, middle_image);
+        change_similar_images();
+
+    }
     function change_dissimilar_images() {
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         images_ids = images_ids.sort(() => Math.random() - 0.5);
@@ -291,6 +352,12 @@
         console.log("change dissimilar");
     }
 
+    function handle_stacks(){
+        console.log("======stack content in change:", undo_stack, redo_stack, middle_image);
+        undo_stack.push(middle_image);
+        console.log("+++++stack content in change:", undo_stack, redo_stack, middle_image);
+    }
+
     function change_similar_images() {
         nearest_neighbors(middle_image, nr_similar_images);
         grid_similar = grid_similar.sort(() => Math.random() - 0.5);
@@ -313,13 +380,14 @@
                 meta_data_painting = data[nearest_ids[i]]
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
-                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", 
+                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
                     similar_locs[i-1], artwork_name, artist_full_name);
             };
 
             console.log("change similar");
 
         });
+
     }
 
     // Data loading from json
@@ -329,6 +397,7 @@
     DATA_LOADED = new TrueListener(function() {
         change_similar_images();
         change_dissimilar_images();
+        handle_stacks();
     })
 
     get_meta(DATA_LOADED);

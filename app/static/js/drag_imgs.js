@@ -131,4 +131,7 @@ function dragged(d) {
 
 	d3.select(this)
 		.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
+
+	d3.select("#tooltip")
+		.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
 }

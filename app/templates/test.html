@@ -47,14 +47,15 @@
 
         }
         .button {
-            fill: #efa2a9;
+            fill: #999999;
             stroke: #dbdbdb;
             stroke-width: 2;
         }
 
         .text {
+            color: #491217;
+            font-weight: bold;
             stroke-width: 0;
-            color: #1e7e34;
             font-size: 0.5em;
             /*font-family: sans-serif;*/
             text-anchor: start;
@@ -107,6 +108,7 @@
     var undo_stack = [];
     var redo_stack = [];
     var old_middle_image = "";
+    var selected_locs_dict = {};
 
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
@@ -150,7 +152,7 @@
     var undoText = middle.append("text").text('Undo')
         .attr("class", "text")
         .attr('x', actionbuttons_size/ 10)
-        .attr('y', actionbuttons_size/2);
+        .attr('y', actionbuttons_size/2 + 1);
 
 
     var redo_button = middle
@@ -163,7 +165,7 @@
     var redoText = middle.append("text").text('Redo')
         .attr("class", "text")
         .attr('x', svgwidth*0.025 +  actionbuttons_size/ 10)
-        .attr('y', actionbuttons_size/2);
+        .attr('y', actionbuttons_size/2 + 1);
     // .attr('fill', 'white');
 
     undo_button.on('click', function() {
@@ -191,7 +193,7 @@
     var randText = test.append("text").text('Randomize')
         .attr("class", "text")
         .attr('x', randomizebutton_width / 10)
-        .attr('y', randomizebutton_height / 2);
+        .attr('y', randomizebutton_height / 2 + 1);
         // .attr('fill', 'white');
 
     randomizebutton.on('click', function() {
@@ -234,6 +236,8 @@
     var outside_subset = [];
     var dissimilar_locs = [];
     var similar_locs = [];
+    var temp_similar_locs = [];
+
     set_center(center, middle_image);
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -296,29 +300,7 @@
         }
     }
 
-    // ---------------- Functions -------------------
-    function redo() {
-        if (redo_stack.length === 0)
-            return;
-        undo_stack.push(middle_image);
-
-        // remove current image from undo stack:
-        middle_image = redo_stack.pop();
-        set_center(center, middle_image);
-        change_similar_images();
-    }
-
-    function undo() {
-        if (undo_stack.length === 0)
-            return;
-        redo_stack.push(middle_image);
-
-        // remove current image from undo stack:
-        middle_image = undo_stack.pop();
-        set_center(center, middle_image);
-        change_similar_images();
-
-    }
+    // ---------------- Helper Functions ------------------
     function change_dissimilar_images() {
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         images_ids = images_ids.sort(() => Math.random() - 0.5);
@@ -353,16 +335,31 @@
     }
 
     function handle_stacks(){
-        console.log("======stack content in change:", undo_stack, redo_stack, middle_image);
+        /*
+        After clicking on a image central image changes. Here we add the current image before updating the central image.
+        So we will be able to retrieve this state after pushing the update button.
+         */
         undo_stack.push(middle_image);
-        console.log("+++++stack content in change:", undo_stack, redo_stack, middle_image);
     }
 
+
     function change_similar_images() {
+        /*
+        Here we find the "n" similar images to the central image, using KNN method.
+        We also define the coordinates for each of those similar images.
+        */
         nearest_neighbors(middle_image, nr_similar_images);
-        grid_similar = grid_similar.sort(() => Math.random() - 0.5);
-        similar_locs = grid_similar.slice(0, nr_similar_images);
-        // similar_locs = [[260, 270], [260, 180], [400, 130], [500, 300], [550, 130]];
+
+        // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
+        if (selected_locs_dict[middle_image.toString()] == undefined){
+            grid_similar = grid_similar.sort(() => Math.random() - 0.5);
+            temp_similar_locs = grid_similar.slice(0, nr_similar_images);
+            selected_locs_dict[middle_image.toString()] = temp_similar_locs;
+        }
+        else {
+            temp_similar_locs = selected_locs_dict[middle_image.toString()];
+        }
+        similar_locs = temp_similar_locs;
 
         // Remove all current images
         d3.selectAll("g#middle_image")
@@ -389,6 +386,32 @@
         });
 
     }
+
+    function redo() {
+        if (redo_stack.length === 0)
+            return;
+        undo_stack.push(middle_image);
+
+        // remove current image from undo stack:
+        middle_image = redo_stack.pop();
+        set_center(center, middle_image);
+        change_similar_images();
+    }
+
+    function undo() {
+        if (undo_stack.length === 0)
+            return;
+        redo_stack.push(middle_image);
+
+        // remove current image from undo stack:
+        middle_image = undo_stack.pop();
+        set_center(center, middle_image);
+        change_similar_images();
+
+    }
+
+    // ----------------------------------------------------------------------------
+
 
     // Data loading from json
     var data;

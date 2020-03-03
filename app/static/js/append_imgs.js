@@ -46,10 +46,10 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name) {
             .transition()
             .duration(1000)
             .style('opacity', 1);}, 1000);
-			//handle_stacks();
+			handle_stacks();
 			// change middle_image variable and call function, both from test.html
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
-			//change_similar_images()
+			change_similar_images()
         })
         .on("mouseover", function(){
         	tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +

@@ -143,13 +143,14 @@
 
     // buttons
     var actionbuttons_size = svgwidth*0.020;
-    var undo_button = middle
-        .append("rect")
+
+    var undo_button = middle.append("g");
+    undo_button.append("rect")
             .attr("class", "button")
             .attr("width", actionbuttons_size)
             .attr("height", actionbuttons_size);
 
-    var undoText = middle.append("image")
+    undo_button.append("image")
 		.attr("href", imgs_path + 'undo.png')
 		.attr("height", actionbuttons_size)
 		.attr("width", actionbuttons_size)
@@ -157,14 +158,14 @@
         // .attr('fill', 'white');
 
 
-    var redo_button = middle
-        .append("rect")
+    var redo_button = middle.append("g");
+    redo_button.append("rect")
             .attr("class", "button")
             .attr("x", svgwidth*0.020)
             .attr("width", actionbuttons_size)
             .attr("height", actionbuttons_size);
 
-    var redoText = middle.append("image")
+    redo_button.append("image")
 		.attr("href", imgs_path + 'redo.png')
 		.attr("height", actionbuttons_size)
         .attr("width", actionbuttons_size)

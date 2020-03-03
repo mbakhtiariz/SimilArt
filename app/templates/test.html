@@ -180,21 +180,20 @@
         console.log('redo images');
         redo()
     });
-
-    var test = svg.append("g")
+    var randomizebutton_width = 50;
+    var randomizebutton_height = 30;
+    var randomizebutton = svg.append("g")
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
 
-    var randomizebutton_width = 50;
-    var randomizebutton_height = 30;
-    var randomizebutton = test.append("rect")
+    randomizebutton.append("rect")
         .attr("class", "button")
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", randomizebutton_width)
         .attr("height", randomizebutton_height);
 
-    var randText = test.append("image")
+    randomizebutton.append("image")
 		.attr("href", imgs_path + 'shuffle.png')
 		.attr("height", randomizebutton_height)
 		.attr("width", randomizebutton_width)

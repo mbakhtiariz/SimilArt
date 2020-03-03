@@ -32,23 +32,23 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background-color: #02090d;
+			background-color: #216869;
 		}
 
         .image-outline {
             fill: none;
-            stroke: #dbdbdb;
+            stroke: #dce1de;
             stroke-width: 2;
         }
         .middle {
-            fill: #3e5869;
-            stroke: #dbdbdb;
-            stroke-width: 2;
+            fill: #9cc5a1;
+            stroke: #1f2421;
+            stroke-width: 4;
 
         }
         .button {
-            fill: #999999;
-            stroke: #dbdbdb;
+            fill: #49a078;
+            stroke: #1f2421;
             stroke-width: 2;
         }
 
@@ -109,7 +109,7 @@
     var redo_stack = [];
     var old_middle_image = "";
     var selected_locs_dict = {};
-
+    var imgs_path = "static/subset/";
     var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
     var middle_y = svgheight*0.25;
@@ -142,31 +142,35 @@
         .style('font-size', '12px');
 
     // buttons
-    var actionbuttons_size = svgwidth*0.025;
+    var actionbuttons_size = svgwidth*0.020;
     var undo_button = middle
         .append("rect")
             .attr("class", "button")
             .attr("width", actionbuttons_size)
             .attr("height", actionbuttons_size);
 
-    var undoText = middle.append("text").text('Undo')
-        .attr("class", "text")
-        .attr('x', actionbuttons_size/ 10)
-        .attr('y', actionbuttons_size/2 + 1);
+    var undoText = middle.append("image")
+		.attr("href", imgs_path + 'undo.png')
+		.attr("height", actionbuttons_size)
+		.attr("width", actionbuttons_size)
+		.attr("clip-path", "url(#clip)");
+        // .attr('fill', 'white');
 
 
     var redo_button = middle
         .append("rect")
             .attr("class", "button")
-            .attr("x", svgwidth*0.025)
+            .attr("x", svgwidth*0.020)
             .attr("width", actionbuttons_size)
             .attr("height", actionbuttons_size);
 
-    var redoText = middle.append("text").text('Redo')
-        .attr("class", "text")
-        .attr('x', svgwidth*0.025 +  actionbuttons_size/ 10)
-        .attr('y', actionbuttons_size/2 + 1);
-    // .attr('fill', 'white');
+    var redoText = middle.append("image")
+		.attr("href", imgs_path + 'redo.png')
+		.attr("height", actionbuttons_size)
+        .attr("width", actionbuttons_size)
+        .attr("x", svgwidth*0.020)
+		.attr("clip-path", "url(#clip)");
+        // .attr('fill', 'white');
 
     undo_button.on('click', function() {
         console.log('go back to previous image');
@@ -190,10 +194,11 @@
         .attr("width", randomizebutton_width)
         .attr("height", randomizebutton_height);
 
-    var randText = test.append("text").text('Randomize')
-        .attr("class", "text")
-        .attr('x', randomizebutton_width / 10)
-        .attr('y', randomizebutton_height / 2 + 1);
+    var randText = test.append("image")
+		.attr("href", imgs_path + 'shuffle.png')
+		.attr("height", randomizebutton_height)
+		.attr("width", randomizebutton_width)
+		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
     randomizebutton.on('click', function() {
@@ -227,11 +232,11 @@
         }
     }
 
-    var imgs_path = "static/subset/";
+    
     var initial_img = 2005927;
     var middle_image = initial_img;
-    var nr_similar_images = 5;
-    var nr_dissimilar_images = 5;
+    var nr_similar_images = 10;
+    var nr_dissimilar_images = 10;
     var outside_images = [];
     var outside_subset = [];
     var dissimilar_locs = [];

@@ -33,8 +33,21 @@
 			bottom: 0;
 			left: 0;
 			background-color: #02090d;
+            width: 100%;
+            height: 100%;
 		}
 
+        #page {
+            display: none;
+            opacity: 0;
+        }
+        #loading {
+            width: 100%;
+            height: 100%;
+            display: block;
+            opacity: 1;
+            background: none;
+        }
         .image-outline {
             fill: none;
             stroke: #dbdbdb;
@@ -51,12 +64,49 @@
             stroke-width: 2;
         }
         #container{
-            width: 100%
+            width: 100%;
+            height: 100%;
+        }
+        .flip-box {
+    	  background-color: transparent;
+    	  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+    	  position: absolute;
+    	}
+
+    	/* This container is needed to position the front and back side */
+    	.flip-box-inner {
+    	  position: relative;
+    	  width: 100%;
+    	  height: 100%;
+    	  text-align: center;
+    	  transform-style: preserve-3d;
+    	}
+
+    	/* Position the front and back side */
+    	.flip-box-front, .flip-box-back {
+    	  position: absolute;
+    	  width: 100%;
+    	  height: 100%;
+    	  -webkit-backface-visibility: hidden; /* Safari */
+    	  backface-visibility: hidden;
+    	}
+
+    	/* Style the back side */
+    	.flip-box-back {
+    	  transform: rotateX(-180deg);
+    	}
+        #loading-text-box {
+            text-align: center;
+            position: absolute;
+        }
+        #loading-text-text {
+            color: white;
+            font-size: 60px;
         }
     </style>
 </head>
 <body>
-<div id="container"></div>
+    <div id="container"></div>
 </body>
 <script type="text/javascript">
     var svgwidth = 960;
@@ -71,17 +121,27 @@
 <!-- Imports for the backend connection + nearest neighbor querying -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script src="../static/js/nearest_neighbors.js"></script>
+<!-- Import for loading screen -->
+<script src="../static/js/loading.js"></script>
 
 <script type="text/javascript">
+    // Container for the loading screen
+    var loading = d3.select("#container").append("div")
+        .attr("id", "loading");
+    // Small list of the first 10000 images in subset folder
+    var tmp_ids = {{ tmp_ids |safe }};
+    // Display the loading screen
+    loading_screen(loading, tmp_ids);
+
     var svg = d3.select("#container").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + svgwidth + " " + svgheight);
+        .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
+        .attr("id", "page");
 
     var image = {
         size: 50
     }
 
-    var defs = svg.append("defs");
     var middle_x = svgwidth*0.25;
     var middle_y = svgheight*0.25;
     var middle_width = svgwidth*0.5;
@@ -170,6 +230,7 @@
         // value setter
         this.set = function(v) {
             if (v == true) {
+                this.value = true;
                 this.onTrue();
             }
         }
@@ -300,7 +361,7 @@
                 meta_data_painting = data[nearest_ids[i]]
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
-                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg", 
+                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
                     similar_locs[i-1], artwork_name, artist_full_name);
             };
 
@@ -313,14 +374,36 @@
     var data;
     var available_ids;
 
+    // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         change_similar_images();
         change_dissimilar_images();
-    })
+        console.log("Page ready");
+        imageLoader.terminate(); // Terminate the image loader worker
+        showPage();
+        setTimeout(clearIntervals(), 2000);
+    });
 
+    // Call get_meta to load the metadata
     get_meta(DATA_LOADED);
 
-
+    // This function fades out the loading page and then fades in the actual page
+    function showPage() {
+        time = 1000;
+        d3.select("#loading")
+            .transition()
+            .duration(time)
+            .style("opacity", 0)
+            // Once the loading page has faded out, remove it and fade normal page in
+            .on("end", function () {
+                d3.select(this).remove();
+                d3.select("#page")
+                .style("display", "block")
+                .transition()
+                .duration(time)
+                .style("opacity", 1);
+            });
+    }
 
 </script>
 </html>

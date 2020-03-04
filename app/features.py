@@ -5,6 +5,7 @@
 
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
+from sklearn.metrics.pairwise import cosine_similarity
 
 import argparse
 from pathlib import Path
@@ -36,8 +37,20 @@ class Features(object):
         img_idx = self.id2i[id]
         vec = self.features[img_idx].reshape(1, -1)
         dist, ind = self.neigh.kneighbors(vec, n_neighbors=n)
-        return list(dist[0]), [self.ids[i] for i in ind[0]]
+        ind_list = [self.ids[i] for i in ind[0]]
+        cos_sims = self.get_cos_sims(id, ind_list)
+        return list(dist[0]), ind_list, cos_sims
 
+    def get_cos_sims(self, center_id, ind):
+        center_img_idx = self.id2i[center_id]
+        vec = self.features[center_img_idx].reshape(1, -1)
+        cos_sims = []
+        for i in range(len(ind)):
+            img_idx = self.id2i[ind[i]]
+            vec_i = self.features[img_idx].reshape(1, -1)
+            cos_sim = cosine_similarity(vec, vec_i).item(0, 0)
+            cos_sims.append(cos_sim)
+        return cos_sims
 
 def main(opt):
     feature_file_path = Path(opt.feature_path) / Path(r'features.csv')

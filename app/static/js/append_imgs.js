@@ -1,12 +1,14 @@
-function appendImage(url, position, artwork_name, artist_full_name) {
+function appendImage(url, position, artwork_name, artist_full_name, similarity) {
 	var img = new Image();
 	img.onload = function () {
-		middleImageHelper(url, position, img, artwork_name, artist_full_name);
+		middleImageHelper(url, position, img, artwork_name, artist_full_name,
+			similarity);
 	}
 	img.src = url;
 }
 
-function middleImageHelper(url, position, img, artwork_name, artist_full_name) {
+function middleImageHelper(url, position, img, artwork_name, artist_full_name,
+		similarity) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -53,7 +55,8 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name) {
         })
         .on("mouseover", function(){
         	tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +
-				"<em>Artist full name:</em>" + "<br/>" + artist_full_name)
+				"<em>Artist full name:</em>" + "<br/>" + artist_full_name + "<br/>" +
+				"<em>Similarity:</em>" + "<br/>" + similarity)
         	return tooltip.style("visibility", "visible");})
 		.on("mousemove", function(){
 			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})

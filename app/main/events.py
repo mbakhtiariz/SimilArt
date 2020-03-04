@@ -22,8 +22,16 @@ def nearest_neighbors(info):
     print("Emitting nearest neighbors query")
     id = info['id']
     n = info['n']
-    dists, ids = features.nearest(int(id), n)
-    emit('nearest_neighbors_data', {'dists': dists, 'ids': ids})
+    dists, ids, cos_sims = features.nearest(int(id), n)
+    emit('nearest_neighbors_data', {'dists': dists, 'ids': ids, 'cos_sims': cos_sims})
+
+@socketio.on('get_cosine_sim')
+def get_cosine_sim(info):
+    print("Getting cosine similarity")
+    id = info['id']
+    ind = info['ind']
+    cos_sims = features.get_cos_sims(int(id), ind)
+    emit('get_cosine_sim_data', {'cos_sims': cos_sims})
 
 @socketio.on('create_meta_json')
 def create_meta_json():

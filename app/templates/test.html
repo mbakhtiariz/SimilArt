@@ -376,6 +376,9 @@
         dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
         // dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
 
+        images_ids_subset_int = images_ids_subset.map(Number)
+        get_cosine_sim(middle_image, images_ids_subset_int);
+
         // Remove all current images
         d3.selectAll("g#outside_image")
             .transition()
@@ -383,22 +386,27 @@
             .style("opacity", 0)
             .remove();
 
-        // --- selecting location of dis-similar layer and plotting those images:
-        var i;
-        for (i = 0; i < images_ids_subset.length; i++) {
-            meta_data_painting = data[images_ids_subset[i]]
-            artwork_name = meta_data_painting['artwork_name']
-            artist_full_name = meta_data_painting['artist_full_name']
-            appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name)
-        };
+        // Sleep for 100 ms until similarity found
+        sleep(100).then(() => {
+            // --- selecting location of dis-similar layer and plotting those images:
+            var i;
+            for (i = 0; i < images_ids_subset.length; i++) {
+                meta_data_painting = data[images_ids_subset[i]]
+                artwork_name = meta_data_painting['artwork_name']
+                artist_full_name = meta_data_painting['artist_full_name']
+                cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
+                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, cosine_sim)
+            };
 
-        // d3.selectAll("g#outside_image")
-        //     .style('opacity', 0)
-        //     .transition()
-        //     .duration(4000)
-        //     .style("opacity", 1);
+            // d3.selectAll("g#outside_image")
+            //     .style('opacity', 0)
+            //     .transition()
+            //     .duration(4000)
+            //     .style("opacity", 1);
 
-        console.log("change dissimilar");
+            console.log("change dissimilar");
+
+        });
     }
 
     function handle_stacks(){
@@ -435,17 +443,20 @@
             .style("opacity", 0)
             .remove()
 
-        // Sleep for 500 ms until neighbouring images is found
+        // Sleep for 1000 ms until neighbouring images is found
         sleep(500).then(() => {
             // --- selecting location of similar layer and plotting those images:
             // Start i from 1 to filter-out central image:
             var i;
+            console.log("nearest ids:", nearest_ids)
             for (i = 1; i < nearest_ids.length; i++) {
                 meta_data_painting = data[nearest_ids[i]]
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
+                cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
                 appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
-                    similar_locs[i-1], artwork_name, artist_full_name);
+                    similar_locs[i-1], artwork_name, artist_full_name, 
+                    cosine_sim);
             };
 
             console.log("change similar");

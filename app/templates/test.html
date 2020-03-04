@@ -151,7 +151,7 @@
             .attr("height", actionbuttons_size);
 
     undo_button.append("image")
-		.attr("href", imgs_path + 'undo.png')
+		.attr("href", "static/icons/" + 'undo.png')
 		.attr("height", actionbuttons_size)
 		.attr("width", actionbuttons_size)
 		.attr("clip-path", "url(#clip)");
@@ -166,7 +166,7 @@
             .attr("height", actionbuttons_size);
 
     redo_button.append("image")
-		.attr("href", imgs_path + 'redo.png')
+		.attr("href", "static/icons/" + 'redo.png')
 		.attr("height", actionbuttons_size)
         .attr("width", actionbuttons_size)
         .attr("x", svgwidth*0.020)
@@ -195,7 +195,7 @@
         .attr("height", randomizebutton_height);
 
     randomizebutton.append("image")
-		.attr("href", imgs_path + 'shuffle.png')
+		.attr("href", "static/icons/" + 'shuffle.png')
 		.attr("height", randomizebutton_height)
 		.attr("width", randomizebutton_width)
 		.attr("clip-path", "url(#clip)");

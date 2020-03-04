@@ -351,8 +351,8 @@
         }
     }
 
-    for (i = middle_x; i < middle_x + middle_width - image.size; i += image.size) {
-        for (j = middle_y; j < middle_y + middle_height - image.size; j += image.size) {
+    for (i = middle_x + 4; i < middle_x + middle_width - image.size - 4; i += image.size) {
+        for (j = middle_y + 4 ; j < middle_y + middle_height - image.size - 4; j += image.size) {
 
             // skip action buttons and center image
             if ((i < middle_x + actionbuttons_size && j < middle_y + actionbuttons_size) ||

@@ -26,4 +26,7 @@ def index():
 
 @main.route('/test', methods=['GET'])
 def test():
-	return render_template("test.html")
+	current_path = Path.cwd()
+	ids = os.listdir(current_path / Path(r"app/static/subset"))
+	ids = json.dumps([id.split(".")[0] for id in ids[:10000]])
+	return render_template("test.html", tmp_ids=ids)

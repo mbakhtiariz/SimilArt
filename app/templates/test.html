@@ -139,8 +139,8 @@
     <div id="container"></div>
 </body>
 <script type="text/javascript">
-    var svgwidth = 960;
-    var svgheight = 500;
+    var svgwidth = document.body.clientWidth;
+    var svgheight = document.body.clientHeight;
 </script>
 <!-- Import dragable images code -->
 <script src="../static/js/drag_imgs.js"></script>
@@ -164,7 +164,7 @@
     loading_screen(loading, tmp_ids);
 
     var svg = d3.select("#container").append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("preserveAspectRatio", "none")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
 
@@ -227,8 +227,8 @@
     var undo_button = middle.append("g");
     undo_button.append("circle")
             .attr("class", "button")
-            .attr("cx", actionbuttons_size / 2.3 + 3)
-            .attr("cy", actionbuttons_size / 2.3 + 2)
+            .attr("cx", actionbuttons_size / 2)
+            .attr("cy", actionbuttons_size / 2)
             .attr("r", actionbuttons_size / 2.3)
             .style('opacity', 0)
             .on("mouseover", function(){
@@ -241,8 +241,8 @@
 		.attr("href", "static/icons/" + 'undo.png')
 		.attr("height", actionbuttons_size / 2)
         .attr("width", actionbuttons_size / 2)
-        .attr("x", 0 + 6)
-        .attr("y", 0 + 5)
+        .attr("x", actionbuttons_size / 4)
+        .attr("y", actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
@@ -250,8 +250,8 @@
     var redo_button = middle.append("g");
     redo_button.append("circle")
             .attr("class", "button")
-            .attr("cx", actionbuttons_size + 6)
-            .attr('cy', actionbuttons_size / 2.3 + 2)
+            .attr("cx", actionbuttons_size / 1.2 + actionbuttons_size / 2)
+            .attr('cy', actionbuttons_size / 2)
             .attr("r", actionbuttons_size / 2.3)
             .style('opacity', 0)
             .on("mouseover", function(){
@@ -264,8 +264,8 @@
 		.attr("href", "static/icons/" + 'redo.png')
 		.attr("height", actionbuttons_size / 2)
         .attr("width", actionbuttons_size / 2)
-        .attr("x", actionbuttons_size + 1)
-        .attr('y', 0 + 5)
+        .attr("x", actionbuttons_size / 1.2 + actionbuttons_size / 4)
+        .attr('y', actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
@@ -277,15 +277,15 @@
         console.log('redo images');
         redo()
     });
-    var randomizebutton_size = 20;
+    var randomizebutton_size = svgwidth * 0.020;
     var randomizebutton = svg.append("g")
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
 
     randomizebutton.append("circle")
         .attr("class", "button")
-        .attr("cx", 10)
-        .attr("cy", 10)
+        .attr("cx", randomizebutton_size / 2)
+        .attr("cy", randomizebutton_size / 2)
         .attr("r", randomizebutton_size / 2)
         .style('opacity', 0)
             .on("mouseover", function(){
@@ -298,8 +298,8 @@
 		.attr("href", "static/icons/" + 'shuffle.png')
 		.attr("height", randomizebutton_size / 2)
         .attr("width", randomizebutton_size / 2)
-        .attr("x", 5)
-        .attr("y", 5)
+        .attr("x", randomizebutton_size / 4)
+        .attr("y", randomizebutton_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 

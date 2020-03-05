@@ -55,9 +55,9 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			change_similar_images()
 		})
 		.on("mouseover", function(d){
-        	tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +
-				"<em>Artist full name:</em>" + "<br/>" + artist_full_name + "<br/>" +
-				"<em>Similarity:</em>" + "<br/>" + similarity)
+        	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
+				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
+				"<em>Similarity:</em> &nbsp" + similarity)
         	tooltip.transition()		
                		.duration(1000)
 					.style("visibility", "visible");})
@@ -66,6 +66,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			var tY = event.pageY
 			var bBox = svg.node().getBBox();
 			var theight = parseFloat(tooltip.style("height"))
+			var twidth = parseFloat(tooltip.style("width"))
             tooltip.style("top", function() {
             	if (tY+10+theight > bBox.height) {
             		return bBox.height-theight+"px";
@@ -76,8 +77,8 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
             	}
             })
             tooltip.style("left", function(){
-            	if (tX+20+120 > bBox.width) {
-            		return bBox.width-120+"px";
+            	if (tX+20+twidth > bBox.width) {
+            		return bBox.width-twidth+"px";
             	} else {
             		return tX+20+"px"
             	}

@@ -119,15 +119,18 @@
         #loading-text-text {
             color: white;
             font-size: 60px;
+            font-family: "Copperplate Gothic Light";
         }
         #tooltip {
 		    position: relative;
 		    text-align: center;
-		    width: 120px;
+		    width: 140px;
 		    padding: 2px;
-		    font: 8px sans-serif;
+		    font-size: 12px;
+            font-family: "Copperplate Gothic Light";
 		    text-align: center;
-		    background: lightsteelblue;
+		    background: white;
+            opacity: 0.8;
 		    border: 0px;
 		    border-radius: 8px;
 		    pointer-events: none;
@@ -217,9 +220,8 @@
         .attr("id", "tooltip")
         .style("position", "absolute")
         .style("z-index", "10")
-        .style('color', 'white')
+        .style('color', 'black')
         .style("visibility", "hidden")
-        .style('font-size', '12px');
 
     // buttons
     var actionbuttons_size = svgwidth*0.020;

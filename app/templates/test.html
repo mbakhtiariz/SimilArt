@@ -32,7 +32,7 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background-color: #216869;
+			background-color: #1b1b1b;
             width: 100%;
             height: 100%;
 		}
@@ -54,15 +54,21 @@
             stroke-width: 2;
         }
         .middle {
-            fill: #9cc5a1;
-            stroke: #1f2421;
+            fill: #1b1b1b;
+            stroke: #515251;
             stroke-width: 4;
-
         }
+
+        /* .middle-outline{
+            fill: none;
+            stroke: black;
+            opacity: 20%;
+            stroke-width: 20;
+        } */
+
         .button {
-            fill: #49a078;
-            stroke: #1f2421;
-            stroke-width: 2;
+            fill: #ffffff;
+            stroke: none;
         }
 
         .text {
@@ -133,8 +139,8 @@
     <div id="container"></div>
 </body>
 <script type="text/javascript">
-    var svgwidth = 960;
-    var svgheight = 500;
+    var svgwidth = document.body.clientWidth;
+    var svgheight = document.body.clientHeight;
 </script>
 <!-- Import dragable images code -->
 <script src="../static/js/drag_imgs.js"></script>
@@ -158,7 +164,7 @@
     loading_screen(loading, tmp_ids);
 
     var svg = d3.select("#container").append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("preserveAspectRatio", "none")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
 
@@ -185,8 +191,21 @@
 
     middle.append("rect")
         .attr("class", "middle")
-        .attr("width", svgwidth*0.5)
-        .attr("height", svgwidth*0.25);
+        .attr("width", middle_width)
+        .attr("height", middle_height);
+    
+    var filter = middle.append("filter")
+        .attr("id","blur");
+    
+    filter.append("feGaussianBlur")
+        .attr("stdDeviation","3.5")
+        .attr("result","coloredBlur");
+
+    // middle.append("rect")
+	// 	.attr("class", "middle-outline")
+	// 	.attr("width", middle_width)
+    //     .attr("height", middle_height)
+    //     .style("filter", "url(#blur)");
 
     var center = middle.append("svg")
         .append("image")
@@ -206,31 +225,47 @@
     var actionbuttons_size = svgwidth*0.020;
 
     var undo_button = middle.append("g");
-    undo_button.append("rect")
+    undo_button.append("circle")
             .attr("class", "button")
-            .attr("width", actionbuttons_size)
-            .attr("height", actionbuttons_size);
+            .attr("cx", actionbuttons_size / 2)
+            .attr("cy", actionbuttons_size / 2)
+            .attr("r", actionbuttons_size / 2.3)
+            .style('opacity', 0)
+            .on("mouseover", function(){
+                d3.select(this).style('opacity', 0.3)})
+            .on("mouseout", function(){
+                d3.select(this).style('opacity', 0)
+            });
 
     undo_button.append("image")
 		.attr("href", "static/icons/" + 'undo.png')
-		.attr("height", actionbuttons_size)
-		.attr("width", actionbuttons_size)
+		.attr("height", actionbuttons_size / 2)
+        .attr("width", actionbuttons_size / 2)
+        .attr("x", actionbuttons_size / 4)
+        .attr("y", actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
 
     var redo_button = middle.append("g");
-    redo_button.append("rect")
+    redo_button.append("circle")
             .attr("class", "button")
-            .attr("x", svgwidth*0.020)
-            .attr("width", actionbuttons_size)
-            .attr("height", actionbuttons_size);
+            .attr("cx", actionbuttons_size / 1.2 + actionbuttons_size / 2)
+            .attr('cy', actionbuttons_size / 2)
+            .attr("r", actionbuttons_size / 2.3)
+            .style('opacity', 0)
+            .on("mouseover", function(){
+                d3.select(this).style('opacity', 0.3)})
+            .on("mouseout", function(){
+                d3.select(this).style('opacity', 0)
+            });
 
     redo_button.append("image")
 		.attr("href", "static/icons/" + 'redo.png')
-		.attr("height", actionbuttons_size)
-        .attr("width", actionbuttons_size)
-        .attr("x", svgwidth*0.020)
+		.attr("height", actionbuttons_size / 2)
+        .attr("width", actionbuttons_size / 2)
+        .attr("x", actionbuttons_size / 1.2 + actionbuttons_size / 4)
+        .attr('y', actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
@@ -242,23 +277,29 @@
         console.log('redo images');
         redo()
     });
-    var randomizebutton_width = 50;
-    var randomizebutton_height = 30;
+    var randomizebutton_size = svgwidth * 0.020;
     var randomizebutton = svg.append("g")
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
 
-    randomizebutton.append("rect")
+    randomizebutton.append("circle")
         .attr("class", "button")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", randomizebutton_width)
-        .attr("height", randomizebutton_height);
+        .attr("cx", randomizebutton_size / 2)
+        .attr("cy", randomizebutton_size / 2)
+        .attr("r", randomizebutton_size / 2)
+        .style('opacity', 0)
+            .on("mouseover", function(){
+                d3.select(this).style('opacity', 0.3)})
+            .on("mouseout", function(){
+                d3.select(this).style('opacity', 0)
+            });;
 
     randomizebutton.append("image")
 		.attr("href", "static/icons/" + 'shuffle.png')
-		.attr("height", randomizebutton_height)
-		.attr("width", randomizebutton_width)
+		.attr("height", randomizebutton_size / 2)
+        .attr("width", randomizebutton_size / 2)
+        .attr("x", randomizebutton_size / 4)
+        .attr("y", randomizebutton_size / 4)
 		.attr("clip-path", "url(#clip)");
         // .attr('fill', 'white');
 
@@ -297,8 +338,8 @@
 
     var initial_img = 2005927;
     var middle_image = initial_img;
-    var nr_similar_images = 10;
-    var nr_dissimilar_images = 10;
+    var nr_similar_images = 26;
+    var nr_dissimilar_images = 30;
     var outside_images = [];
     var outside_subset = [];
     var dissimilar_locs = [];
@@ -343,7 +384,7 @@
             // skip middle section and randomize button
             if ((i + image.size > middle_x && i < (middle_x + middle_width)) &&
                     (j + image.size > middle_y && j < (middle_y + middle_height)) ||
-                    (i < randomizebutton_width && j < randomizebutton_height))
+                    (i < randomizebutton_size && j < randomizebutton_size))
 
                 continue;
 

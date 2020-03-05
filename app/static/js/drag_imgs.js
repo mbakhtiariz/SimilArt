@@ -109,15 +109,15 @@ function dragged(d) {
 		newY = d3.event.y - height * 0.5;
 
 	xborder = d3.event.x
-	if (xborder + width*0.5  > 960 ){
-		newX = 960 - width
+	if (xborder + width*0.5  > svgwidth ){
+		newX = svgwidth - width
 	} else if (xborder - width*0.5  < 0){
 		newX = 0
 	}
 
 	yborder = d3.event.y
-	if (yborder + height*0.5  > 500) {
-		newY = 500 - height
+	if (yborder + height*0.5  > svgheight) {
+		newY = svgheight - height
 	} else if (yborder - height*0.5  < 0){
 		newY = 0
 	}

@@ -64,9 +64,11 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on("mousemove", function(d){
 			var tX = event.pageX
 			var tY = event.pageY
+			var bBox = svg.node().getBBox();
+			var theight = parseFloat(tooltip.style("height"))
             tooltip.style("top", function() {
-            	if (tY-10+tooltip.height > 724) {
-            		return 724-tooltip.height+10+"px";
+            	if (tY+10+theight > bBox.height) {
+            		return bBox.height-theight+"px";
             	} else if (tY-10 < 0) {
             		return tY;
             	} else {
@@ -74,8 +76,8 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
             	}
             })
             tooltip.style("left", function(){
-            	if (tX+20+120 > 1400) {
-            		return 1400-120+"px";
+            	if (tX+20+120 > bBox.width) {
+            		return bBox.width-120+"px";
             	} else {
             		return tX+20+"px"
             	}

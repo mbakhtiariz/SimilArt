@@ -54,15 +54,35 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 			change_similar_images()
 		})
-		.on("mouseover", function(){
+		.on("mouseover", function(d){
         	tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +
 				"<em>Artist full name:</em>" + "<br/>" + artist_full_name + "<br/>" +
 				"<em>Similarity:</em>" + "<br/>" + similarity)
-			return tooltip.style("visibility", "visible");})
-		.on("mousemove", function(){
-			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-		.on("mouseout", function(){
-			return tooltip.style("visibility", "hidden");});
+        	tooltip.transition()		
+               		.duration(1000)
+					.style("visibility", "visible");})
+		.on("mousemove", function(d){
+			var tX = event.pageX
+			var tY = event.pageY
+            tooltip.style("top", function() {
+            	if (tY-10+tooltip.height > 724) {
+            		return 724-tooltip.height+10+"px";
+            	} else if (tY-10 < 0) {
+            		return tY;
+            	} else {
+            		return tY-10+"px"
+            	}
+            })
+            tooltip.style("left", function(){
+            	if (tX+20+120 > 1400) {
+            		return 1400-120+"px";
+            	} else {
+            		return tX+20+"px"
+            	}
+            }) 
+        })
+		.on("mouseout", function(d){
+			tooltip.style("visibility", "hidden");});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")
@@ -137,5 +157,5 @@ function dragged(d) {
 		.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
 
 	d3.select("#tooltip")
-		.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+		.style("visibility", "hidden");
 }

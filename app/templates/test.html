@@ -336,7 +336,7 @@
         for (j = middle_y + 4 ; j < middle_y + middle_height - similar_image_size - 4; j += similar_image_size) {
 
             // skip action buttons and center image
-            if ((i < middle_x + actionbuttons_size && j < middle_y + actionbuttons_size) ||
+            if ((i < middle_x + actionbuttons_size * 2 && j < middle_y + actionbuttons_size) ||
                     (i + similar_image_size > middle_x + center_image_x &&
                      i < middle_x + center_image_x + center_image_size &&
                      j + similar_image_size > middle_y + center_image_y &&
@@ -461,7 +461,6 @@
         change_similar_images();
 
     }
-
     // ----------------------------------------------------------------------------
 
 

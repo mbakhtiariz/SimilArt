@@ -462,9 +462,6 @@
         }
     }
 
-
-    var initial_img = 2005927;
-    var middle_image = initial_img;
     var nr_similar_images = 26;
     var nr_dissimilar_images = 30;
     var outside_images = [];
@@ -473,7 +470,6 @@
     var similar_locs = [];
     var temp_similar_locs = [];
 
-    set_center(center, middle_image);
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
@@ -542,7 +538,6 @@
         images_ids_subset = images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
         dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
-        // dissimilar_locs = [[30, 400], [810, 280], [650, 390], [50, 80], [400, 30]];
 
         images_ids_subset_int = images_ids_subset.map(Number)
         get_cosine_sim(middle_image, images_ids_subset_int);
@@ -550,7 +545,7 @@
         // Remove all current images
         d3.selectAll("g#outside_image")
             .transition()
-            .duration(2000)
+            .duration(1000)
             .style("opacity", 0)
             .remove();
 
@@ -565,12 +560,6 @@
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
                 appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, cosine_sim)
             };
-
-            // d3.selectAll("g#outside_image")
-            //     .style('opacity', 0)
-            //     .transition()
-            //     .duration(4000)
-            //     .style("opacity", 1);
 
             console.log("change dissimilar");
 
@@ -607,7 +596,7 @@
         // Remove all current images
         d3.selectAll("g#middle_image")
             .transition()
-            .duration(2000)
+            .duration(1000)
             .style("opacity", 0)
             .remove()
 
@@ -662,9 +651,12 @@
     // Data loading from json
     var data;
     var available_ids;
+    var middle_image;
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
+        middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
+        set_center(center, middle_image);
         change_similar_images();
         change_dissimilar_images();
         console.log("Page ready");

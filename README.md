@@ -133,9 +133,20 @@ Notes Meeting
 - Training; maybe later still possible but for now we will not focus on it.
 
 Questions Next Meeting
-
+- Loading screen
+- Metadata
 
 ### Meeting 3, March 5 2020
+
+Notes Meeting
+- Think in terms of MVP; Minimum Viable Product
+- Loading screen issue; scale images smaller.
+- Images randomly placed; make position better. For example ArtCLouds; clustering artworks based on similarity and scale.     Try it ourselves.
+- Evaluation & Progress report grade: 7.5.
+- Lot to be improved; design especially. Choose type of buttons; material and flat OR 3D and awesome. Work on design & user experience! 
+- Next meeting Wednesday at 10. 
+
+Questions Next Meeting 
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration

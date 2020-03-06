@@ -55,7 +55,7 @@ function loading_screen(container, ids) {
 		.append("span")
 			.attr("id", "loading-text-text")
 			.style("line-height", (2*im_height).toString()+"px")
-			.text("InfoVis");
+			.text("OmniArt Exploration");
 
 	// Add flipboxes around the center
 	for (var i=0; i<num_x; i++) {

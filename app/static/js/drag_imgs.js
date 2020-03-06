@@ -54,15 +54,38 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 			change_similar_images()
 		})
-		.on("mouseover", function(){
-        	tooltip.html("<em>Artwork name:</em>" + "<br/>" + artwork_name + "<br/>" +
-				"<em>Artist full name:</em>" + "<br/>" + artist_full_name + "<br/>" +
-				"<em>Similarity:</em>" + "<br/>" + similarity)
-			return tooltip.style("visibility", "visible");})
-		.on("mousemove", function(){
-			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-		.on("mouseout", function(){
-			return tooltip.style("visibility", "hidden");});
+		.on("mouseover", function(d){
+        	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
+				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
+				"<em>Similarity:</em> &nbsp" + similarity)
+        	tooltip.transition()		
+               		.duration(1000)
+					.style("visibility", "visible");})
+		.on("mousemove", function(d){
+			var tX = event.pageX
+			var tY = event.pageY
+			var bBox = svg.node().getBBox();
+			var theight = parseFloat(tooltip.style("height"))
+			var twidth = parseFloat(tooltip.style("width"))
+            tooltip.style("top", function() {
+            	if (tY+10+theight > bBox.height) {
+            		return bBox.height-theight+"px";
+            	} else if (tY-10 < 0) {
+            		return tY;
+            	} else {
+            		return tY-10+"px"
+            	}
+            })
+            tooltip.style("left", function(){
+            	if (tX+20+twidth > bBox.width) {
+            		return bBox.width-twidth+"px";
+            	} else {
+            		return tX+20+"px"
+            	}
+            }) 
+        })
+		.on("mouseout", function(d){
+			tooltip.style("visibility", "hidden");});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")
@@ -89,15 +112,15 @@ function dragged(d) {
 		newY = d3.event.y - height * 0.5;
 
 	xborder = d3.event.x
-	if (xborder + width*0.5  > 960 ){
-		newX = 960 - width
+	if (xborder + width*0.5  > svgwidth ){
+		newX = svgwidth - width
 	} else if (xborder - width*0.5  < 0){
 		newX = 0
 	}
 
 	yborder = d3.event.y
-	if (yborder + height*0.5  > 500) {
-		newY = 500 - height
+	if (yborder + height*0.5  > svgheight) {
+		newY = svgheight - height
 	} else if (yborder - height*0.5  < 0){
 		newY = 0
 	}
@@ -137,5 +160,5 @@ function dragged(d) {
 		.attr("transform", "translate(" + (d.position = [newX, newY]) + ")");
 
 	d3.select("#tooltip")
-		.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+		.style("visibility", "hidden");
 }

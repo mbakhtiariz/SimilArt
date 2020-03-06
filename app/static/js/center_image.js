@@ -31,6 +31,6 @@ function set_center(center_obj, img_id) {
 	center_obj
         .style('opacity', 0)
         .transition()
-	    .duration(4500)
+	    .duration(1000)
         .style("opacity", 1);
 };

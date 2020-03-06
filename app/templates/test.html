@@ -25,6 +25,9 @@
     <!-- Layout stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
 
+    <!-- Navigation bar stylesheet -->
+    <link rel="stylesheet" type="text/css" href="../static/css/nav_bar.css">
+
     <!-- slider -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,16 +116,20 @@
         size: 50
     }
 
+    var removal_transition_speed = 500;
+    var appearance_transition_speed = 500;
+    var removal_transition_speed_middle_image = 0;
+    var time_to_suspend_middle_image_after_click = 0;
     var undo_stack = [];
     var redo_stack = [];
     var old_middle_image = "";
     var selected_locs_dict = {};
     var imgs_path = "static/subset/";
     var defs = svg.append("defs");
-    var middle_x = svgwidth*0.25;
-    var middle_y = svgheight*0.25;
-    var middle_width = svgwidth*0.5;
-    var middle_height = svgwidth*0.25;
+    var middle_x = svgwidth * 0.25;
+    var middle_y = svgheight * 0.25;
+    var middle_width = svgwidth * 0.5;
+    var middle_height = svgwidth * 0.25;
     var middle = svg.append("svg")
         .attr("class", "middle")
         .attr("x", middle_x)
@@ -164,18 +171,20 @@
     // buttons
     var actionbuttons_size = svgwidth*0.020;
 
+    var undo_button_circle;
     var undo_button = middle.append("g");
     undo_button.append("circle")
-            .attr("class", "button")
-            .attr("cx", actionbuttons_size / 2)
-            .attr("cy", actionbuttons_size / 2)
-            .attr("r", actionbuttons_size / 2.3)
-            .style('opacity', 0)
-            .on("mouseover", function(){
-                d3.select(this).style('opacity', 0.3)})
-            .on("mouseout", function(){
-                d3.select(this).style('opacity', 0)
-            });
+        .attr("class", "button")
+        .attr("cx", actionbuttons_size / 2)
+        .attr("cy", actionbuttons_size / 2)
+        .attr("r", actionbuttons_size / 2.3)
+        .style('opacity', 0)
+        .on("mouseover", function(){
+            undo_button_circle = this;
+            d3.select(this).style('opacity', 0.3)})
+        .on("mouseout", function(){
+            d3.select(this).style('opacity', 0)
+        });
 
     undo_button.append("image")
 		.attr("href", "static/icons/" + 'undo.png')
@@ -183,22 +192,29 @@
         .attr("width", actionbuttons_size / 2)
         .attr("x", actionbuttons_size / 4)
         .attr("y", actionbuttons_size / 4)
-		.attr("clip-path", "url(#clip)");
+		.attr("clip-path", "url(#clip)")
+        .style('opacity', 1)
+        .on("mouseover", function(){
+            d3.select(undo_button_circle).style('opacity', 0.3)})
+        .on("mouseout", function(){
+            d3.select(undo_button_circle).style('opacity', 0)
+        });
         // .attr('fill', 'white');
 
-
+    var redo_button_circle;
     var redo_button = middle.append("g");
     redo_button.append("circle")
-            .attr("class", "button")
-            .attr("cx", actionbuttons_size / 1.2 + actionbuttons_size / 2)
-            .attr('cy', actionbuttons_size / 2)
-            .attr("r", actionbuttons_size / 2.3)
-            .style('opacity', 0)
-            .on("mouseover", function(){
-                d3.select(this).style('opacity', 0.3)})
-            .on("mouseout", function(){
-                d3.select(this).style('opacity', 0)
-            });
+        .attr("class", "button")
+        .attr("cx", actionbuttons_size / 1.2 + actionbuttons_size / 2)
+        .attr('cy', actionbuttons_size / 2)
+        .attr("r", actionbuttons_size / 2.3)
+        .style('opacity', 0)
+        .on("mouseover", function(){
+            redo_button_circle = this;
+            d3.select(this).style('opacity', 0.3)})
+        .on("mouseout", function(){
+            d3.select(this).style('opacity', 0)
+        });
 
     redo_button.append("image")
 		.attr("href", "static/icons/" + 'redo.png')
@@ -206,7 +222,13 @@
         .attr("width", actionbuttons_size / 2)
         .attr("x", actionbuttons_size / 1.2 + actionbuttons_size / 4)
         .attr('y', actionbuttons_size / 4)
-		.attr("clip-path", "url(#clip)");
+		.attr("clip-path", "url(#clip)")
+        .style('opacity', 1)
+        .on("mouseover", function(){
+            d3.select(redo_button_circle).style('opacity', 0.3)})
+        .on("mouseout", function(){
+            d3.select(redo_button_circle).style('opacity', 0)
+        });
         // .attr('fill', 'white');
 
     undo_button.on('click', function() {
@@ -222,6 +244,7 @@
         .datum({position: [0, 0], height: 35, width: 55})
         .attr("transform", d => "translate(" + d.position + ")");
 
+    var randomizebutton_circle;
     randomizebutton.append("circle")
         .attr("class", "button")
         .attr("cx", randomizebutton_size / 2)
@@ -229,6 +252,7 @@
         .attr("r", randomizebutton_size / 2)
         .style('opacity', 0)
             .on("mouseover", function(){
+                randomizebutton_circle = this;
                 d3.select(this).style('opacity', 0.3)})
             .on("mouseout", function(){
                 d3.select(this).style('opacity', 0)
@@ -240,7 +264,13 @@
         .attr("width", randomizebutton_size / 2)
         .attr("x", randomizebutton_size / 4)
         .attr("y", randomizebutton_size / 4)
-		.attr("clip-path", "url(#clip)");
+		.attr("clip-path", "url(#clip)")
+        .style('opacity', 1)
+            .on("mouseover", function(){
+                d3.select(randomizebutton_circle).style('opacity', 0.3)})
+            .on("mouseout", function(){
+                d3.select(randomizebutton_circle).style('opacity', 0)
+            });;
         // .attr('fill', 'white');
 
     randomizebutton.on('click', function() {
@@ -358,7 +388,7 @@
         // Remove all current images
         d3.selectAll("g#outside_image")
             .transition()
-            .duration(1000)
+            .duration(removal_transition_speed)
             .style("opacity", 0)
             .remove();
 
@@ -409,7 +439,7 @@
         // Remove all current images
         d3.selectAll("g#middle_image")
             .transition()
-            .duration(1000)
+            .duration(removal_transition_speed)
             .style("opacity", 0)
             .remove()
 
@@ -474,7 +504,7 @@
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
-        setTimeout(clearIntervals(), 2000);
+        setTimeout(clearIntervals(), 500);
         handle_stacks();
     })
 

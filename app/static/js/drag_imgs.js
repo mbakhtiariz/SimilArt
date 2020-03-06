@@ -15,12 +15,12 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 	var ratio = img_width / img_height;
 	// If image width > height
 	if (ratio > 1) {
-		img_width = image.size;
-		img_height = image.size / ratio;
+		img_width = dissimilar_image_size;
+		img_height = dissimilar_image_size / ratio;
 	// If image height > width
 	} else {
-		img_width = image.size * ratio;
-		img_height = image.size;
+		img_width = dissimilar_image_size * ratio;
+		img_height = dissimilar_image_size;
 	};
 
 	var imageGroup = svg.append("g")

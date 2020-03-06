@@ -29,28 +29,8 @@
     <link rel="stylesheet" type="text/css" href="../static/css/nav_bar.css">
 
     <!-- slider -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>jQuery UI Slider - Range slider</title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-    $( function() {
-        $( "#slider-range" ).slider({
-        range: true,
-        min: -2500,
-        max: 2020,
-        values: [ -2500, 2020 ],
-        slide: function( event, ui ) {
-            $( "#period" ).val(ui.values[ 0 ] + " until " + ui.values[ 1 ] );
-        }
-        });
-        $( "#period" ).val($( "#slider-range" ).slider( "values", 0 ) +
-        " until " + $( "#slider-range" ).slider( "values", 1 ) );
-    } );
-    </script>
+    <link rel="stylesheet" href="../static/css/multirange.css">
+    <script src="../static/js/multirange.js"></script>
 </head>
 
 
@@ -69,13 +49,8 @@
         </div>
 
         <div>
-            <p>
-              <label for="period">Time period:</label>
-              <input type="text" id="period" readonly style="border:0; color:#000000; font-weight:regular;">
-            </p>
-            <div id="slider-range"></div>
+            <input type="range" multiple value="-2500,2020" />
         </div>
-
     </div>
 
     <div id="container"></div>
@@ -84,6 +59,9 @@
 <script type="text/javascript">
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight;
+    var center_image_size = 200;
+    var similar_image_size = 70;
+    var dissimilar_image_size = 40;
 </script>
 
 <!-- Import dragable images code -->
@@ -111,10 +89,6 @@
         .attr("preserveAspectRatio", "none")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
-
-    var image = {
-        size: 50
-    }
 
     var removal_transition_speed = 500;
     var appearance_transition_speed = 500;
@@ -169,7 +143,7 @@
         .style("visibility", "hidden")
 
     // buttons
-    var actionbuttons_size = svgwidth*0.020;
+    var actionbuttons_size = svgwidth * 0.020;
 
     var undo_button_circle;
     var undo_button = middle.append("g");
@@ -305,7 +279,7 @@
         }
     }
 
-    var nr_similar_images = 26;
+    var nr_similar_images = 24;
     var nr_dissimilar_images = 30;
     var outside_images = [];
     var outside_subset = [];
@@ -344,13 +318,13 @@
     var grid_similar = [];
     var grid_dissimilar = [];
 
-    for (i = 0; i < svgwidth - image.size; i += image.size) {
-        for (j = 0; j < svgheight - image.size; j += image.size) {
+    for (i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
+        for (j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
 
             // skip middle section and randomize button
-            if ((i + image.size > middle_x && i < (middle_x + middle_width)) &&
-                    (j + image.size > middle_y && j < (middle_y + middle_height)) ||
-                    (i < randomizebutton_size && j < randomizebutton_size))
+            if ((i + dissimilar_image_size > middle_x && i < (middle_x + middle_width)) &&
+                    (j + dissimilar_image_size > middle_y && j < (middle_y + middle_height)) ||
+                    (i < randomizebutton_size + 0.5 && j < randomizebutton_size + 0.5))
 
                 continue;
 
@@ -358,14 +332,14 @@
         }
     }
 
-    for (i = middle_x + 4; i < middle_x + middle_width - image.size - 4; i += image.size) {
-        for (j = middle_y + 4 ; j < middle_y + middle_height - image.size - 4; j += image.size) {
+    for (i = middle_x + 4; i < middle_x + middle_width - similar_image_size - 4; i += similar_image_size) {
+        for (j = middle_y + 4 ; j < middle_y + middle_height - similar_image_size - 4; j += similar_image_size) {
 
             // skip action buttons and center image
             if ((i < middle_x + actionbuttons_size && j < middle_y + actionbuttons_size) ||
-                    (i + image.size > middle_x + center_image_x &&
+                    (i + similar_image_size > middle_x + center_image_x &&
                      i < middle_x + center_image_x + center_image_size &&
-                     j + image.size > middle_y + center_image_y &&
+                     j + similar_image_size > middle_y + center_image_y &&
                      j < middle_y + center_image_y + center_image_size))
 
                 continue;
@@ -443,7 +417,7 @@
             .style("opacity", 0)
             .remove()
 
-        // Sleep for 1000 ms until neighbouring images is found
+        // Sleep for 500 ms until neighbouring images is found
         sleep(500).then(() => {
             // --- selecting location of similar layer and plotting those images:
             // Start i from 1 to filter-out central image:

@@ -1,4 +1,3 @@
-var center_image_size = 100;
 var center_image_x = svgwidth * 0.5 * 0.5 - center_image_size / 2;
 var center_image_y = svgheight * 0.5 * 0.5 - center_image_size / 2;
 
@@ -13,12 +12,12 @@ function set_center(center_obj, img_id) {
 	var ratio = img_width / img_height;
 	// If image width > height
 	if (ratio > 1) {
-		img_width = image.size;
-		img_height = image.size / ratio;
+		img_width = similar_image_size;
+		img_height = similar_image_size / ratio;
 	// If image height > width
 	} else {
-		img_width = image.size * ratio;
-		img_height = image.size;
+		img_width = similar_image_size * ratio;
+		img_height = similar_image_size;
 	};
 
 	center_obj.attr("href", url)

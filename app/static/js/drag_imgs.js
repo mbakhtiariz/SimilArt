@@ -39,6 +39,9 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
+			var modalImg = document.getElementById("img01");
+			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+
             d3.select('image#center')
                 .transition()
                 .duration(removal_transition_speed)

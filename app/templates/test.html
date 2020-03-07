@@ -35,6 +35,13 @@
 
 
 <body>
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg", id="img01">
+        </div>
+    </div>
 
     <div class="navbar">
         <div class="dropdown">
@@ -129,9 +136,7 @@
     //     .attr("height", middle_height)
     //     .style("filter", "url(#blur)");
 
-    var center = middle.append("svg")
-        .append("image")
-        .attr("clip-path", "url(#clip)");
+    var center = middle.append("svg");
 
     // tooltip
     var tooltip = d3.select("#container")

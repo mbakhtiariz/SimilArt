@@ -375,7 +375,8 @@
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
-                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, cosine_sim)
+                sim_score = Math.round(cosine_sim * 100)
+                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, sim_score)
             };
 
             console.log("change dissimilar");
@@ -428,9 +429,10 @@
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
                 cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
+                sim_score = Math.round(cosine_sim * 100)
                 appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
                     similar_locs[i-1], artwork_name, artist_full_name, 
-                    cosine_sim);
+                    sim_score);
             };
 
             console.log("change similar");

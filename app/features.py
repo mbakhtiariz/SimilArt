@@ -6,9 +6,11 @@
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from sklearn.metrics.pairwise import cosine_similarity
+import sklearn.metrics.pairwise as pairwise
 
 import argparse
 from pathlib import Path
+import numpy as np
 
 
 class Features(object):
@@ -48,7 +50,17 @@ class Features(object):
         for i in range(len(ind)):
             img_idx = self.id2i[ind[i]]
             vec_i = self.features[img_idx].reshape(1, -1)
-            cos_sim = cosine_similarity(vec, vec_i).item(0, 0)
+            # Transform dist in random attempt at meaningful similarity score 
+            # cos_sim = (1.3 - euclidean_distances(vec, vec_i).item(0, 0))
+            cos_sim = pairwise.cosine_distances(vec, vec_i).item(0, 0)
+            # Between 0 and 1
+            # ang_dis = np.arccos(cos_sim) / np.pi
+            # Scale cosine distance for meaningful similarity score
+            cos_sim = (1 - (4*cos_sim))
+            if cos_sim < 0:
+                cos_sim = 0
+            if cos_sim > 1:
+                cos_sim = 1
             cos_sims.append(cos_sim)
         return cos_sims
 

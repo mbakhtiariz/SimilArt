@@ -57,7 +57,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on("mouseover", function(d){
         	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
 				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
-				"<em>Similarity:</em> &nbsp" + similarity)
+				"<em>Similarity:</em> &nbsp" + similarity + "%")
         	tooltip.transition()		
                		.duration(1000)
 					.style("visibility", "visible");})

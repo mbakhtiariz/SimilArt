@@ -22,7 +22,7 @@ socket.on('nearest_neighbors_data', function(data) {
 	nearest_ids = data.ids;
 	cos_sims_nearest = data.cos_sims;
 	console.log("nearest ids:", nearest_ids);
-	console.log("cos sim nearest:", cos_sims_nearest);
+	// console.log("cos sim nearest:", cos_sims_nearest);
 });
 
 // store cosine similarity 
@@ -35,5 +35,5 @@ function get_cosine_sim(id, ind) {
 
 socket.on('get_cosine_sim_data', function(data) {
 	cos_sims_explore = data.cos_sims;
-	console.log("cos sims explore area:", cos_sims_explore);
+	// console.log("cos sims explore area:", cos_sims_explore);
 });

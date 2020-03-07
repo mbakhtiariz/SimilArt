@@ -1,15 +1,15 @@
 function appendDraggableImage(url, position, artwork_name, artist_full_name,
-		similarity) {
+		similarity, transition=true) {
 	var img = new Image();
 	img.onload = function () {
 		appendImageHelper(url, position, img, artwork_name, artist_full_name,
-			similarity);
+			similarity, transition);
 	}
 	img.src = url;
 }
 
 function appendImageHelper(url, position, img, artwork_name, artist_full_name,
-		similarity) {
+		similarity, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -97,11 +97,13 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on("drag", dragged)
 	);
 	
+	if (transition) {
 	imageGroup
         .style('opacity', 0)
         .transition()
 	    .duration(appearance_transition_speed)
         .style("opacity", 1);
+    };
 }
 
 function dragged(d) {

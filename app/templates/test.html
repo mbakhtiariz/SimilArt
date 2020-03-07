@@ -348,6 +348,10 @@
         }
     }
 
+    // global vars for nearest and explore images ids
+    var images_ids_subset
+    var nearest_ids
+
     // ---------------- Helper Functions ------------------
     function change_dissimilar_images() {
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
@@ -355,6 +359,11 @@
         images_ids_subset = images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
         dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
+
+        plot_dissimilar_images(images_ids_subset);
+    }
+
+    function plot_dissimilar_images(images_ids_subset, transition=true) {
 
         images_ids_subset_int = images_ids_subset.map(Number)
         get_cosine_sim(middle_image, images_ids_subset_int);
@@ -376,12 +385,14 @@
                 artist_full_name = meta_data_painting['artist_full_name']
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
                 sim_score = Math.round(cosine_sim * 100)
-                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, sim_score)
+                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, sim_score,
+                    transition)
             };
 
             console.log("change dissimilar");
 
-        });
+        }); 
+
     }
 
     function handle_stacks(){
@@ -435,6 +446,8 @@
                     sim_score);
             };
 
+            // Update outside images for similarity score
+            plot_dissimilar_images(images_ids_subset, transition=false)
             console.log("change similar");
 
         });

@@ -58,12 +58,15 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			change_similar_images()
 		})
 		.on("mouseover", function(d){
+			timer_tooltip = setTimeout(function () {
         	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
 				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%")
-        	tooltip.transition()		
+        	return tooltip.transition()		
                		.duration(1000)
-					.style("visibility", "visible");})
+					.style("visibility", "visible");
+			}, time_till_tooltip_appearance);
+		})
 		.on("mousemove", function(d){
 			var tX = event.pageX
 			var tY = event.pageY
@@ -88,7 +91,8 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
             }) 
         })
 		.on("mouseout", function(d){
-			tooltip.style("visibility", "hidden");});
+			clearTimeout(timer_tooltip);
+			return tooltip.style("visibility", "hidden");});
 
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")

@@ -57,13 +57,17 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 			change_similar_images()
         })
         .on("mouseover", function(){
+        	timer_tooltip = setTimeout(function () {
         	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
 				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%")
-        	return tooltip.style("visibility", "visible");})
+        	return tooltip.style("visibility", "visible");
+        	}, time_till_tooltip_appearance);
+        })
 		.on("mousemove", function(){
 			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 		.on("mouseout", function(){
+			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
         
     middleGroup

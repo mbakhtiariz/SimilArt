@@ -35,14 +35,16 @@
 
 
 <body>
+    <div id="dissimilar_label" class="label">Dissimilar images</div>
+    <div id="similar_label" class="label">Similar images</div>
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <img src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg", id="img01">
-        </div>
     </div>
 
+        </div>
     <div class="navbar">
         <div class="dropdown">
             <button class="dropbtn">Select Category
@@ -64,8 +66,9 @@
 </body>
 
 <script type="text/javascript">
+    var height_navbar = 52;
     var svgwidth = document.body.clientWidth;
-    var svgheight = document.body.clientHeight - 52;
+    var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
     var similar_image_size = 70;
     var dissimilar_image_size = 40;
@@ -131,7 +134,7 @@
     filter.append("feGaussianBlur")
         .attr("stdDeviation","3.5")
         .attr("result","coloredBlur");
-
+    
     // middle.append("rect")
 	// 	.attr("class", "middle-outline")
 	// 	.attr("width", middle_width)
@@ -139,6 +142,22 @@
     //     .style("filter", "url(#blur)");
 
     var center = middle.append("svg");
+
+    // "Similar images" and "Dissimilar images" labels
+    var font_size_labels = 28;
+    middle.append("text")
+    .attr("x", font_size_labels / 6)
+    .attr("y", middle_height - font_size_labels / 3 - font_size_labels / 12)
+    .text("Similar images")
+    .style("font-size", font_size_labels + "px")
+    .attr("font-family", "Saira");
+
+    svg.append("text")
+    .attr("x", font_size_labels / 6)
+    .attr("y", height_navbar)
+    .text("Dissimilar images")
+    .style("font-size", font_size_labels + "px")
+    .attr("font-family", "Saira");
 
     // tooltip
     var tooltip = d3.select("#container")
@@ -264,6 +283,12 @@
         console.log("JSON CREATED");
         get_meta();
     })
+
+    // Position "Similar" and "Dissimilar" text label on screen
+    document.getElementById("similar_label").style.left = middle_x + 'px';
+    document.getElementById("similar_label").style.bottom  = svgheight - middle_y + 'px';
+    document.getElementById("dissimilar_label").style.left = randomizebutton_size + 'px';
+    document.getElementById("dissimilar_label").style.top  = height_navbar + 'px';
 
     // This can be used to execute code once a flag become true
     function TrueListener(callback, init_val=false) {

@@ -54,6 +54,7 @@ body {
 .button {
     fill: #ffffff;
     stroke: none;
+    cursor: pointer;
 }
 
 .text {
@@ -121,6 +122,20 @@ body {
     pointer-events: none;
 }
 
+#tooltip_buttons {
+    position: relative;
+    text-align: center;
+    padding: 2px;
+    font-size: 12px;
+    font-family: "Copperplate Gothic Light";
+    text-align: center;
+    background: white;
+    opacity: 0.8;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -142,6 +157,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
     background-color: #51525177;
     width: 80vw;
     height: 80vh;
@@ -149,9 +165,19 @@ body {
 
 #img01{
     max-height: 80vh;
-    max-width: 80vw;
+    max-width: 60vw;
   }
   
+#popup_information {
+    color:white;
+    padding: 3em;
+    flex: 382 1 auto;
+}
+
+#center_image {
+    flex: 618 1 auto;
+}
+
   /* Add Animation - Zoom in the Modal */
 .modal-content {
     animation-name: zoom;

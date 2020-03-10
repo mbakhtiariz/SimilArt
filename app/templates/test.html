@@ -662,6 +662,11 @@
         start_year = parseInt(start_point);
         end_year = parseInt(end_point);
 
+        if(Number.isNaN(start_year) || Number.isNaN(start_year)){
+            alert("[Filtering Error] You have entered text instead of number. You should enter some number between -2500 to 2017.");
+            return;
+        };
+
         // choose dis-similar images.
         change_dissimilar_images(start_year, end_year);
 

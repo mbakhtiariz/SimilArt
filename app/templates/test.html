@@ -46,8 +46,8 @@
         </div>  
     </div>
 
-    <div  id="myheader" class="header">
-        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-;">
+    <div  id="myheader" class="header" style='opacity: 0;'>
+        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-; margin-bottom: 0;">
             OmniArt Exploration Area
         </h6>
 
@@ -89,7 +89,7 @@
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 77;
+    var height_navbar = 19;
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
@@ -621,6 +621,7 @@
         if (image_to_be_set !== undefined && dict_search_key != ""){
             handle_stacks();
             middle_image = image_to_be_set;
+            d3.select('image#center').remove();
             set_center(center, image_to_be_set);
             change_similar_images();
         }
@@ -722,6 +723,7 @@
 
         // remove current image from undo stack:
         middle_image = redo_stack.pop();
+        d3.select('image#center').remove();
         set_center(center, middle_image);
         change_similar_images();
     }
@@ -733,6 +735,7 @@
 
         // remove current image from undo stack:
         middle_image = undo_stack.pop();
+        d3.select('image#center').remove()
         set_center(center, middle_image);
         change_similar_images();
 
@@ -750,15 +753,15 @@
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
-        undo_stack.push(middle_image);
         set_center(center, middle_image);
         change_similar_images();
         change_dissimilar_images();
+        handle_stacks();
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
         setTimeout(clearIntervals(), 500);
-        handle_stacks();
+        
     })
 
     // Call get_meta to load the metadata
@@ -779,6 +782,8 @@
                 .transition()
                 .duration(time)
                 .style("opacity", 1);
+                d3.select(".header")
+                .style('opacity', 1);
             });
     }
 

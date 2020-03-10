@@ -66,52 +66,59 @@
         </div>
     </div> -->
 
-    <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="btn closebtn" onclick="closeNav()">×</a>
-        <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Search</a>
-        <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a>
-    </div>
 
-    <div id="search_mySidebar" class="sidebar" style="margin-left: 250px;">
-        <label for="search_cat" class="select_btn_label" style="margin-left: 30px;margin-top: 7px;" >Based on:</label>
-        <br>
-        <select id="search_cat" class="btn" name="search_cat" style="margin-left: 30px; background-color: white;">
-            <option>Art name</option>
-            <option>Artist full name</option>
-        </select>
-        <br>
-        <label for="search_key" class="search_key_label">Search Key:</label>
-        <input type="text" id="search_key" class="search_key" name="search_key">
-        <br><br>
-        <a href="javascript:void(0)" class="btn" onclick="my_set_center()">Update</a>
-    </div>
+    <div  id="myheader" class="header">
+        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-;">
+            OmniArt Exploration Area
+        </h6>
 
-    <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
-        <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-5000" data-slider-max="2030" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
-        <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
-        <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)">
-        <br><br>
-        <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
-        <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)">
 
-        <br><br>
-        <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
-    </div>
-
-    
-    <!-- <div class="navbar">
-        <div>
-            <input type="range" multiple value="-2500,2020" />
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="btn closebtn" onclick="closeNav()">×</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Search</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a>
         </div>
-    </div> -->
+
+        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px;">
+            <label for="search_cat" class="select_btn_label" style="margin-left: 30px;margin-top: 7px;" >Based on:</label>
+            <br>
+            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 30px; background-color: white;">
+                <option>Art name</option>
+                <option>Artist full name</option>
+            </select>
+            <br>
+            <label for="search_key" class="search_key_label">Search Key:</label>
+            <input type="text" id="search_key" class="search_key" name="search_key">
+            <br><br>
+            <a href="javascript:void(0)" class="btn" onclick="my_set_center()">Update</a>
+        </div>
+
+        <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
+            <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-5000" data-slider-max="2030" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
+            <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
+            <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)">
+            <br><br>
+            <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
+            <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)">
+
+            <br><br>
+            <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
+        </div>
+
+        
+        <!-- <div class="navbar">
+            <div>
+                <input type="range" multiple value="-2500,2020" />
+            </div>
+        </div> -->
 
 
-    <div id="menu_main">
-        <button class="openbtn" onclick="openNav()">☰ </button>  
+        <div id="menu_main">
+            <button class="openbtn" onclick="openNav()">☰ </button>  
+        </div>
+
+
     </div>
-
-
-
     <div id="container"></div>
 </body>
 

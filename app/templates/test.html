@@ -661,7 +661,7 @@
         nearest_neighbors(middle_image, nr_similar_images);
 
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
-        if (selected_locs_dict[middle_image.toString()] == undefined){
+        if (selected_locs_dict[middle_image.toString()] == undefined) {
             grid_similar = grid_similar.sort(() => Math.random() - 0.5);
             temp_similar_locs = grid_similar.slice(0, nr_similar_images);
             selected_locs_dict[middle_image.toString()] = temp_similar_locs;
@@ -681,7 +681,6 @@
         // Sleep for 500 ms until neighbouring images is found
         sleep(500).then(() => {
             // --- selecting location of similar layer and plotting those images:
-            // Start i from 1 to filter-out central image:
             var i;
             console.log("nearest ids:", nearest_ids)
             const center_x = parseFloat(d3.select("image#center").attr("x"));
@@ -691,6 +690,7 @@
             const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
             const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
             similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest);
+            // Start i from 1 to filter-out central image:
             // for (i = 1; i < nearest_ids.length; i++) {
             //     meta_data_painting = data[nearest_ids[i]]
             //     artwork_name = meta_data_painting['artwork_name']

@@ -153,7 +153,17 @@ function remove_border_overlap(borders, center) {
 }
 
 // Checks if a new location is valid (i.e. no overlap with other images)
-function check_valid(borders, x, y, width, height) {
+function check_valid(borders, x, y, width, height, center) {
+	const center_x = center["x"],
+		center_y = center["y"],
+		center_width = center["width"],
+		center_height = center["height"];
+
+	if ((x > center_x) && (x+width < center_x+center_width) &&
+		(y > center_y) && (y+height < center_y+center_height)) {
+			return false
+		}
+
 	const sides = Object.keys(borders);
 	for (var i=0; i<sides.length; i++) {
 		const side = sides[i];
@@ -237,7 +247,7 @@ function find_place(borders, all_borders, direction, width, height, center, oute
 				}
 				if (new_x < outer_x) continue;
 			}
-			if (check_valid(all_borders, new_x, new_y, width, height)) candidates.push([new_x, new_y]);
+			if (check_valid(all_borders, new_x, new_y, width, height, center)) candidates.push([new_x, new_y]);
 
 		} else if (direction == "down") {
 			var rand = Math.random() * Math.max(x2-x1-randClipThreshold, 0);
@@ -262,9 +272,7 @@ function find_place(borders, all_borders, direction, width, height, center, oute
 				}
 				if (new_x+width > outer_x+outer_width) continue;
 			}
-			if (check_valid(all_borders, new_x, new_y, width, height)) {
-				candidates.push([new_x, new_y]);
-			}
+			if (check_valid(all_borders, new_x, new_y, width, height, center)) candidates.push([new_x, new_y]);
 
 		} else if (direction == "right") {
 			var rand = Math.random() * Math.max(y2-y1-randClipThreshold, 0);
@@ -289,7 +297,7 @@ function find_place(borders, all_borders, direction, width, height, center, oute
 				}
 				if (new_y < outer_y) continue;
 			}
-			if (check_valid(all_borders, new_x, new_y, width, height)) candidates.push([new_x, new_y]);
+			if (check_valid(all_borders, new_x, new_y, width, height, center)) candidates.push([new_x, new_y]);
 
 		} else if (direction == "left") {
 			var rand = Math.random() * Math.max(y2-y1-randClipThreshold, 0);
@@ -315,7 +323,7 @@ function find_place(borders, all_borders, direction, width, height, center, oute
 				}
 				if (new_y+height > outer_y+outer_height) continue;
 			}
-			if (check_valid(all_borders, new_x, new_y, width, height)) candidates.push([new_x, new_y]);
+			if (check_valid(all_borders, new_x, new_y, width, height, center)) candidates.push([new_x, new_y]);
 		}
 	}
 
@@ -468,7 +476,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 	const imgSize = 70;
 
 	var failCounter = 0;
-	for (var i=0; i<img_ids.length; i++) {
+	for (var i=1; i<img_ids.length; i++) {
 
 		// Get the image
 		let img_id = img_ids[i];

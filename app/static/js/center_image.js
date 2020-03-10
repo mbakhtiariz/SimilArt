@@ -32,6 +32,13 @@ function set_center(center_obj, img_id) {
 	var modalImg = document.getElementById("img01");
 	modalImg.src = data[url.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
+	// Change information of popup middle image
+	meta_data_painting = data[middle_image];
+    artwork_name = meta_data_painting['artwork_name'];
+    artist_full_name = meta_data_painting['artist_full_name'];
+    creation_year = meta_data_painting["creation_year"];
+    document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").";
+
 	center_obj.append('rect')
 		.attr("x",  center_image_x)
 		.attr("y", center_image_y)

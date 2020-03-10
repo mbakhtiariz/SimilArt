@@ -29,8 +29,14 @@ function set_center(center_obj, img_id) {
 		.attr("width", center_image_size)
 		.attr("id", 'center');
 
+	// Add image full resolution url
 	var modalImg = document.getElementById("img01");
 	modalImg.src = data[url.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+
+	// Change image to alternate image if full resolution url does not exist
+	modalImg.onerror = function() { 
+		modalImg.src = img.src; 
+	}
 
 	// Change information of popup middle image
 	meta_data_painting = data[middle_image];

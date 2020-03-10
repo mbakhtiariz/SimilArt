@@ -45,6 +45,7 @@ function set_center(center_obj, img_id) {
 		.attr("height", center_image_size)
 		.attr("width", center_image_size)
 		.attr("filter", "url(#glow)")
+		.attr("id", 'center')
 		.on('click', function(){
 			var modal = document.getElementById("myModal");			
 			modal.style.display = "block";

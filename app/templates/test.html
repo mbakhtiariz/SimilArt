@@ -85,9 +85,9 @@
 
     <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
         <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-5000" data-slider-max="2030" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
-        <label for="fname" style="color:white;">Start year:</label><input type="text" id="start_year" name="fname">
+        <label for="fname" style="color:white;">Start year:</label><input type="text" id="start_year" name="fname" placeholder="E.g. -5">
         <br><br>
-        <label for="fname" style="color:white;">End year:</label><input type="text" id="end_year" name="fname">
+        <label for="fname" style="color:white;">End year:</label><input type="text" id="end_year" name="fname" placeholder="E.g. 100">
         <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
     </div>
 
@@ -436,7 +436,21 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-    function change_dissimilar_images(start_time=-10000, end_time = 3000) {
+    function change_dissimilar_images(start_time=-2500, end_time = 2017) {
+        console.log("3--start and end year for Filtering:",start_time, end_time);
+        var temp_time;
+        if(start_time > end_time){
+            alert("[Filtering Warning]: There the end year should be later or equal to start year");
+            [start_time, end_time] = [end_time, start_time]
+            console.log("6666--start and end year for Filtering:",start_time, end_time);
+        };
+        if(end_time > 2017){
+            end_time = 2017;
+        };
+        if(start_time < -2500){
+            start_time < -2500;
+        };
+
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         filtered_ids = images_ids.filter(filter_fun);
         function filter_fun(my_id){
@@ -495,8 +509,9 @@
         {
             dictionary = artists_to_ids;
         }
-        image_to_be_set = dictionary[document.getElementById("search_key").value.toLowerCase()];
-        if (image_to_be_set !== undefined){
+        let dict_search_key = document.getElementById("search_key").value.toLowerCase();
+        image_to_be_set = dictionary[dict_search_key];
+        if (image_to_be_set !== undefined && dict_search_key != ""){
             handle_stacks();
             middle_image = image_to_be_set;
             set_center(center, image_to_be_set);
@@ -505,12 +520,27 @@
         else{
             alert("Searched image not found...");
         }
-        closeNav()
+        closeNav();
     }
 
     function filter_dissimilar(){
-        start_year = parseInt(document.getElementById("start_year").value);
-        end_year = parseInt(document.getElementById("end_year").value);
+
+        // start_year = parseInt(document.getElementById("start_year").value);
+        // end_year = parseInt(document.getElementById("end_year").value);
+
+        let start_point = document.getElementById("start_year").value;
+        let end_point = document.getElementById("end_year").value;
+
+        if(start_point == ""){
+            start_point = "-2500";
+        };
+ 
+        if(end_point == ""){
+            end_point = "2017";
+        }
+
+        start_year = parseInt(start_point);
+        end_year = parseInt(end_point);
 
         change_dissimilar_images(start_year, end_year);
         closeNav()

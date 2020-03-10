@@ -56,8 +56,9 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name + ".<br/><br/>" + 
-        		artist_full_name + " (" + creation_year + ").<br/><br/>" +
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()) + ". <b>" + 
+        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
+        		"</b> (" + creation_year + "). " +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
 			return tooltip.style("visibility", "visible");
 			}, time_till_tooltip_appearance);

@@ -34,8 +34,8 @@ function set_center(center_obj, img_id) {
 
 	// Change information of popup middle image
 	meta_data_painting = data[middle_image];
-    artwork_name = meta_data_painting['artwork_name'];
-    artist_full_name = meta_data_painting['artist_full_name'];
+    artwork_name = meta_data_painting['artwork_name'].replace(/^\w/, c => c.toUpperCase());
+    artist_full_name = meta_data_painting['artist_full_name'].toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
     creation_year = meta_data_painting["creation_year"];
     document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").";
 

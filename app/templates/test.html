@@ -722,6 +722,7 @@
 
         // remove current image from undo stack:
         middle_image = redo_stack.pop();
+        d3.select('image#center').remove()
         set_center(center, middle_image);
         change_similar_images();
     }
@@ -733,6 +734,7 @@
 
         // remove current image from undo stack:
         middle_image = undo_stack.pop();
+        d3.select('image#center').remove()
         set_center(center, middle_image);
         change_similar_images();
 

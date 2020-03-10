@@ -84,16 +84,12 @@
             <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
         </div>
 
-        <div id="menu_main">
-        </div>
-
-
     </div>
     <div id="container"></div>
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 52;
+    var height_navbar = 77;
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
@@ -140,7 +136,7 @@
     var imgs_path = "static/subset/";
     var defs = svg.append("defs");
     var middle_x = svgwidth * 0.25;
-    var middle_y = svgheight * 0.25;
+    var middle_y = svgheight * 0.25 - height_navbar / 2 ;
     var middle_width = svgwidth * 0.5;
     var middle_height = svgwidth * 0.25;
     var middle = svg.append("svg")
@@ -205,9 +201,11 @@
         .style("visibility", "hidden")
 
     // buttons
-    var button_svg = d3.select('#menu_main').append('svg')
+    var button_svg = svg.append('svg')
         .attr('width', svgwidth / 4)
         .attr('height', 50)
+        .attr("x", 0)
+        .attr("y", 00)
 
     var button_size = 40;
 
@@ -298,10 +296,10 @@
     randomizebutton.append("image")
         .attr("class", "button")
 		.attr("href", "static/icons/" + 'shuffle.png')
-		.attr("height", button_size / 2)
-        .attr("width", button_size / 2)
-        .attr("x", button_size / 4 + button_size / 1.2)
-        .attr("y", button_size / 4)
+		.attr("height", button_size / 2.3)
+        .attr("width", button_size / 2.3)
+        .attr("x", button_size / 3.4 + button_size / 1.2)
+        .attr("y", button_size / 3.4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
         .on("mouseover", function(){
@@ -352,10 +350,10 @@
     undo_button.append("image")
         .attr("class", "button")
 		.attr("href", "static/icons/" + 'undo.png')
-		.attr("height", button_size / 2)
-        .attr("width", button_size / 2)
-        .attr("x", button_size / 4 + button_size / 1.2 + button_size / 1.2)
-        .attr("y", button_size / 4)
+		.attr("height", button_size / 2.3)
+        .attr("width", button_size / 2.3)
+        .attr("x", button_size / 3.4 + button_size / 1.2 + button_size / 1.2)
+        .attr("y", button_size / 3.4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
         .on("mouseover", function(){
@@ -401,10 +399,10 @@
     redo_button.append("image")
         .attr("class", "button")
 		.attr("href", "static/icons/" + 'redo.png')
-		.attr("height", button_size / 2)
-        .attr("width", button_size / 2)
-        .attr("x", button_size / 1.2 + button_size / 4 + button_size / 1.2 + button_size / 1.2)
-        .attr('y', button_size / 4)
+		.attr("height", button_size / 2.3)
+        .attr("width", button_size / 2.3)
+        .attr("x", button_size / 1.2 + button_size / 3.4 + button_size / 1.2 + button_size / 1.2)
+        .attr('y', button_size / 3.4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
         .on("mouseover", function(){

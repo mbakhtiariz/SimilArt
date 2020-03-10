@@ -575,7 +575,6 @@
 
     function plot_dissimilar_images(images_ids_subset, transition=true) {
 
-        console.log("dissimilar locs:", dissimilar_locs)
         images_ids_subset_int = images_ids_subset.map(Number)
         get_cosine_sim(middle_image, images_ids_subset_int);
 

@@ -165,6 +165,5 @@ function dragged(d) {
 	d3.select("#tooltip")
 		.style("visibility", "hidden");
 
-	console.log("d:", d.i_list)
 	dissimilar_locs[d.i_list] = [newX, newY];
 }

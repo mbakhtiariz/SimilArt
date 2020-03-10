@@ -165,9 +165,19 @@ body {
 
 #img01{
     max-height: 80vh;
-    max-width: 80vw;
+    max-width: 60vw;
   }
   
+#popup_information {
+    color:white;
+    padding: 3em;
+    flex: 382 1 auto;
+}
+
+#center_image {
+    flex: 618 1 auto;
+}
+
   /* Add Animation - Zoom in the Modal */
 .modal-content {
     animation-name: zoom;

@@ -58,10 +58,9 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
-				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
-				"<em>creation_year:</em> &nbsp" + creation_year + "<br/>" +
-				"<em>Similarity:</em> &nbsp" + similarity + "%")
+        	tooltip.html(artwork_name + ".<br/><br/>" + 
+        		artist_full_name + " (" + creation_year + ").<br/><br/>" +
+				"<em>Similarity:</em> &nbsp" + similarity + "%");
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

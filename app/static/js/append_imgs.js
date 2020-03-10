@@ -51,7 +51,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 				.remove();
 			d3.select('rect#center').remove();
         	set_center(center, middle_image);
-			handle_stacks();
+			// handle_stacks();
 			change_similar_images();
         })
         .on("mouseover", function(){

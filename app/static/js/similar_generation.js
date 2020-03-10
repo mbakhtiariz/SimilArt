@@ -335,13 +335,13 @@ function find_place(borders, all_borders, direction, width, height, center, oute
 }
 
 // This function adds a rectangle at at location (x,y)
-function add_rect(borders, all_borders, container, x, y, width, height, center, data, id) {
+function add_rect(borders, all_borders, container, x, y, width, height, center, data, id, sim_score) {
 	const meta_data_painting = data[id];
 	const artwork_name = meta_data_painting['artwork_name'],
 		artist_full_name = meta_data_painting['artist_full_name'],
-		creation_year = meta_data_painting['creation_year'],
-		cosine_sim = 0;
-	const sim_score = Math.round(cosine_sim * 100);
+		creation_year = meta_data_painting['creation_year'];
+	const cosine_sim = (Math.round(sim_score * 100) / 100).toFixed(2);
+	sim_score = Math.round(sim_score * 100);
 	appendImage("static/subset/"+id+".jpg", [x, y], artwork_name, artist_full_name, sim_score, creation_year);
 	add_border(all_borders, "top", x, y, x+width, y);
 	add_border(all_borders, "bottom", x, y+height, x+width, y+height);
@@ -428,7 +428,7 @@ function load_images(path, ids) {
 }
 
 // Main function for calculating new image positions and adding them
-function similar_layout_main(container, img_ids, imgs, center, outer, data) {
+function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores) {
 	// Center image position
 	const center_x = center["x"],
 		center_y = center["y"],
@@ -472,6 +472,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data) {
 
 		// Get the image
 		let img_id = img_ids[i];
+		let sim_score = sim_scores[i];
 		let img_width = imgs[img_id]["width"];
 		let img_height = imgs[img_id]["height"];
 		var ratio = img_width / img_height;
@@ -498,7 +499,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data) {
 			i--; // We want to try this index again
 			continue;
 		} else {
-			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id);
+			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id, sim_score);
 		}
 
 		if (direction == "up" && y < furthest["up"]) {
@@ -521,8 +522,8 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data) {
 
 // This function first loads the images, then calls the main function
 // In practise, only this one should be called to use the image loading
-function similar_layout(container, img_ids, center, outer, data) {
+function similar_layout(container, img_ids, center, outer, data, sim_scores) {
 	load_images("static/subset/", img_ids).then(imgs => {
-		similar_layout_main(container, img_ids, imgs, center, outer, data);
+		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores);
 	});
 }

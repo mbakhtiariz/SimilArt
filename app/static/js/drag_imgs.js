@@ -49,6 +49,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				.duration(removal_transition_speed_middle_image)
 				.style('opacity', 0)
 				.remove();
+			d3.select('rect#center').remove();
         	set_center(center, middle_image);
 			handle_stacks();
 			change_similar_images();

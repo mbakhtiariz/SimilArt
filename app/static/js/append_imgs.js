@@ -47,6 +47,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 				.duration(removal_transition_speed_middle_image)
 				.style('opacity', 0)
 				.remove();
+			d3.select('rect#center').remove();
         	set_center(center, middle_image);
 			handle_stacks();
 			change_similar_images();

@@ -54,6 +54,7 @@ body {
 .button {
     fill: #ffffff;
     stroke: none;
+    cursor: pointer;
 }
 
 .text {
@@ -124,7 +125,6 @@ body {
 #tooltip_buttons {
     position: relative;
     text-align: center;
-    width: 50px;
     padding: 2px;
     font-size: 12px;
     font-family: "Copperplate Gothic Light";

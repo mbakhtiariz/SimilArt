@@ -262,13 +262,13 @@
         .style('opacity', 1)
         .on("mouseover", function(d){
             d3.select(undo_button_circle).style('opacity', 0.3)
-            tooltip_buttons.html("<p>Undo</p>")
-            console.log("Undo")
+            tooltip_buttons.html("Undo similarity area")
             return tooltip_buttons.style("visibility", "visible");
         })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
             d3.select(undo_button_circle).style('opacity', 0)
-            console.log("Undo remove")
             return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
@@ -281,11 +281,12 @@
         .attr('cy', actionbuttons_size / 2)
         .attr("r", actionbuttons_size / 2.3)
         .style('opacity', 0)
-        .on("mouseover", function(){
+        .on("mouseover", function(d){
             redo_button_circle = this;
             d3.select(this).style('opacity', 0.3)})
-        .on("mouseout", function(){
+        .on("mouseout", function(d){
             d3.select(this).style('opacity', 0)
+            return tooltip_buttons.style("visibility", "hidden");
         });
 
     redo_button.append("image")
@@ -297,9 +298,15 @@
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
         .on("mouseover", function(){
-            d3.select(redo_button_circle).style('opacity', 0.3)})
+            d3.select(redo_button_circle).style('opacity', 0.3)
+            tooltip_buttons.html("Redo similarity area")
+            return tooltip_buttons.style("visibility", "visible");
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+20)+"px");})
         .on("mouseout", function(){
             d3.select(redo_button_circle).style('opacity', 0)
+            return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
 
@@ -338,11 +345,17 @@
         .attr("y", randomizebutton_size / 4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
-            .on("mouseover", function(){
-                d3.select(randomizebutton_circle).style('opacity', 0.3)})
-            .on("mouseout", function(){
-                d3.select(randomizebutton_circle).style('opacity', 0)
-            });;
+        .on("mouseover", function(){
+            d3.select(randomizebutton_circle).style('opacity', 0.3)
+            tooltip_buttons.html("Randomize Exploration Area")
+            return tooltip_buttons.style("visibility", "visible");
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+20)+"px");})
+        .on("mouseout", function(){
+            d3.select(randomizebutton_circle).style('opacity', 0)
+            return tooltip_buttons.style("visibility", "hidden");
+        });;
         // .attr('fill', 'white');
 
     randomizebutton.on('click', function() {

@@ -227,6 +227,7 @@
         });
 
     undo_button.append("image")
+        .attr("class", "button")
 		.attr("href", "static/icons/" + 'undo.png')
 		.attr("height", actionbuttons_size / 2)
         .attr("width", actionbuttons_size / 2)
@@ -264,6 +265,7 @@
         });
 
     redo_button.append("image")
+        .attr("class", "button")
 		.attr("href", "static/icons/" + 'redo.png')
 		.attr("height", actionbuttons_size / 2)
         .attr("width", actionbuttons_size / 2)
@@ -312,6 +314,7 @@
             });;
 
     randomizebutton.append("image")
+        .attr("class", "button")
 		.attr("href", "static/icons/" + 'shuffle.png')
 		.attr("height", randomizebutton_size / 2)
         .attr("width", randomizebutton_size / 2)
@@ -321,7 +324,7 @@
         .style('opacity', 1)
         .on("mouseover", function(){
             d3.select(randomizebutton_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Randomize Exploration Area")
+            tooltip_buttons.html("Randomize exploration area")
             return tooltip_buttons.style("visibility", "visible");
         })
         .on("mousemove", function(){

@@ -27,12 +27,6 @@
 
     <!-- Navigation bar stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/nav_bar.css">
-
-
-    <!-- slider -->
-    <link rel="stylesheet" href="../static/css/multirange.css">
-    <script src="../static/js/multirange.js"></script>
-
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <script src="../static/js/collapsed_sidebar.js"></script>
 </head>
@@ -88,7 +82,7 @@
         </div>
 
         <div id="menu_main">
-            <button class="openbtn" onclick="openNav()">☰ </button>  
+            <button class="openbtn" id="openbtn" onclick="openNav()">☰ </button>  
         </div>
 
 
@@ -231,6 +225,20 @@
             return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    d3.select("#openbtn")
+        .on("mouseover", function(){
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Menu")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){
             clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });

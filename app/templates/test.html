@@ -247,9 +247,18 @@
         .style('opacity', 0)
         .on("mouseover", function(){
             undo_button_circle = this;
-            d3.select(this).style('opacity', 0.3)})
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Undo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
         });
 
     undo_button.append("image")
@@ -261,15 +270,18 @@
         .attr("y", actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
-        .on("mouseover", function(d){
+        .on("mouseover", function(){
             d3.select(undo_button_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Undo similarity area")
-            return tooltip_buttons.style("visibility", "visible");
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Undo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
         })
         .on("mousemove", function(){
             return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
-        .on("mouseout", function(d){
+        .on("mouseout", function(){
             d3.select(undo_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
@@ -284,9 +296,17 @@
         .style('opacity', 0)
         .on("mouseover", function(d){
             redo_button_circle = this;
-            d3.select(this).style('opacity', 0.3)})
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Redo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
             d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
 
@@ -301,13 +321,16 @@
         .style('opacity', 1)
         .on("mouseover", function(){
             d3.select(redo_button_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Redo similarity area")
-            return tooltip_buttons.style("visibility", "visible");
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Redo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
         })
         .on("mousemove", function(){
-            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+20)+"px");})
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(redo_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
@@ -334,9 +357,18 @@
         .style('opacity', 0)
             .on("mouseover", function(){
                 randomizebutton_circle = this;
-                d3.select(this).style('opacity', 0.3)})
+                d3.select(this).style('opacity', 0.3)
+                timer_tooltip = setTimeout(function () {
+                    tooltip_buttons.html("Randomize exploration area")
+                    return tooltip_buttons.style("visibility", "visible");
+                }, time_till_tooltip_appearance);
+            })
+            .on("mousemove", function(){
+                return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
             .on("mouseout", function(){
                 d3.select(this).style('opacity', 0)
+                clearTimeout(timer_tooltip);
+                return tooltip_buttons.style("visibility", "hidden");
             });;
 
     randomizebutton.append("image")
@@ -350,13 +382,16 @@
         .style('opacity', 1)
         .on("mouseover", function(){
             d3.select(randomizebutton_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Randomize exploration area")
-            return tooltip_buttons.style("visibility", "visible");
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Randomize exploration area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
         })
         .on("mousemove", function(){
-            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+20)+"px");})
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(randomizebutton_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });;
         // .attr('fill', 'white');

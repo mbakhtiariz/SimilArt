@@ -81,6 +81,7 @@ body {
 .menu_main {
   transition: margin-left .5s;
   padding: 16px;
+  max-height: 7%;
 }
 
 

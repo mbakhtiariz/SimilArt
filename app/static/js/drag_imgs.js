@@ -1,14 +1,15 @@
-function appendDraggableImage(url, position, artwork_name, artist_full_name,
+function appendDraggableImage(url, position, i_list, artwork_name, artist_full_name,
 		similarity, creation_year, transition=true) {
 	var img = new Image();
 	img.onload = function () {
-		appendImageHelper(url, position, img, artwork_name, artist_full_name,
+		appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
 			similarity, creation_year, transition);
 	}
 	img.src = url;
+	img.i_list = i_list;
 }
 
-function appendImageHelper(url, position, img, artwork_name, artist_full_name,
+function appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
 		similarity, creation_year, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
@@ -24,7 +25,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 	};
 
 	var imageGroup = svg.append("g")
-		.datum({position: position, height: img_height, width: img_width})
+		.datum({position: position, height: img_height, width: img_width, i_list: i_list})
 		.attr('id', 'outside_image')
 		.attr("transform", d => "translate(" + d.position + ")");
 
@@ -163,4 +164,7 @@ function dragged(d) {
 
 	d3.select("#tooltip")
 		.style("visibility", "hidden");
+
+	console.log("d:", d.i_list)
+	dissimilar_locs[d.i_list] = [newX, newY];
 }

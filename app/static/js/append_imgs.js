@@ -22,7 +22,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		img_height = similar_image_size;
 	};
 
-	var middleGroup = svg.append("g")
+	var middleGroup = middle.append("g")
         .datum({position: position, height: img_height, width: img_width})
         .attr('id', 'middle_image')
 		.attr("transform", d => "translate(" + d.position + ")");
@@ -40,21 +40,16 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on('click', function() {
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
-			
-            d3.select('image#center')
-                .transition()
-                .duration(removal_transition_speed)
-                .style('opacity', 0);
-            setTimeout(function(){
-                d3.select("image#center").attr('href', img.src);}, time_to_suspend_middle_image_after_click);
-            setTimeout(function(){d3.select("image#center")
-            .transition()
-            .duration(appearance_transition_speed)
-            .style('opacity', 1);}, removal_transition_speed_middle_image);
+
+            // change middle_image variable and call function, both from test.html;
+			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
+            d3.select('image#center').transition()
+				.duration(removal_transition_speed_middle_image)
+				.style('opacity', 0)
+				.remove();
+        	set_center(center, middle_image);
 			handle_stacks();
-			// change middle_image variable and call function, both from test.html
-			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
-			change_similar_images()
+			change_similar_images();
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
@@ -70,7 +65,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on("mouseout", function(){
 			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
-        
+
     middleGroup
         .style('opacity', 0)
         .transition()

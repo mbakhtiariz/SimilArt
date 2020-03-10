@@ -43,7 +43,7 @@
             <div id="popup_information">
                 Artwork name.<br /><br />Artist name (year).
             </div>
-        </div>  
+        </div>
     </div>
 
     <div  id="myheader" class="header" style='opacity: 0;'>
@@ -94,7 +94,7 @@
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
     var similar_image_size = 70;
-    var dissimilar_image_size = 40;
+    var dissimilar_image_size = 70;
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
 </script>
@@ -105,6 +105,8 @@
 <script src="../static/js/center_image.js"></script>
 <!-- Import non dragable images code-->
 <script src="../static/js/append_imgs.js"></script>
+<!-- Import similarity placement code -->
+<script src="../static/js/similar_generation.js"></script>
 <!-- Imports for the backend connection + nearest neighbor querying -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script src="../static/js/nearest_neighbors.js"></script>
@@ -150,14 +152,14 @@
         .attr("class", "middle")
         .attr("width", middle_width)
         .attr("height", middle_height);
-    
+
     var filter = middle.append("filter")
         .attr("id","blur");
-    
+
     filter.append("feGaussianBlur")
         .attr("stdDeviation","3.5")
         .attr("result","coloredBlur");
-    
+
     // middle.append("rect")
 	// 	.attr("class", "middle-outline")
 	// 	.attr("width", middle_width)
@@ -322,7 +324,7 @@
         // randomize all outside images
         change_dissimilar_images()
     });
-    
+
     var undo_button_circle;
     var undo_button = button_svg.append("g");
     undo_button.append("circle")
@@ -462,7 +464,7 @@
         }
     }
 
-    var nr_similar_images = 24;
+    var nr_similar_images = 80;
     var nr_dissimilar_images = 30;
     var outside_images = [];
     var outside_subset = [];
@@ -596,13 +598,13 @@
                 creation_year = meta_data_painting["creation_year"]
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
                 sim_score = Math.round(cosine_sim * 100)
-                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], artwork_name, artist_full_name, sim_score,
+                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
                     creation_year, transition)
             };
 
             console.log("change dissimilar");
 
-        }); 
+        });
 
     }
 
@@ -642,7 +644,7 @@
         if(start_point == ""){
             start_point = "-2500";
         };
- 
+
         if(end_point == ""){
             end_point = "2017";
         }
@@ -696,17 +698,24 @@
             // Start i from 1 to filter-out central image:
             var i;
             console.log("nearest ids:", nearest_ids)
-            for (i = 1; i < nearest_ids.length; i++) {
-                meta_data_painting = data[nearest_ids[i]]
-                artwork_name = meta_data_painting['artwork_name']
-                artist_full_name = meta_data_painting['artist_full_name']
-                creation_year = meta_data_painting['creation_year']
-                cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100)
-                appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
-                    similar_locs[i-1], artwork_name, artist_full_name, 
-                    sim_score, creation_year);
-            };
+            const center_x = parseFloat(d3.select("image#center").attr("x"));
+            const center_y = parseFloat(d3.select("image#center").attr("y"));
+            const center_width = parseFloat(d3.select("image#center").attr("width"));
+            const center_height = parseFloat(d3.select("image#center").attr("height"));
+            const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
+            const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
+            similar_layout(middle, nearest_ids, center_info, outer, data);
+            // for (i = 1; i < nearest_ids.length; i++) {
+            //     meta_data_painting = data[nearest_ids[i]]
+            //     artwork_name = meta_data_painting['artwork_name']
+            //     artist_full_name = meta_data_painting['artist_full_name']
+            //     creation_year = meta_data_painting['creation_year']
+            //     cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
+            //     sim_score = Math.round(cosine_sim * 100)
+            //     appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
+            //         similar_locs[i-1], artwork_name, artist_full_name,
+            //         sim_score, creation_year);
+            // };
 
             // Update outside images for similarity score
             plot_dissimilar_images(images_ids_subset, transition=false)
@@ -761,7 +770,7 @@
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
         setTimeout(clearIntervals(), 500);
-        
+
     })
 
     // Call get_meta to load the metadata

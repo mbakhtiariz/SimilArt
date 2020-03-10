@@ -1,14 +1,15 @@
-function appendDraggableImage(url, position, artwork_name, artist_full_name,
+function appendDraggableImage(url, position, i_list, artwork_name, artist_full_name,
 		similarity, creation_year, transition=true) {
 	var img = new Image();
 	img.onload = function () {
-		appendImageHelper(url, position, img, artwork_name, artist_full_name,
+		appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
 			similarity, creation_year, transition);
 	}
 	img.src = url;
+	img.i_list = i_list;
 }
 
-function appendImageHelper(url, position, img, artwork_name, artist_full_name,
+function appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
 		similarity, creation_year, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
@@ -24,7 +25,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 	};
 
 	var imageGroup = svg.append("g")
-		.datum({position: position, height: img_height, width: img_width})
+		.datum({position: position, height: img_height, width: img_width, i_list: i_list})
 		.attr('id', 'outside_image')
 		.attr("transform", d => "translate(" + d.position + ")");
 
@@ -42,20 +43,15 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
-            d3.select('image#center')
-                .transition()
-                .duration(removal_transition_speed)
-                .style('opacity', 0);
-            setTimeout(function(){
-                d3.select("image#center").attr('href', img.src);}, time_to_suspend_middle_image_after_click);
-            setTimeout(function(){d3.select("image#center")
-            .transition()
-            .duration(appearance_transition_speed)
-            .style('opacity', 1);}, removal_transition_speed_middle_image);
- 			handle_stacks()
-			// change middle_image variable and call function, both from test.html
-			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
-			change_similar_images()
+            // change middle_image variable and call function, both from test.html;
+			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
+            d3.select('image#center').transition()
+				.duration(removal_transition_speed_middle_image)
+				.style('opacity', 0)
+				.remove();
+        	set_center(center, middle_image);
+			handle_stacks();
+			change_similar_images();
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {
@@ -169,4 +165,6 @@ function dragged(d) {
 
 	d3.select("#tooltip")
 		.style("visibility", "hidden");
+
+	dissimilar_locs[d.i_list] = [newX, newY];
 }

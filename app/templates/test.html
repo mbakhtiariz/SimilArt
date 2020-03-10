@@ -621,6 +621,7 @@
         if (image_to_be_set !== undefined && dict_search_key != ""){
             handle_stacks();
             middle_image = image_to_be_set;
+            d3.select('image#center').remove();
             set_center(center, image_to_be_set);
             change_similar_images();
         }
@@ -722,7 +723,7 @@
 
         // remove current image from undo stack:
         middle_image = redo_stack.pop();
-        d3.select('image#center').remove()
+        d3.select('image#center').remove();
         set_center(center, middle_image);
         change_similar_images();
     }
@@ -752,15 +753,15 @@
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
-        undo_stack.push(middle_image);
         set_center(center, middle_image);
         change_similar_images();
         change_dissimilar_images();
+        handle_stacks();
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
         setTimeout(clearIntervals(), 500);
-        handle_stacks();
+        
     })
 
     // Call get_meta to load the metadata

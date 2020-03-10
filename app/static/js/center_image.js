@@ -59,6 +59,6 @@ function set_center(center_obj, img_id) {
 	center_obj
         .style('opacity', 0)
         .transition()
-	    .duration(1000)
+	    .duration(time_to_suspend_middle_image_after_click)
         .style("opacity", 1);
 };

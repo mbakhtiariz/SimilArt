@@ -27,12 +27,6 @@
 
     <!-- Navigation bar stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/nav_bar.css">
-
-
-    <!-- slider -->
-    <link rel="stylesheet" href="../static/css/multirange.css">
-    <script src="../static/js/multirange.js"></script>
-
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <script src="../static/js/collapsed_sidebar.js"></script>
 </head>
@@ -48,24 +42,6 @@
             <img src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg", id="img01">
         </div>  
     </div>
-
-    <!-- <div class="navbar">
-        <div class="dropdown">
-            <button class="dropbtn">Menu
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="#"  onclick="my_set_center()" >Search</a>
-                <a href="#">Textile</a>
-                <a href="#">Sculpture</a>
-            </div>
-        </div>
-
-        <div>
-            <input type="range" multiple value="-2500,2020" />
-        </div>
-    </div> -->
-
 
     <div  id="myheader" class="header">
         <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-;">
@@ -104,14 +80,6 @@
             <br><br>
             <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
         </div>
-
-        
-        <!-- <div class="navbar">
-            <div>
-                <input type="range" multiple value="-2500,2020" />
-            </div>
-        </div> -->
-
 
         <div id="menu_main">
         </div>
@@ -338,12 +306,36 @@
         .style('opacity', 0)
         .on("mouseover", function(){
             undo_button_circle = this;
-            d3.select(this).style('opacity', 0.3)})
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Undo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    d3.select("#openbtn")
+        .on("mouseover", function(){
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Menu")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
         });
 
     undo_button.append("image")
+        .attr("class", "button")
 		.attr("href", "static/icons/" + 'undo.png')
 		.attr("height", button_size / 2)
         .attr("width", button_size / 2)
@@ -351,15 +343,18 @@
         .attr("y", button_size / 4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
-        .on("mouseover", function(d){
+        .on("mouseover", function(){
             d3.select(undo_button_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Undo similarity area")
-            return tooltip_buttons.style("visibility", "visible");
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Undo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
         })
         .on("mousemove", function(){
             return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
-        .on("mouseout", function(d){
+        .on("mouseout", function(){
             d3.select(undo_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
@@ -374,13 +369,22 @@
         .style('opacity', 0)
         .on("mouseover", function(d){
             redo_button_circle = this;
-            d3.select(this).style('opacity', 0.3)})
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Redo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
             d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
 
     redo_button.append("image")
+        .attr("class", "button")
 		.attr("href", "static/icons/" + 'redo.png')
 		.attr("height", button_size / 2)
         .attr("width", button_size / 2)
@@ -390,13 +394,16 @@
         .style('opacity', 1)
         .on("mouseover", function(){
             d3.select(redo_button_circle).style('opacity', 0.3)
-            tooltip_buttons.html("Redo similarity area")
-            return tooltip_buttons.style("visibility", "visible");
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Redo similarity area")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
         })
         .on("mousemove", function(){
-            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+20)+"px");})
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){
             d3.select(redo_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
             return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');

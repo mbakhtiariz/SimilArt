@@ -72,31 +72,26 @@
         <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a>
     </div>
 
-    
     <div id="search_mySidebar" class="sidebar" style="margin-left: 250px;">
-        <label for="fname" style="color:#818181;margin-left: 30px; margin-top: 7px;">Based on:</label>
-        <select id="search_cat" class="btn drop_btn" style="margin-left: 30px; ">
-            <option >Art Name</option>
-            <option>Artist Full Name</option>
-        </select>
+        <select id="search_cat" class="btn">
+            <option>By artname</option>
+            <option>By artist</option>
+          </select>
         <br>
-        <label for="fname" style="color:#818181; font-size: 1rem; margin-left: 30px;">Search Key:</label>
-        <input type="text" id="search_key" name="fname" style="color:#818181; font-size: 1rem; margin-left: 30px;">
-        <br><br>
-        <a href="javascript:void(0)" class="btn" onclick="my_set_center()" style="align-self: left;">Update</a>
+        <label for="fname">Search Key:</label>
+        <input type="text" id="search_key" name="fname">
+        <a href="javascript:void(0)" class="btn" onclick="my_set_center()">Update</a>
     </div>
 
     <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
-        <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-2500" data-slider-max="2020" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
-        <label for="fname" class="start_year_label" style="color:#818181; position: relative; margin-left: 30px; margin-top: 7px;font-size: 1rem;" >Start year:</label>
-        <input type="text"  class="start_year"  id="start_year" name="fname" style="color:darkslategray; margin-left: 20px;" placeholder="E.g. -5">
+        <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-5000" data-slider-max="2030" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
+        <label for="fname" style="color:white;">Start year:</label><input type="text" id="start_year" name="fname">
         <br><br>
-        <label for="fname" class="end_year_label" style="color:#818181; position: relative; margin-left: 30px;font-size: 1rem;">End year:</label>
-        <input type="text" class="end_year" id="end_year" name="fname" style="color:darkslategray; margin-left: 20px;"  placeholder="E.g. 100">
-        <br><br>
-        <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()" style="align-self: left;">Update</a>
+        <label for="fname" style="color:white;">End year:</label><input type="text" id="end_year" name="fname">
+        <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
     </div>
 
+    
     <!-- <div class="navbar">
         <div>
             <input type="range" multiple value="-2500,2020" />
@@ -441,26 +436,12 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-    function change_dissimilar_images(start_time=-2500, end_time = 2020) {
-        console.log("3--start and end year for Filtering:",start_time, end_time);
-        var temp_time;
-        if(start_time > end_time){
-            alert("[Filtering Warning]: There the end year should be later or equal to start year");
-            [start_time, end_time] = [end_time, start_time]
-            console.log("6666--start and end year for Filtering:",start_time, end_time);
-        };
-        if(start_time > 2020){
-            start_time = 2020;
-        };
-        if(end_time < -2500){
-            end_time < -2500;
-        };
-
+    function change_dissimilar_images(start_time=-10000, end_time = 3000) {
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         filtered_ids = images_ids.filter(filter_fun);
         function filter_fun(my_id){
             return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time;
-        };
+        }
 
         console.log("#########################",images_ids, data['1000']);
         sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
@@ -528,22 +509,8 @@
     }
 
     function filter_dissimilar(){
-        let start_point = document.getElementById("start_year").value;
-        let end_point = document.getElementById("end_year").value;
-
-        if(start_point == ""){
-            start_point = "-2500";
-            console.log("hheeeeeyyy");
-        };
- 
-        if(end_point == ""){
-            end_point = "2020";
-        }
-
-        start_year = parseInt(start_point);
-        end_year = parseInt(end_point);
-
-        
+        start_year = parseInt(document.getElementById("start_year").value);
+        end_year = parseInt(document.getElementById("end_year").value);
 
         change_dissimilar_images(start_year, end_year);
         closeNav()

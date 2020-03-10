@@ -38,7 +38,10 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="center_image">
-                <center><img id="img01" src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg" /></center>
+                <!-- !!!!!!!!!!!!!!!!! center is not supported in html5 !!!!!!!!!!!!!!!!!!!!! -->
+                <center>
+                    <img id="img01" src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg" />
+                </center>
             </div>
             <div id="popup_information">
                 Artwork name.<br /><br />Artist name (year).
@@ -47,8 +50,8 @@
     </div>
 
     <div  id="myheader" class="header" style='opacity: 0;'>
-        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-; margin-bottom: 0;">
-            OmniArt Exploration Area
+        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white; font-weight: bold;font-; margin-bottom: 0;font-family:  Times New Roman;">
+            OmniArt Exploration
         </h6>
 
 
@@ -75,14 +78,17 @@
         <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
             <!-- start year: <input id="year" type="text" class="span2" value="" data-slider-min="-5000" data-slider-max="2030" data-slider-step="10" data-slider-value="[-5000,2030]"/> -->
             <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
-            <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)">
+            <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)" value="">
             <br><br>
             <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
-            <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)">
-
+            <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)" value="">
+    
+            <!-- <input id="myInput" placeholder="Some text.." value=""> -->
+    
             <br><br>
-            <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
+            <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
         </div>
+    
 
     </div>
     <div id="container"></div>
@@ -224,6 +230,7 @@
         .style('opacity', 0)
             .on("mouseover", function(){
                 menubutton_circle = this;
+
                 d3.select(this).style('opacity', 0.3)
                 timer_tooltip = setTimeout(function () {
                     tooltip_buttons.html("Open menu")
@@ -265,6 +272,8 @@
 
     menubutton.on('click', function() {
         // randomize all outside images
+        document.getElementById("end_year_update").style.color = "#818181";
+        document.getElementById("end_year_update").style.backgroundColor = "#111";
         openNav()
     });
 
@@ -619,14 +628,37 @@
         closeNav();
     }
 
+    let filter_start_year_input = document.getElementById("start_year");
+    filter_start_year_input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            // event.preventDefault();
+            filter_dissimilar();
+        }
+    });
+
+
+
+    let filter_end_year_input = document.getElementById("end_year");
+    filter_end_year_input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            // event.preventDefault();
+            filter_dissimilar();
+
+        }
+    });
+
     function filter_dissimilar(){
 
-        // start_year = parseInt(document.getElementById("start_year").value);
-        // end_year = parseInt(document.getElementById("end_year").value);
+        // change the color of pressed button to blue
+        document.getElementById("end_year_update").style.color = "#f1f1f1";
+        document.getElementById("end_year_update").style.backgroundColor = "#17a2b8";
 
+
+        // Get the requested years to filter images
         let start_point = document.getElementById("start_year").value;
         let end_point = document.getElementById("end_year").value;
 
+        // use some predefined values, if user pressed sumbmit without choosing a value
         if(start_point == ""){
             start_point = "-2500";
         };
@@ -638,7 +670,10 @@
         start_year = parseInt(start_point);
         end_year = parseInt(end_point);
 
+        // choose dis-similar images.
         change_dissimilar_images(start_year, end_year);
+
+        // close the navigation bar.
         closeNav()
     }
 
@@ -712,11 +747,12 @@
     }
 
     function redo() {
-        if (redo_stack.length === 0)
+        if (redo_stack.length === 0){
             return;
+        }
         undo_stack.push(middle_image);
 
-        // remove current image from undo stack:
+        // remove current image from redo stack:
         middle_image = redo_stack.pop();
         d3.select('image#center').remove();
         d3.select('rect#center').remove();
@@ -725,9 +761,18 @@
     }
 
     function undo() {
-        if (undo_stack.length === 0)
+        
+        // to stop undo if it is empty. 
+        if (undo_stack.length === 0){
             return;
+        };
+
         redo_stack.push(middle_image);
+        // // to stop keep the image id of last image but do not have an extra undo on it.
+        // if (redo_stack.length === 0){
+        //     redo_stack.push(middle_image);
+        //     return;
+        // };
 
         // remove current image from undo stack:
         middle_image = undo_stack.pop();
@@ -750,13 +795,17 @@
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
+        handle_stacks();
         set_center(center, middle_image);
+        
         change_similar_images();
         change_dissimilar_images();
-        handle_stacks();
+        
+        
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
+        
         setTimeout(clearIntervals(), 500);
 
     })

@@ -41,6 +41,8 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
+			handle_stacks();
+			
             // change middle_image variable and call function, both from test.html;
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
             d3.select('image#center').transition()

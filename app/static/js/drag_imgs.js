@@ -43,6 +43,8 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
+			handle_stacks();
+			
             // change middle_image variable and call function, both from test.html;
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
             d3.select('image#center').transition()
@@ -51,12 +53,18 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				.remove();
 			d3.select('rect#center').remove();
         	set_center(center, middle_image);
-			handle_stacks();
+			
 			change_similar_images();
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()) + ". <b>" + 
+
+		    // If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
+		    length_artist_name = artist_full_name.split(' ').length;
+		    if (length_artist_name > 5)
+		    	artist_full_name = artist_full_name.replace(/\s/g,'');
+
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
         		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
         		"</b> (" + creation_year + "). " +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");

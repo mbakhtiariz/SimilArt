@@ -25,14 +25,6 @@
     <!-- Layout stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
 
-    <!-- Navigation bar stylesheet -->
-    <link rel="stylesheet" type="text/css" href="../static/css/nav_bar.css">
-
-
-    <!-- slider -->
-    <link rel="stylesheet" href="../static/css/multirange.css">
-    <script src="../static/js/multirange.js"></script>
-
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <script src="../static/js/collapsed_sidebar.js"></script>
 </head>
@@ -45,7 +37,12 @@
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <img src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg", id="img01">
+            <div style="flex: 618 0 auto; margin:auto">
+                <img src="https://uploads8.wikiart.org/images/vajda-lajos/table-still-life-with-armchair-1934.jpg", id="img01" style="float:left" />
+            </div>
+            <div style="color:white; padding: 3em; flex: 382 1 auto">
+                Artwork name.<br /><br />Artist name (year).
+            </div>
         </div>  
     </div>
 
@@ -426,7 +423,7 @@
             // skip middle section and randomize button
             if ((i + dissimilar_image_size > middle_x && i < (middle_x + middle_width)) &&
                     (j + dissimilar_image_size > middle_y && j < (middle_y + middle_height)) ||
-                    (i < randomizebutton_size + 0.5 && j < randomizebutton_size + 0.5))
+                    (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
 
                 continue;
 
@@ -438,8 +435,7 @@
         for (j = middle_y + 4 ; j < middle_y + middle_height - similar_image_size - 4; j += similar_image_size) {
 
             // skip action buttons and center image
-            if ((i < middle_x + actionbuttons_size * 2 && j < middle_y + actionbuttons_size) ||
-                    (i + similar_image_size > middle_x + center_image_x &&
+            if ((i + similar_image_size > middle_x + center_image_x &&
                      i < middle_x + center_image_x + center_image_size &&
                      j + similar_image_size > middle_y + center_image_y &&
                      j < middle_y + center_image_y + center_image_size))

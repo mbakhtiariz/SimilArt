@@ -157,6 +157,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
     background-color: #51525177;
     width: 80vw;
     height: 80vh;

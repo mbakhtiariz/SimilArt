@@ -63,9 +63,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
 				"<em>creation_year:</em> &nbsp" + creation_year + "<br/>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%")
-        	return tooltip.transition()		
-               		.duration(1000)
-					.style("visibility", "visible");
+			return tooltip.style("visibility", "visible");
 			}, time_till_tooltip_appearance);
 		})
 		.on("mousemove", function(d){

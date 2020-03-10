@@ -225,6 +225,15 @@
         .style('color', 'black')
         .style("visibility", "hidden")
 
+    // tooltip buttons
+    var tooltip_buttons = d3.select("#container")
+        .append("div")
+        .attr("id", "tooltip_buttons")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style('color', 'black')
+        .style("visibility", "hidden")
+
     // buttons
     var actionbuttons_size = svgwidth * 0.020;
 
@@ -251,10 +260,16 @@
         .attr("y", actionbuttons_size / 4)
 		.attr("clip-path", "url(#clip)")
         .style('opacity', 1)
-        .on("mouseover", function(){
-            d3.select(undo_button_circle).style('opacity', 0.3)})
-        .on("mouseout", function(){
+        .on("mouseover", function(d){
+            d3.select(undo_button_circle).style('opacity', 0.3)
+            tooltip_buttons.html("<p>Undo</p>")
+            console.log("Undo")
+            return tooltip_buttons.style("visibility", "visible");
+        })
+        .on("mouseout", function(d){
             d3.select(undo_button_circle).style('opacity', 0)
+            console.log("Undo remove")
+            return tooltip_buttons.style("visibility", "hidden");
         });
         // .attr('fill', 'white');
 

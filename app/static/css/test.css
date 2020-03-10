@@ -121,6 +121,21 @@ body {
     pointer-events: none;
 }
 
+#tooltip_buttons {
+    position: relative;
+    text-align: center;
+    width: 50px;
+    padding: 2px;
+    font-size: 12px;
+    font-family: "Copperplate Gothic Light";
+    text-align: center;
+    background: white;
+    opacity: 0.8;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */

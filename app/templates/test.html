@@ -81,16 +81,12 @@
             <a href="javascript:void(0)" class="btn" onclick="filter_dissimilar()">Update</a>
         </div>
 
-        <div id="menu_main">
-        </div>
-
-
     </div>
     <div id="container"></div>
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 52;
+    var height_navbar = 77;
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
@@ -137,7 +133,7 @@
     var imgs_path = "static/subset/";
     var defs = svg.append("defs");
     var middle_x = svgwidth * 0.25;
-    var middle_y = svgheight * 0.25;
+    var middle_y = svgheight * 0.25 - height_navbar / 2 ;
     var middle_width = svgwidth * 0.5;
     var middle_height = svgwidth * 0.25;
     var middle = svg.append("svg")
@@ -202,9 +198,11 @@
         .style("visibility", "hidden")
 
     // buttons
-    var button_svg = d3.select('#menu_main').append('svg')
+    var button_svg = d3.select('#container').append('svg')
         .attr('width', svgwidth / 4)
         .attr('height', 50)
+        .attr("x", 0)
+        .attr("y", 0)
 
     var button_size = 40;
 

@@ -46,7 +46,7 @@
         </div>  
     </div>
 
-    <div  id="myheader" class="header">
+    <div  id="myheader" class="header" style='opacity: 0;'>
         <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white;font:arial;font-weight: bold;font-; margin-bottom: 0;">
             OmniArt Exploration Area
         </h6>
@@ -779,6 +779,8 @@
                 .transition()
                 .duration(time)
                 .style("opacity", 1);
+                d3.select(".header")
+                .style('opacity', 1);
             });
     }
 

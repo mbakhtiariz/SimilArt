@@ -1,15 +1,15 @@
 function appendDraggableImage(url, position, artwork_name, artist_full_name,
-		similarity, transition=true) {
+		similarity, creation_year, transition=true) {
 	var img = new Image();
 	img.onload = function () {
 		appendImageHelper(url, position, img, artwork_name, artist_full_name,
-			similarity, transition);
+			similarity, creation_year, transition);
 	}
 	img.src = url;
 }
 
 function appendImageHelper(url, position, img, artwork_name, artist_full_name,
-		similarity, transition=true) {
+		similarity, creation_year, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -61,6 +61,7 @@ function appendImageHelper(url, position, img, artwork_name, artist_full_name,
 			timer_tooltip = setTimeout(function () {
         	tooltip.html("<em>Artwork name:</em> &nbsp" + artwork_name + "<br/>" +
 				"<em>Artist full name:</em> &nbsp" + artist_full_name + "<br/>" +
+				"<em>creation_year:</em> &nbsp" + creation_year + "<br/>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%")
         	return tooltip.transition()		
                		.duration(1000)

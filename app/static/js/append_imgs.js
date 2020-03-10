@@ -22,7 +22,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		img_height = similar_image_size;
 	};
 
-	var middleGroup = svg.append("g")
+	var middleGroup = middle.append("g")
         .datum({position: position, height: img_height, width: img_width})
         .attr('id', 'middle_image')
 		.attr("transform", d => "translate(" + d.position + ")");
@@ -40,7 +40,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on('click', function() {
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
-			
+
             // change middle_image variable and call function, both from test.html;
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
             d3.select('image#center').transition()
@@ -53,7 +53,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name + ".<br/><br/>" + 
+        	tooltip.html(artwork_name + ".<br/><br/>" +
         		artist_full_name + " (" + creation_year + ").<br/><br/>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
         	return tooltip.style("visibility", "visible");
@@ -64,7 +64,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		.on("mouseout", function(){
 			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
-        
+
     middleGroup
         .style('opacity', 0)
         .transition()

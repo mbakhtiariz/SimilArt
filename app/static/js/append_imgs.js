@@ -54,7 +54,13 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()) + ". <b>" + 
+
+        	// If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
+		    length_artist_name = artist_full_name.split(' ').length;
+		    if (length_artist_name > 5)
+		    	artist_full_name = artist_full_name.replace(/\s/g,'');
+
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
         		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
         		"</b> (" + creation_year + "). " +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");

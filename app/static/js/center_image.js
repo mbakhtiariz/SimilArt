@@ -52,14 +52,14 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 
 	// Change information of pop up middle image
 	meta_data_painting = data[middle_image];
-    artwork_name = meta_data_painting['artwork_name'].replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ');
-    artist_full_name = meta_data_painting['artist_full_name'];
+    var artwork_name = meta_data_painting['artwork_name'].replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ');
+    var artist_full_name = meta_data_painting['artist_full_name'];
     // If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
     length_artist_name = artist_full_name.split(' ').length;
     if (length_artist_name > 5)
     	artist_full_name = artist_full_name.replace(/\s/g,'');
     artist_full_name = artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
-    creation_year = meta_data_painting["creation_year"];
+    var creation_year = meta_data_painting["creation_year"];
     document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").";
 
 	center_obj.append('rect')
@@ -85,7 +85,18 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 					modal.style.display = "none";
 				}
 			}
-		});
+		})
+		.on("mouseover", function(){
+        	timer_tooltip = setTimeout(function () {
+        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + ").");
+        	return tooltip.style("visibility", "visible");
+        	}, time_till_tooltip_appearance);
+        })
+		.on("mousemove", function(){
+			return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+		.on("mouseout", function(){
+			clearTimeout(timer_tooltip);
+			return tooltip.style("visibility", "hidden");});
 
 	center_obj
         .style('opacity', 0)

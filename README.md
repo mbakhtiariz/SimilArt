@@ -148,9 +148,6 @@ Notes Meeting
 
 Questions Next Meeting 
 
-## Links
-- Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
-
 
 ### Meeting 4, March 11 2020
 
@@ -163,4 +160,7 @@ Notes Meeting
 - Information overlay? Maybe add sequential interactive guide; always do it on start up or with cookies
 - Different transition instead of fade in; add images one by one, pop them in
 - Add color borders to the paintings. Green - red. Purple - yellow. 
+
+## Links
+- Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
 

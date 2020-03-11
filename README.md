@@ -150,3 +150,17 @@ Questions Next Meeting
 
 ## Links
 - Trello: https://trello.com/invite/b/gSxiQTt3/92389c2b75a8f1e535cf2f66ab8ca667/omniarts-exploration
+
+
+### Meeting 4, March 11 2020
+
+Notes Meeting
+- Last week! Focus on user experience, transitions, animnations, and justifcations of where we place everything (report).
+- Similarity score; log or handcrafted score both fine.
+- Add autocomplete for search.
+- Focus on visualization aspect; filters with the years timeline. Slider with nice transition.
+- Remove the top bar; does not add anything to visualization. 
+- Information overlay? Maybe add sequential interactive guide; always do it on start up or with cookies
+- Different transition instead of fade in; add images one by one, pop them in
+- Add color borders to the paintings. Green - red. Purple - yellow. 
+

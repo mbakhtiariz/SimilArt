@@ -4,24 +4,30 @@ var center_image_y;
 function set_center(center_obj, img_id) {
 	toString(img_id);
 	var img = new Image();
-	img.onload = function () {
-		img_width = img.width;
-		img_height = img.height;
-
-		var ratio = img_width / img_height;
-		// If image width > height
-		if (ratio > 1) {
-			img_width = center_image_size;
-			img_height = center_image_size / ratio;
-		// If image height > width
-		} else {
-			img_width = center_image_size * ratio;
-			img_height = center_image_size;
-		};
-		set_center_main(center_obj, img_id, img_width, img_height);
-	}
 	const url = "static/subset/" + img_id + ".jpg";
-	img.src = url;
+
+	// Return a promise that executes the main code. After set_center_main has() has finished the promise is resolved.
+	var promise = new Promise(function(resolve, reject) {
+		img.onload = function () {
+			img_width = img.width;
+			img_height = img.height;
+
+			var ratio = img_width / img_height;
+			// If image width > height
+			if (ratio > 1) {
+				img_width = center_image_size;
+				img_height = center_image_size / ratio;
+			// If image height > width
+			} else {
+				img_width = center_image_size * ratio;
+				img_height = center_image_size;
+			};
+			set_center_main(center_obj, img_id, img_width, img_height);
+			resolve();
+		}
+		img.src = url;
+	});
+	return promise
 }
 
 function set_center_main(center_obj, img_id, img_width, img_height) {

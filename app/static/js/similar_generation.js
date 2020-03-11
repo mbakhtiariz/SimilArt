@@ -437,7 +437,7 @@ function load_images(path, ids) {
 
 // Main function for calculating new image positions and adding them
 // locations is empty list
-function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations) {
+function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, imgSize) {
 	// Center image position
 	const center_x = center["x"],
 		center_y = center["y"],
@@ -474,7 +474,6 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 	// var lines = [];
 	// lines = draw_borders(container, borders, lines);
 	var dirIdx = 0; // Direction index, corresponding with the `directions` list
-	const imgSize = 70;
 
 	var failCounter = 0;
 	for (var i=1; i<img_ids.length; i++) {
@@ -533,8 +532,8 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 // This function first loads the images, then calls the main function
 // In practise, only this one should be called to use the image loading
 // locations is empty list
-function similar_layout(container, img_ids, center, outer, data, sim_scores, locations) {
+function similar_layout(container, img_ids, center, outer, data, sim_scores, locations, img_size) {
 	load_images("static/subset/", img_ids).then(imgs => {
-		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations);
+		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, img_size);
 	});
 }

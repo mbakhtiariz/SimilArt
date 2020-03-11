@@ -459,7 +459,6 @@
     var outside_subset = [];
     var dissimilar_locs = [];
     var similar_locs = [];
-    var temp_similar_locs = [];
 
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -543,6 +542,7 @@
         sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
+        grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5); // Shuffle a second time
         dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
 
         plot_dissimilar_images(images_ids_subset);

@@ -702,7 +702,6 @@
             // Wait until neighbouring images is found
             nearest_neighbors(middle_image, nr_similar_images).then(() => {
                 // --- selecting location of similar layer and plotting those images:
-                console.log("HERE", nearest_ids);
                 const center_x = parseFloat(d3.select("image#center").attr("x"));
                 const center_y = parseFloat(d3.select("image#center").attr("y"));
                 const center_width = parseFloat(d3.select("image#center").attr("width"));

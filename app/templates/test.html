@@ -561,7 +561,6 @@
         // Sleep for 100 ms until similarity found
         sleep(100).then(() => {
             // --- selecting location of dis-similar layer and plotting those images:
-            var i;
             for (i = 0; i < images_ids_subset.length; i++) {
                 meta_data_painting = data[images_ids_subset[i]]
                 artwork_name = meta_data_painting['artwork_name']
@@ -569,8 +568,9 @@
                 creation_year = meta_data_painting["creation_year"]
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
                 sim_score = Math.round(cosine_sim * 100)
-                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                    creation_year, transition)
+                id_image = images_ids_subset[i].toString()
+                setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
+                    creation_year, transition);
             };
 
             console.log("change dissimilar");

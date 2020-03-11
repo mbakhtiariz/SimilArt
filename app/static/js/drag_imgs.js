@@ -107,35 +107,34 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		d3.drag()
 		.on("drag", dragged)
 	);
-	console.log(position[0])
 	if (transition) {
-	imageElem
-		.attr("height", img_height * 1.5)
-		.attr("width", img_width * 1.5)
-		.attr('x', -img_width * 0.25)
-		.attr('y', -img_height * 0.25)
-		.transition()
-		.delay(function(d,i){ return 100*i; })
-		.duration(appearance_transition_speed)
-		.attr('x', 0)
-		.attr('y', 0)
-		.attr("height", img_height)
-		.attr("width", img_width)
-		.ease(d3.easeBounce);
-	rectOutline
-		.attr("height", img_height * 1.5)
-		.attr("width", img_width * 1.5)
-		.attr('x', -img_width * 0.25)
-		.attr('y', -img_height * 0.25)
-		.transition()
-		.delay(function(d,i){ return 100*i; })
-		.duration(appearance_transition_speed)
-		.attr('x', 0)
-		.attr('y', 0)
-		.attr("height", img_height)
-		.attr("width", img_width)
-		.ease(d3.easeBounce);
-    };
+		imageElem
+			.attr("height", img_height * 1.5)
+			.attr("width", img_width * 1.5)
+			.attr('x', -img_width * 0.25)
+			.attr('y', -img_height * 0.25)
+			.transition()
+			.delay(function(d,i){ return 100*i; })
+			.duration(appearance_transition_speed)
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr("height", img_height)
+			.attr("width", img_width)
+			.ease(d3.easeBounce);
+		rectOutline
+			.attr("height", img_height * 1.5)
+			.attr("width", img_width * 1.5)
+			.attr('x', -img_width * 0.25)
+			.attr('y', -img_height * 0.25)
+			.transition()
+			.delay(function(d,i){ return 100*i; })
+			.duration(appearance_transition_speed)
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr("height", img_height)
+			.attr("width", img_width)
+			.ease(d3.easeBounce);
+    }
 }
 
 function dragged(d) {

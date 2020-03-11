@@ -785,11 +785,11 @@
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
-        handle_stacks();
         set_center(center, middle_image);
 
         change_similar_images();
         change_dissimilar_images();
+        change_dissimilar_images(); // Do a second call, because the first time it doesn't seem to shuffle that good
 
 
         console.log("Page ready");

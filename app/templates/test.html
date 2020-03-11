@@ -72,18 +72,18 @@
         </div>
 
         <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
-
+    
             <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
             <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)" value="">
             <br><br>
             <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
             <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)" value="">
-
-
+            
+    
             <br><br>
             <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
         </div>
-
+    
 
     </div>
     <div id="container"></div>
@@ -94,8 +94,8 @@
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
-    var similar_image_size = 90;
-    var dissimilar_image_size = 90;
+    var similar_image_size = 70;
+    var dissimilar_image_size = 70;
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
 </script>
@@ -136,7 +136,6 @@
     var redo_stack = [];
     var old_middle_image = "";
     var selected_locs_dict = {};
-    var selected_nearest_ids_dict = {};
     var imgs_path = "static/subset/";
     var defs = svg.append("defs");
     var middle_x = svgwidth * 0.25;
@@ -247,14 +246,14 @@
         // .attr('fill', 'white');
 
     menubutton.on('click', function() {
-
+        
         // // remove blue color of pre-clicked update buttons
         // document.getElementById("end_year_update").style.color = "#818181";
         // document.getElementById("end_year_update").style.backgroundColor = "#111";
 
         // document.getElementById("search_key_update").style.color = "#818181";
         // document.getElementById("search_key_update").style.backgroundColor = "#111";
-
+        
         // open the encapsolated menu bar
         openNav()
 
@@ -495,6 +494,7 @@
     // create grid for possible locations of images
     var i;
     var j;
+    var grid_similar = [];
     var grid_dissimilar = [];
 
     for (i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
@@ -631,7 +631,7 @@
         }
     });
 
-
+    
 
     function filter_dissimilar(){
 
@@ -682,58 +682,61 @@
 
 
     function change_similar_images() {
+        /*
+        Here we find the "n" similar images to the central image, using KNN method.
+        We also define the coordinates for each of those similar images.
+        */
+        nearest_neighbors(middle_image, nr_similar_images);
+
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
-        console.log(middle_image.toString());
-        console.log("change similar");
+        if (selected_locs_dict[middle_image.toString()] == undefined) {
+            grid_similar = grid_similar.sort(() => Math.random() - 0.5);
+            temp_similar_locs = grid_similar.slice(0, nr_similar_images);
+            selected_locs_dict[middle_image.toString()] = temp_similar_locs;
+        }
+        else {
+            temp_similar_locs = selected_locs_dict[middle_image.toString()];
+        }
+        similar_locs = temp_similar_locs;
 
         // Remove all current images
         d3.selectAll("g#middle_image")
             .transition()
             .duration(removal_transition_speed)
             .style("opacity", 0)
-            .remove();
+            .remove()
 
-        if (selected_locs_dict[middle_image.toString()] == undefined) {
-            /*
-            Here we find the "n" similar images to the central image, using KNN method.
-            We also define the coordinates for each of those similar images.
-            */
-            nearest_neighbors(middle_image, nr_similar_images);
-
-            // Sleep for 500 ms until neighbouring images is found
-            sleep(500).then(() => {
-                // --- selecting location of similar layer and plotting those images:
-                console.log("nearest ids:", nearest_ids)
-                const center_x = parseFloat(d3.select("image#center").attr("x"));
-                const center_y = parseFloat(d3.select("image#center").attr("y"));
-                const center_width = parseFloat(d3.select("image#center").attr("width"));
-                const center_height = parseFloat(d3.select("image#center").attr("height"));
-                const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
-                const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
-                var similar_locs = [];
-                similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest, similar_locs);
-                selected_locs_dict[middle_image.toString()] = similar_locs;
-                selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
-
-                // Update outside images for similarity score
-                plot_dissimilar_images(images_ids_subset, transition=false);
-            });
-        } else {
-            similar_locs = selected_locs_dict[middle_image.toString()];
-            nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
+        // Sleep for 500 ms until neighbouring images is found
+        sleep(500).then(() => {
+            // --- selecting location of similar layer and plotting those images:
+            var i;
+            console.log("nearest ids:", nearest_ids)
+            const center_x = parseFloat(d3.select("image#center").attr("x"));
+            const center_y = parseFloat(d3.select("image#center").attr("y"));
+            const center_width = parseFloat(d3.select("image#center").attr("width"));
+            const center_height = parseFloat(d3.select("image#center").attr("height"));
+            const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
+            const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
+            similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest);
             // Start i from 1 to filter-out central image:
-            for (var i=0; i < similar_locs.length; i++) {
-                meta_data_painting = data[nearest_ids[i+1]]
-                artwork_name = meta_data_painting['artwork_name']
-                artist_full_name = meta_data_painting['artist_full_name']
-                creation_year = meta_data_painting['creation_year']
-                cosine_sim = (Math.round(cos_sims_nearest[i+1] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100)
-                appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
-                    similar_locs[i], artwork_name, artist_full_name,
-                    sim_score, creation_year);
-            }
-        }
+            // for (i = 1; i < nearest_ids.length; i++) {
+            //     meta_data_painting = data[nearest_ids[i]]
+            //     artwork_name = meta_data_painting['artwork_name']
+            //     artist_full_name = meta_data_painting['artist_full_name']
+            //     creation_year = meta_data_painting['creation_year']
+            //     cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
+            //     sim_score = Math.round(cosine_sim * 100)
+            //     appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
+            //         similar_locs[i-1], artwork_name, artist_full_name,
+            //         sim_score, creation_year);
+            // };
+
+            // Update outside images for similarity score
+            plot_dissimilar_images(images_ids_subset, transition=false)
+            console.log("change similar");
+
+        });
+
     }
 
     function redo() {
@@ -751,8 +754,8 @@
     }
 
     function undo() {
-
-        // to stop undo if it is empty.
+        
+        // to stop undo if it is empty. 
         if (undo_stack.length === 0){
             return;
         };
@@ -785,17 +788,17 @@
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
+        handle_stacks();
         set_center(center, middle_image);
-
+        
         change_similar_images();
         change_dissimilar_images();
-        change_dissimilar_images(); // Do a second call, because the first time it doesn't seem to shuffle that good
-
-
+        
+        
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
-
+        
         setTimeout(clearIntervals(), 500);
 
     })

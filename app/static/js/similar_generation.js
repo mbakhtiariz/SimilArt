@@ -436,7 +436,8 @@ function load_images(path, ids) {
 }
 
 // Main function for calculating new image positions and adding them
-function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores) {
+// locations is empty list
+function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations) {
 	// Center image position
 	const center_x = center["x"],
 		center_y = center["y"],
@@ -507,6 +508,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			i--; // We want to try this index again
 			continue;
 		} else {
+			locations.push([x,y]);
 			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id, sim_score);
 		}
 
@@ -530,8 +532,9 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 
 // This function first loads the images, then calls the main function
 // In practise, only this one should be called to use the image loading
-function similar_layout(container, img_ids, center, outer, data, sim_scores) {
+// locations is empty list
+function similar_layout(container, img_ids, center, outer, data, sim_scores, locations) {
 	load_images("static/subset/", img_ids).then(imgs => {
-		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores);
+		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations);
 	});
 }

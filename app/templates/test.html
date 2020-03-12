@@ -29,6 +29,19 @@
     <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
 
     <script src="../static/js/collapsed_sidebar.js"></script>
+
+    <!-- Slider -->
+    <script src="../static/js/d3-simple-slider.js"></script>
+    <!-- <script src="../static/js/slider.js"></script> -->
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="d3RangeSlider.js"></script>
+    <link href="d3RangeSlider.css" rel="stylesheet"> -->
+
+
+
 </head>
 
 
@@ -87,14 +100,34 @@
             <br><br>
             <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
         </div>
+    </div>
 
+
+
+
+
+    <div id="container">
 
     </div>
-    <div id="container"></div>
+    <div class="align-items-center">
+        <div id="slider-range" style='position:absolute;top:570px;'></div>
+
+        <!-- <div id="similar_too_div" style="position: absolute; top: 640px; left:100px;">
+            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
+            <label for="similar_too" style="color:whitesmoke"> Include similar images</label><br>
+        </div> -->
+
+        <div id="cat_div" style="position:absolute;left: 1200px;top: 640px;">
+            <label for="general_cats", style="color:white"> Filter category:</label>
+            <select id="general_cats" name="general_cats" style="background-color: white;", onchange="filter_dissimilar()">
+                <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
+            </select>
+        </div>
+    </div>
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 19;
+    var height_navbar = 100;
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
@@ -174,6 +207,52 @@
 
     var center = middle.append("svg");
 
+    //  ------------ this works dont remove -------------
+
+    // Range slider for time filter
+    var sliderRange = d3
+        .sliderBottom()
+        .min(-2500)
+        .max(2017)
+        .width(svgwidth * .95)
+        .default([-2500, 2017])
+        .step(1)
+        // .fill('#2196f3')
+        .fill('purple')
+        .on('end', val => {
+            d3.selectAll("g#outside_image")
+                .transition()
+                .duration(0)
+                .style("opacity", 0)
+                .remove();
+            d3.select('p#value-range').text(val);
+            filter_dissimilar();
+        //   d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'));
+        })
+        .on('start', val => {
+            d3.select('p#value-range').text(val);
+            filter_dissimilar();
+        //   d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'));
+        });
+
+    var timeslider_padding = svgwidth * .05 *.75;
+    var gRange = d3
+        .select('div#slider-range')
+        // .style('position','absolute')
+        // .style('top','550px')
+        // .style('z-index','0')
+        .append('svg')
+        .attr('width', svgwidth)
+        .attr('height', 100)
+        .append('g')
+        .attr('transform', 'translate('+timeslider_padding+',30)')
+        .call(sliderRange);
+
+    //     // style="position:; top:600px;"
+    // const similar_too_div = document.getElementById("similar_too_div");
+    // console.log("!!!!!!!!!!!!!!!!!!!!!!!", similar_image_size.innerHTML)
+    // similar_too_div.setAttribute('style','position: absolute; top: 620px; left:100px;');
+    // -----------------------------------------------------------
 
     // tooltip
     var tooltip = d3.select("#container")
@@ -535,7 +614,7 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-    function change_dissimilar_images(start_time=-2500, end_time = 2017) {
+    function change_dissimilar_images(category="all", start_time=-2500, end_time = 2017) {
         console.log("3--start and end year for Filtering:",start_time, end_time);
         var temp_time;
         if(start_time > end_time){
@@ -553,7 +632,8 @@
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         filtered_ids = images_ids.filter(filter_fun);
         function filter_fun(my_id){
-            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time;
+            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
+            && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
         console.log("#########################",images_ids, data['1000']);
@@ -678,8 +758,13 @@
         // document.getElementById("search_key_update").style.backgroundColor = "#17a2b8";
 
         // Get the requested years to filter images
-        let start_point = document.getElementById("start_year").value;
-        let end_point = document.getElementById("end_year").value;
+        // let start_point = document.getElementById("start_year").value;
+        // let end_point = document.getElementById("end_year").value;
+
+        console.log("changed.........")
+        let start_point = sliderRange.value()[0];
+        let end_point = sliderRange.value()[1];
+        console.log("changed.........", start_point, end_point)
 
         // use some predefined values, if user pressed sumbmit without choosing a value
         if(start_point == ""){
@@ -688,7 +773,7 @@
 
         if(end_point == ""){
             end_point = "2017";
-        }
+        };
 
         start_year = parseInt(start_point);
         end_year = parseInt(end_point);
@@ -698,8 +783,13 @@
             return;
         };
 
+        category = document.getElementById("general_cats").value
         // choose dis-similar images.
-        change_dissimilar_images(start_year, end_year);
+        change_dissimilar_images(category,start_year, end_year);
+        // if (document.getElementById("").value === true){
+        //     change_similar_images(start_year, end_year)
+        // };
+
 
         // close the navigation bar.
         closeNav()
@@ -716,7 +806,7 @@
     }
 
 
-    function change_similar_images(plot_dissimilar=true) {
+    function change_similar_images(start_year=-5000, end_year=2020, plot_dissimilar=true) {
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
         console.log("change similar");
 
@@ -733,7 +823,7 @@
             We also define the coordinates for each of those similar images.
             */
             // Wait until neighbouring images is found
-            nearest_neighbors(middle_image, nr_similar_images).then(() => {
+            nearest_neighbors(middle_image, nr_similar_images, start_year, end_year).then(() => {
                 // --- selecting location of similar layer and plotting those images:
                 const center_x = parseFloat(d3.select("image#center").attr("x"));
                 const center_y = parseFloat(d3.select("image#center").attr("y"));

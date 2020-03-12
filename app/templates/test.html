@@ -102,14 +102,9 @@
         </div>
     </div>
 
+    <div id="container"></div>
 
-
-
-
-    <div id="container">
-
-    </div>
-    <div class="align-items-center">
+    <div id="filtering_section" class="align-items-center filtering_section" style='opacity: 0;'>
         <div id="slider-range" style='position:absolute;top:570px;'></div>
 
         <!-- <div id="similar_too_div" style="position: absolute; top: 640px; left:100px;">
@@ -948,6 +943,8 @@
                 .duration(time)
                 .style("opacity", 1);
                 d3.select(".header")
+                .style('opacity', 1);
+                d3.select("#filtering_section")
                 .style('opacity', 1);
             });
     }

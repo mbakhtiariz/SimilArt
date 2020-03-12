@@ -26,6 +26,8 @@
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
 
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
+
     <script src="../static/js/collapsed_sidebar.js"></script>
 </head>
 
@@ -66,7 +68,9 @@
             </select>
             <br>
             <label for="search_key" class="search_key_label">Search Key:</label>
-            <input type="text" id="search_key" class="search_key" name="search_key" value="">
+            <div class="autocomplete">
+                <input type="text" id="search_key" class="search_key" name="search_key" value="">
+            </div>
             <br><br>
             <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a>
         </div>
@@ -113,6 +117,9 @@
 <script src="../static/js/nearest_neighbors.js"></script>
 <!-- Import for loading screen -->
 <script src="../static/js/loading.js"></script>
+<!-- Import for autocompletion of search bar -->
+<script src="../static/js/autocomplete.js"></script>
+
 
 <script type="text/javascript">
     // Container for the loading screen
@@ -482,12 +489,23 @@
                 console.log("Data loaded");
                 artnames_to_ids = {};
                 artists_to_ids = {};
+                artnames_list_cased = [];
+                artists_list_cased = new Set();
                 for(const key in data){
-                    let art_name = data[key]['artwork_name'].toLowerCase();
-                    let artist_name = data[key]['artist_full_name'].toLowerCase();
-                    artnames_to_ids[art_name] = key;
-                    artists_to_ids[artist_name] = key;
+                    let art_name = data[key]['artwork_name'];
+                    let artist_name = data[key]['artist_full_name'];
+                    // Mapping from lowercased names to artwork id for search
+                    artnames_to_ids[art_name.toLowerCase()] = key;
+                    artists_to_ids[artist_name.toLowerCase()] = key;
+                    // List of upper/lowercased names (as in dataset) for autocompletion
+                    artnames_list_cased.push(art_name);
+                    artists_list_cased.add(artist_name);
                 }
+                artists_list_cased = Array.from(artists_list_cased); //from set to list
+                // Sort the autocompletion lists
+                artnames_list_cased.sort();
+                artists_list_cased.sort();
+                // Finally set the listener to true
                 listener.set(true);
             }
         });
@@ -611,6 +629,16 @@
     search_key_input.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
             my_set_center();
+        }
+    });
+
+    let search_cat_selection = document.getElementById("search_cat");
+    search_cat_selection.addEventListener("change", function(event) {
+        const value = event.target.value;
+        if (value == "Art name") {
+            autocomplete(document.getElementById("search_key"), artnames_list_cased);
+        } else {
+            autocomplete(document.getElementById("search_key"), artists_list_cased);
         }
     });
 
@@ -779,6 +807,8 @@
     var middle_image;
     var artnames_to_ids;
     var artists_to_ids;
+    var artnames_list_cased; // List with artnames with upper/lower casing as in dataset
+    var artists_list_cased; // List with artist names with upper/lower casing as in dataset
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
@@ -790,6 +820,13 @@
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
+
+        // Turn on the autocompletion
+        if (document.getElementById("search_cat").value == "Art name") {
+            autocomplete(document.getElementById("search_key"), artnames_list_cased);
+        } else {
+            autocomplete(document.getElementById("search_key"), artists_list_cased);
+        }
 
         setTimeout(clearIntervals(), 500);
 

@@ -588,8 +588,13 @@
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
                 sim_score = Math.round(cosine_sim * 100)
                 id_image = images_ids_subset[i].toString()
+                if (transition) {
                 setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
                     creation_year, transition);
+                } else {
+                    appendDraggableImage(imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
+                    creation_year, transition);
+                }
             };
 
             console.log("change dissimilar");
@@ -711,7 +716,7 @@
     }
 
 
-    function change_similar_images() {
+    function change_similar_images(plot_dissimilar=true) {
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
         console.log("change similar");
 
@@ -741,8 +746,10 @@
                 selected_locs_dict[middle_image.toString()] = similar_locs;
                 selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 
-                // Update outside images for similarity score
-                plot_dissimilar_images(images_ids_subset, transition=false);
+                if (plot_dissimilar) {
+                    // Update outside images for similarity score
+                    plot_dissimilar_images(images_ids_subset, transition=false);
+                }
             });
         } else {
             similar_locs = selected_locs_dict[middle_image.toString()];
@@ -814,7 +821,7 @@
     DATA_LOADED = new TrueListener(function() {
         middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
         set_center(center, middle_image).then(() => {
-            change_similar_images();
+            change_similar_images(plot_dissimilar=false);
             change_dissimilar_images();
         })
         console.log("Page ready");

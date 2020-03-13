@@ -39,13 +39,14 @@ body {
     stroke-width: 2;
 }
 .middle {
-    fill: #212121;
-    /* #FBC02D; */
+    fill: 
+    /* #212121; */
+    #FBC02D;
     /* #2e2e2e; */
             /*#1b1b1b;*/
-    stroke:#FBC02D;
+    /* stroke:#FBC02D; */
      /* #515251; */
-    stroke-width: 7;
+    /* stroke-width: 7; */
 }
 
 /* .middle-outline{

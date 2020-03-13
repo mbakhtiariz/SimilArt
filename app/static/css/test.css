@@ -44,10 +44,11 @@ body {
     /* #FBC02D; */
     /* #2e2e2e; */
             /*#1b1b1b;*/
-    stroke:#FBC02D;
+    stroke: wheat;
+    /* #FBC02D; */
      /* #515251; */
     stroke-width: 5;
-    stroke-linecap:round;
+    stroke-linecap: round;
 }
 
 /* .middle-outline{

@@ -1,5 +1,5 @@
 body {
-  font-family: "Lato", sans-serif;
+  font-family: arial, "Lato", sans-serif;
 }
 
 .sidebar {
@@ -85,18 +85,19 @@ body {
 }
 
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size)
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size)*/
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
-} */
+} 
 
 .sidebar .btn:hover{
   /* color:#17a2b8; */
-  background-color: #00BCD4;
+  background-color:#56B8CF;
+   /* #00BCD4; */
   /* #17a2b8; */
 }
-.sidebar .start_year_label{
+/* .sidebar .start_year_label{
   margin-left: 30px;
   margin-top: 7px;
 }
@@ -111,9 +112,9 @@ body {
 
 .sidebar .end_year{
   margin-left: 30px;
-}
+} */
 
-.sidebar .search_key, .search_key_label{
+/* .sidebar .search_key, .search_key_label{
   margin-left: 30px;
-}
+} */
 

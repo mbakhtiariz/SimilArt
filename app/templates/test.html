@@ -66,29 +66,72 @@
 
     <div  id="myheader" class="header" style='opacity: 0;'>
 
+        <!-- the main menu icons -->
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="btn closebtn" onclick="closeNav()">×</a>
+            <!-- <a href="javascript:void(0)" class="btn" onclick="open_about_nav()">About</a>
             <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Search</a>
-            <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Contact</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a> -->
+
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('about')">About</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('search')">Search</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('contact')">Contact</a>
+            <!-- <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('filter')">Filter</a> -->
         </div>
 
-        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px;">
-            <label for="search_cat" class="select_btn_label" style="margin-left: 30px;margin-top: 7px;" >Based on:</label>
+
+        <!-- about us side bar -->
+        <div id="about_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #D2B48C; color:#111;">
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART?</h4>
+            <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
+            OmniArt is a large scale artistic benchmark dataset aggregated from multiple collections around the world.
+            </p>
+            
             <br>
-            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 30px; background-color: white;">
+
+            <h5 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART EXPLORATION?</h5>
+            <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
+                In OmniArt-Exploration we aim to visulize the similar and dis-similar images to one specific selected image. .... (This should be modified).
+            </p>
+        </div>
+
+
+        <!-- sidebar that appears after clicking on search buttun -->
+        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; ">
+            <label for="search_cat" class="select_btn_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px;font-size: medium; font-weight: bolder;" >Based on:</label>
+            <br>
+            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;">
                 <option>Art name</option>
                 <option>Artist full name</option>
             </select>
             <br>
-            <label for="search_key" class="search_key_label">Search Key:</label>
+            <label for="search_key" class="search_key_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Key:</label>
             <div class="autocomplete">
-                <input type="text" id="search_key" class="search_key" name="search_key" value="">
+                <input type="text" id="search_key" class="search_key" name="search_key" value="" style="margin-left: 20px;margin-right: 20px;">
             </div>
             <br><br>
             <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a>
         </div>
 
-        <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
+
+        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;">
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Barry Hendriks: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Iulia Ionescu: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Martine Toering: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Gjorgji Strezoski: <br> g.strezoski [at] uva [dot] nl</p>
+
+            <br>
+
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Address:</h4>
+            <address style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Science Park 904 <br>
+                Amsterdam, The Netherlands</address>
+        </div>
+
+        <!-- <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
 
             <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
             <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)" value="">
@@ -99,7 +142,8 @@
 
             <br><br>
             <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
-        </div>
+        </div> -->
+
     </div>
 
     <div id="container"></div>
@@ -244,8 +288,8 @@
         .width(svgwidth * .95)
         .default([-2500, 2017])
         .step(1)
-        // .fill('#2196f3')
-        .fill('#00BCD4')
+        // slider color:
+        .fill('#56B8CF')
         .on('end', val => {
             d3.selectAll("g#outside_image")
                 .transition()
@@ -755,23 +799,23 @@
     });
 
 
-    let filter_start_year_input = document.getElementById("start_year");
-    filter_start_year_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            // event.preventDefault();
-            filter_dissimilar();
-        }
-    });
+    // let filter_start_year_input = document.getElementById("start_year");
+    // filter_start_year_input.addEventListener("keyup", function(event) {
+    //     if (event.keyCode === 13) {
+    //         // event.preventDefault();
+    //         filter_dissimilar();
+    //     }
+    // });
 
 
-    let filter_end_year_input = document.getElementById("end_year");
-    filter_end_year_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            // event.preventDefault();
-            filter_dissimilar();
+    // let filter_end_year_input = document.getElementById("end_year");
+    // filter_end_year_input.addEventListener("keyup", function(event) {
+    //     if (event.keyCode === 13) {
+    //         // event.preventDefault();
+    //         filter_dissimilar();
 
-        }
-    });
+    //     }
+    // });
 
 
 

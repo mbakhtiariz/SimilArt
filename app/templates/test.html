@@ -191,8 +191,8 @@
         .attr("class", "middle")
         .attr("width", middle_width)
         .attr("height", middle_height)
-        .attr("rx","30px")
-        .attr("ry","30px");
+        .attr("rx","70px")
+        .attr("ry","70px");
 
 
     var filter = middle.append("filter")
@@ -216,7 +216,7 @@
         .default([-2500, 2017])
         .step(1)
         // .fill('#2196f3')
-        .fill('#0C7BDC')
+        .fill('#00BCD4')
         .on('end', val => {
             d3.selectAll("g#outside_image")
                 .transition()

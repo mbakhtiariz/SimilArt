@@ -93,7 +93,8 @@ body {
 
 .sidebar .btn:hover{
   /* color:#17a2b8; */
-  background-color:#17a2b8;
+  background-color: #00BCD4;
+  /* #17a2b8; */
 }
 .sidebar .start_year_label{
   margin-left: 30px;

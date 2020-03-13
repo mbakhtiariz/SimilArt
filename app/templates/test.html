@@ -105,14 +105,14 @@
     <div id="container"></div>
 
     <div id="filtering_section" class="align-items-center filtering_section" style='opacity: 0;'>
-        <div id="slider-range" style='position:absolute;top:570px;'></div>
+        <div id="slider-range" style='position:absolute;top:600px;'></div>
 
         <!-- <div id="similar_too_div" style="position: absolute; top: 640px; left:100px;">
             <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
             <label for="similar_too" style="color:whitesmoke"> Include similar images</label><br>
         </div> -->
 
-        <div id="cat_div" style="position:absolute;left: 1200px;top: 640px;">
+        <div id="cat_div" style="position:absolute;left: 1200px;top: 670px;">
             <label for="general_cats", style="color:#757575"> Filter category:</label>
             <select id="general_cats" name="general_cats" style="background-color: white;", onchange="filter_dissimilar()">
                 <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
@@ -191,8 +191,8 @@
         .attr("class", "middle")
         .attr("width", middle_width)
         .attr("height", middle_height)
-        .attr("rx","70px")
-        .attr("ry","70px");
+        .attr("rx","0px")
+        .attr("ry","0px");
 
 
     var filter = middle.append("filter")
@@ -597,8 +597,8 @@
         for (j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
 
             // skip middle section and randomize button
-            if ((i + dissimilar_image_size > middle_x && i < (middle_x + middle_width)) &&
-                    (j + dissimilar_image_size > middle_y && j < (middle_y + middle_height)) ||
+            if ((i + dissimilar_image_size > (middle_x - 5) && i < (middle_x + middle_width + 5)) &&
+                    (j + dissimilar_image_size > (middle_y - 5) && j < (middle_y + middle_height + 5)) ||
                     (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
 
                 continue;

@@ -105,20 +105,25 @@
     <div id="container"></div>
 
     <div id="filtering_section" class="align-items-center filtering_section" style='opacity: 0;'>
-        <div id="slider-range" style='position:absolute;top:600px;'></div>
 
+        <!-- slider: -->
+        <div id="slider-range"></div>
+
+        <!-- check box to add filter on similar area: -->
         <!-- <div id="similar_too_div" style="position: absolute; top: 640px; left:100px;">
             <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
             <label for="similar_too" style="color:whitesmoke"> Include similar images</label><br>
         </div> -->
 
-        <div id="cat_div" style="position:absolute;left: 1200px;top: 670px;">
+        <!-- category filter: -->
+        <div id="cat_div">
             <label for="general_cats", style="color:#757575"> Filter category:</label>
             <select id="general_cats" name="general_cats" style="background-color: white;", onchange="filter_dissimilar()">
                 <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
             </select>
         </div>
     </div>
+    
 </body>
 
 <script type="text/javascript">
@@ -130,6 +135,11 @@
     var dissimilar_image_size = 70;
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
+
+    var filter_sec_top = svgheight + 'px';
+    var timeslider_width = svgwidth * .95
+    var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
+    var filter_cat_padding_left = timeslider_padding_left - 10 + 'px';
 </script>
 
 <!-- Import dragable images code -->
@@ -206,6 +216,24 @@
     var center = middle.append("svg");
 
     //  ------------ this works dont remove -------------
+    // Set the positions of slider based on page ratio: 
+
+    // alert(svgheight);
+    // alert(svgwidth);
+
+
+    const filtering_section = document.getElementById("filtering_section");
+    filtering_section.style.position = 'absolute';
+    filtering_section.style.top = filter_sec_top;//svgheight + 'px';
+    filtering_section.style.paddingTop = '0';
+
+
+    const filtering_cat_section = document.getElementById("cat_div");
+    // alert(filtering_cat_section.innerHTML)
+    filtering_cat_section.style.position = 'absolute';
+    filtering_cat_section.style.top = '60px';
+    filtering_cat_section.style.left = filter_cat_padding_left;
+
 
     // Range slider for time filter
     var sliderRange = d3
@@ -233,7 +261,7 @@
         //   d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'));
         });
 
-    var timeslider_padding = svgwidth * .05 *.75;
+    
     var gRange = d3
         .select('div#slider-range')
         // .style('position','absolute')
@@ -243,13 +271,13 @@
         .attr('width', svgwidth)
         .attr('height', 100)
         .append('g')
-        .attr('transform', 'translate('+timeslider_padding+',30)')
+        .attr('transform', 'translate('+timeslider_padding_left+',10)')
         .call(sliderRange);
 
-    //     // style="position:; top:600px;"
-    // const similar_too_div = document.getElementById("similar_too_div");
-    // console.log("!!!!!!!!!!!!!!!!!!!!!!!", similar_image_size.innerHTML)
-    // similar_too_div.setAttribute('style','position: absolute; top: 620px; left:100px;');
+
+
+
+
     // -----------------------------------------------------------
 
     // tooltip

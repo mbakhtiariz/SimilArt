@@ -144,7 +144,7 @@
 
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
-            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
+            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
             <label for="similar_too" style="color:whitesmoke"> Filter similar images too</label><br>
         </div>
 
@@ -214,6 +214,7 @@
     var SIM_SCORE_LISTENER;
     var removal_transition_speed = 500;
     var appearance_transition_speed = 500;
+    var overlay_transition_speed = 1000;
     var removal_transition_speed_middle_image = 0;
     var time_to_suspend_middle_image_after_click = 0;
     var undo_stack = [];
@@ -584,26 +585,33 @@
           .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
     info_overlay.append("text")
           .attr("text-anchor", "middle")
-          .attr("class", "overlay-text")
+          .style("opacity", 0)
+          .attr("id", "overlaytext1")
+          .style("font-family", "Copperplate Gothic Light")
           .style("fill", "white")
           .attr("x", svgwidth*0.5)
           .attr("y", svgheight*0.25+20)
-          .text("Your center painting: Click to expand");
+          .text("Your center painting: Click to expand")
     info_overlay.append("text")
           .style("fill", "white")
-          .attr("class", "overlay-text")
+          .style("opacity", 0)
+          .attr("id", "overlaytext2")
+          .style("font-family", "Copperplate Gothic Light")
           .attr("x", middle_x)
           .attr("y", middle_y-10)
-          .text("Paintings with visual similarity");
+          .text("Paintings with visual similarity")
     info_overlay.append("text")
           .style("fill", "white")
-          .attr("class", "overlay-text")
+          .style("opacity", 0)
+          .attr("id", "overlaytext3")
+          .style("font-family", "Copperplate Gothic Light")
           .attr("x", 20)
           .attr("y", 60)
-          .text("Exploration area: Click to see visual similarity");
+          .text("Exploration area: Click to see visual similarity")
 
     var info_button_circle;
-    var info_button = button_svg.append("g");
+    var info_button = button_svg.append("g")
+
     info_button.append("circle")
         .attr("class", "button")
         .attr("cx", button_size / 1.2 + button_size / 2 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
@@ -614,7 +622,7 @@
             info_button_circle = this;
             d3.select(this).style('opacity', 0.3)
             timer_tooltip = setTimeout(function () {
-                tooltip_buttons.html("Show information overlay")
+                tooltip_buttons.html("Help")
                 return tooltip_buttons.style("visibility", "visible");
             }, time_till_tooltip_appearance);
         })
@@ -628,17 +636,17 @@
 
     info_button.append("image")
         .attr("class", "button")
-        .attr("href", "static/icons/" + 'info.png')
-        .attr("height", button_size / 2.3)
-        .attr("width", button_size / 2.3)
-        .attr("x", button_size / 1.2 + button_size / 3.4 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
-        .attr('y', button_size / 3.4)
+        .attr("href", "static/icons/" + 'help.png')
+        .attr("height", button_size / 1.6)
+        .attr("width", button_size / 1.6)
+        .attr("x", button_size / 1.2 + button_size / 4.9 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
+        .attr('y', button_size / 4.9)
         .attr("clip-path", "url(#clip)")
         .style('opacity', 1)
         .on("mouseover", function(){
             d3.select(info_button_circle).style('opacity', 0.3)
             timer_tooltip = setTimeout(function () {
-                tooltip_buttons.html("Show information overlay")
+                tooltip_buttons.html("Help")
                 return tooltip_buttons.style("visibility", "visible");
             }, time_till_tooltip_appearance);
         })
@@ -773,6 +781,16 @@
             change_similar_images();
         }
     }
+
+    function filter_similars(){
+        if (document.getElementById("similar_too").checked){
+        change_dissimilar_images();
+        change_similar_images();
+        }
+    }
+
+
+
     
 
     function change_dissimilar_images() {
@@ -787,7 +805,6 @@
             && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
-        console.log("#########################",images_ids, data['1000']);
         sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
@@ -809,15 +826,15 @@
             .remove();
 
         // Wait until similarity found
-        get_cosine_sim(middle_image, images_ids_subset_int).then(() => {
+        get_sim_scores(middle_image, images_ids_subset_int).then(() => {
             // --- selecting location of dis-similar layer and plotting those images:
             for (i = 0; i < images_ids_subset.length; i++) {
                 meta_data_painting = data[images_ids_subset[i]]
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
                 creation_year = meta_data_painting["creation_year"]
-                cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100)
+                // Convert to percentage
+                sim_score = Math.round(sim_scores_explore[i] * 100)
                 id_image = images_ids_subset[i].toString()
                 if (transition) {
                 setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
@@ -912,7 +929,20 @@
             We also define the coordinates for each of those similar images.
             */
             // Wait until neighbouring images is found
+            middle.append("text").text('Loading ...')
+                .attr("class","middle")
+                .attr("id","filter_loading")
+                .style("fill","whitesmoke")
+                .style("stroke-width","0")
+                .attr("x","10")
+                .attr("y","22");
+
             nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+                d3.selectAll("#filter_loading")
+                .transition()
+                .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
                 // --- selecting location of similar layer and plotting those images:
                 const center_x = parseFloat(d3.select("image#center").attr("x"));
                 const center_y = parseFloat(d3.select("image#center").attr("y"));
@@ -923,7 +953,7 @@
                 // !!!!!!!!!!!!!! modified this to not have images on border
                 const outer = {"x": 20, "y": 20, "width": middle_width-50, "height": middle_height-50};
                 var similar_locs = [];
-                similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest, similar_locs, similar_image_size);
+                similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
                 selected_locs_dict[middle_image.toString()] = similar_locs;
                 selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 
@@ -942,8 +972,8 @@
         //         artwork_name = meta_data_painting['artwork_name']
         //         artist_full_name = meta_data_painting['artist_full_name']
         //         creation_year = meta_data_painting['creation_year']
-        //         cosine_sim = (Math.round(cos_sims_nearest[i+1] * 100) / 100).toFixed(2);
-        //         sim_score = Math.round(cosine_sim * 100)
+        //         // Convert to percentage
+        //         sim_score = Math.round(sim_scores_nearest[i+1] * 100)
         //         appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
         //             similar_locs[i], artwork_name, artist_full_name,
         //             sim_score, creation_year);
@@ -992,10 +1022,32 @@
     function info_on() {
         console.log('show information overlay');
         document.getElementById("overlay").style.display = "block";
+        d3.select("#overlaytext1")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
+        d3.select("#overlaytext2")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
+        d3.select("#overlaytext3")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
     }
     function info_off() {
         console.log('remove information overlay');
         document.getElementById("overlay").style.display = "none";
+        d3.select("#overlaytext1")
+          .transition()
+          .style("opacity", 0);
+        d3.select("#overlaytext2")
+          .transition()
+          .style("opacity", 0);
+        d3.select("#overlaytext3")
+          .transition()
+          .style("opacity", 0);
+
     }
 
     // ----------------------------------------------------------------------------

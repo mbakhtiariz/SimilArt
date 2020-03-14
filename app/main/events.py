@@ -42,21 +42,21 @@ def nearest_neighbors(info):
         return start_time <= sample_year <= end_time and (category == sample_cat or category == "all")
 
     for iter in range(5):
-        dists, ids, cos_sims = features.nearest(int(id), n * (5 ** iter))
+        dists, ids, sim_scores = features.nearest(int(id), n * (5 ** iter))
         filtered_ids = [id for id in ids if is_valid(data[id]["creation_year"], data[id]["general_type"])][:n]
         if len(filtered_ids) == n:
             filtered_dists = [dist for id, dist in zip(ids, dists) if is_valid(data[id]["creation_year"], data[id]["general_type"])][:n]
-            filtered_cos_sims = [cos_sim for id, cos_sim in zip(ids, cos_sims) if is_valid(data[id]["creation_year"], data[id]["general_type"])][:n]
+            filtered_sim_scores = [sim_score for id, sim_score in zip(ids, sim_scores) if is_valid(data[id]["creation_year"], data[id]["general_type"])][:n]
             break
-    emit('nearest_neighbors_data', {'dists': filtered_dists, 'ids': filtered_ids, 'cos_sims': filtered_cos_sims, 'log': category})
+    emit('nearest_neighbors_data', {'dists': filtered_dists, 'ids': filtered_ids, 'sim_scores': filtered_sim_scores, 'log': category})
 
-@socketio.on('get_cosine_sim')
-def get_cosine_sim(info):
-    print("Getting cosine similarity")
+@socketio.on('get_sim_scores')
+def get_sim_scores(info):
+    print("Getting similarity scores")
     id = info['id']
     ind = info['ind']
-    cos_sims = features.get_cos_sims(int(id), ind)
-    emit('get_cosine_sim_data', {'cos_sims': cos_sims})
+    sim_scores = features.get_sim_scores(int(id), ind)
+    emit('get_sim_scores_data', {'sim_scores': sim_scores})
 
 @socketio.on('create_meta_json')
 def create_meta_json():

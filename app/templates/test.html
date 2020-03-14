@@ -853,6 +853,7 @@
             d3.select('rect#center').remove();
             set_center(center, image_to_be_set).then(() => {
                 change_similar_images();
+                change_dissimilar_images();
             });
         }
         else{

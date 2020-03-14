@@ -8,8 +8,8 @@ socket.on('connect', function() {
 var dists = []
 var nearest_ids = []
 
-// store cosine similarity
-var cos_sims_nearest = []
+// store similarity scores for inside area
+var sim_scores_nearest = []
 
 // Functions needed for the nearest neighbor queries
 function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
@@ -28,19 +28,19 @@ function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
 socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;
-	cos_sims_nearest = data.cos_sims;
+	sim_scores_nearest = data.sim_scores;
+	
 	logsss = data.log;
 	console.log(";;;;;;;;;;;;;;;;;;;;", logsss)
 	NEIGHBORS_LISTENER.callback();
-	console.log("nearest ids:", nearest_ids,);
-	// console.log("cos sim nearest:", cos_sims_nearest);
+	console.log("nearest ids:", nearest_ids);
 });
 
-// store cosine similarity
-var cos_sims_explore = []
+// store similarity scores for outside area
+var sim_scores_explore = []
 
-function get_cosine_sim(id, ind) {
-	console.log('Getting cosine similarity...');
+function get_sim_scores(id, ind) {
+	console.log('Getting similarity scores...');
 
 	var promise = new Promise(function(resolve, reject) {
 		SIM_SCORE_LISTENER = new Listener(function () {
@@ -48,12 +48,13 @@ function get_cosine_sim(id, ind) {
 			resolve();
 		});
 	});
-	socket.emit('get_cosine_sim', {id: id, ind: ind});
+	socket.emit('get_sim_scores', {id: id, ind: ind});
+	
 	return promise
 }
 
-socket.on('get_cosine_sim_data', function(data) {
-	cos_sims_explore = data.cos_sims;
+socket.on('get_sim_scores_data', function(data) {
+	sim_scores_explore = data.sim_scores;
 	SIM_SCORE_LISTENER.callback();
 	// console.log("cos sims explore area:", cos_sims_explore);
 });

@@ -40,29 +40,27 @@ class Features(object):
         vec = self.features[img_idx].reshape(1, -1)
         dist, ind = self.neigh.kneighbors(vec, n_neighbors=n)
         ind_list = [self.ids[i] for i in ind[0]]
-        cos_sims = self.get_cos_sims(id, ind_list)
-        return list(dist[0]), ind_list, cos_sims
+        sim_scores = self.get_sim_scores(id, ind_list)
+        return list(dist[0]), ind_list, sim_scores
 
-    def get_cos_sims(self, center_id, ind):
+    def get_sim_scores(self, center_id, ind):
         center_img_idx = self.id2i[center_id]
         vec = self.features[center_img_idx].reshape(1, -1)
-        cos_sims = []
+        sim_scores = []
         for i in range(len(ind)):
             img_idx = self.id2i[ind[i]]
             vec_i = self.features[img_idx].reshape(1, -1)
-            # Transform dist in random attempt at meaningful similarity score 
-            # cos_sim = (1.3 - euclidean_distances(vec, vec_i).item(0, 0))
-            cos_sim = pairwise.cosine_distances(vec, vec_i).item(0, 0)
-            # Between 0 and 1
-            # ang_dis = np.arccos(cos_sim) / np.pi
-            # Scale cosine distance for meaningful similarity score
-            cos_sim = (1 - (4*cos_sim))
-            if cos_sim < 0:
-                cos_sim = 0
-            if cos_sim > 1:
-                cos_sim = 1
-            cos_sims.append(cos_sim)
-        return cos_sims
+            # Get cosine distances
+            cos_dist = pairwise.cosine_distances(vec, vec_i).item(0, 0)
+            # Handcrafted similarity score
+            sim_score = (1 - (4*cos_dist))
+            # Account for values outside range
+            if sim_score < 0:
+                sim_score = 0
+            if sim_score > 1:
+                sim_score = 1
+            sim_scores.append(sim_score)
+        return sim_scores
 
 def main(opt):
     feature_file_path = Path(opt.feature_path) / Path(r'features.csv')

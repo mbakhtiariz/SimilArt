@@ -12,7 +12,7 @@ var nearest_ids = []
 var cos_sims_nearest = []
 
 // Functions needed for the nearest neighbor queries
-function nearest_neighbors(id, n_neighbors) {
+function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
 	console.log('Getting nearest neighbors...');
 
 	var promise = new Promise(function(resolve, reject) {
@@ -21,7 +21,7 @@ function nearest_neighbors(id, n_neighbors) {
 			resolve();
 		});
 	});
-	socket.emit('nearest_neighbors', {id: id, n: n_neighbors});
+	socket.emit('nearest_neighbors', {id: id, n: n_neighbors, start_time: start_time, end_time: end_time, category: category});
 	return promise
 }
 
@@ -29,8 +29,10 @@ socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;
 	cos_sims_nearest = data.cos_sims;
+	logsss = data.log;
+	console.log(";;;;;;;;;;;;;;;;;;;;", logsss)
 	NEIGHBORS_LISTENER.callback();
-	console.log("nearest ids:", nearest_ids);
+	console.log("nearest ids:", nearest_ids,);
 	// console.log("cos sim nearest:", cos_sims_nearest);
 });
 

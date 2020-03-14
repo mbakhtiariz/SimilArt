@@ -141,15 +141,15 @@
         <div id="slider-range"></div>
 
         <!-- check box to add filter on similar area: -->
-        <!-- <div id="similar_too_div" style="position: absolute; top: 640px; left:100px;">
+        <div id="similar_too_div">
             <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
-            <label for="similar_too" style="color:whitesmoke"> Include similar images</label><br>
-        </div> -->
+            <label for="similar_too" style="color:whitesmoke"> Filter similar images too</label><br>
+        </div>
 
         <!-- category filter: -->
         <div id="cat_div">
             <label for="general_cats", style="color:#757575"> Filter category:</label>
-            <select id="general_cats" name="general_cats" style="background-color: white;", onchange="change_dissimilar_images()">
+            <select id="general_cats" name="general_cats" style="background-color: white;", onchange="chnage_category()">
                 <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
             </select>
         </div>
@@ -172,6 +172,8 @@
     var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
     var filter_cat_padding_left = svgwidth - 300 + 'px';//timeslider_padding_left - 10 + 'px';
     var filter_cat_padding_top = height_navbar - 40 + 'px';
+    var filter_checkbox_padding_left = timeslider_padding_left - 10 + 'px';
+
 </script>
 
 <!-- Import dragable images code -->
@@ -254,6 +256,11 @@
     filtering_section.style.top = filter_sec_top;//svgheight + 'px';
     filtering_section.style.paddingTop = '0';
 
+    const filtering_checkbox_section = document.getElementById("similar_too_div");
+    // alert(filtering_cat_section.innerHTML)
+    filtering_checkbox_section.style.position = 'absolute';
+    filtering_checkbox_section.style.top = '60px';
+    filtering_checkbox_section.style.left = filter_checkbox_padding_left;
 
     const filtering_cat_section = document.getElementById("cat_div");
     // alert(filtering_cat_section.innerHTML)
@@ -278,12 +285,37 @@
                 .duration(0)
                 .style("opacity", 0)
                 .remove();
+            
             d3.select('p#value-range').text(val);
             change_dissimilar_images();
+            if (document.getElementById("similar_too").checked === true)
+            {
+                d3.selectAll("g#middle_image")
+                .transition()
+                .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
+                change_similar_images();
+            }
         })
         .on('start', val => {
-            d3.select('p#value-range').text(val);
-            change_dissimilar_images();
+            // d3.selectAll("g#outside_image")
+            //     .transition()
+            //     .duration(0)
+            //     .style("opacity", 0)
+            //     .remove();
+            
+            // d3.select('p#value-range').text(val);
+            // change_dissimilar_images();
+            // if (document.getElementById("similar_too").checked === true)
+            // {
+            //     d3.selectAll("g#middle_image")
+            //     .transition()
+            //     .duration(removal_transition_speed)
+            //     .style("opacity", 0)
+            //     .remove();
+            //     change_similar_images();
+            // }
         });
 
     
@@ -654,14 +686,23 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
+
+    function chnage_category(){
+        change_dissimilar_images();
+        if (document.getElementById("similar_too").checked){
+            change_similar_images();
+        }
+    }
+    
+
     function change_dissimilar_images() {
         start_time = parseInt(sliderRange.value()[0]);
         end_time = parseInt(sliderRange.value()[1]);
         category = document.getElementById("general_cats").value
 
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
-        filtered_ids = images_ids.filter(filter_fun);
-        function filter_fun(my_id){
+        filtered_ids = images_ids.filter(filter_func);
+        function filter_func(my_id){
             return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
             && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
@@ -767,9 +808,15 @@
     }
 
 
-    function change_similar_images(start_year=-5000, end_year=2020, plot_dissimilar=true) {
+    function change_similar_images(start_time=-5000, end_time=2020, category="all", plot_dissimilar=true) {
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
         console.log("change similar");
+        if (document.getElementById("similar_too").checked === true){
+            start_time = parseInt(sliderRange.value()[0]);
+            end_time = parseInt(sliderRange.value()[1]);
+            category = document.getElementById("general_cats").value
+        }
+        
 
         // Remove all current images
         d3.selectAll("g#middle_image")
@@ -778,13 +825,13 @@
             .style("opacity", 0)
             .remove();
 
-        if (selected_locs_dict[middle_image.toString()] == undefined) {
+        if (selected_locs_dict[middle_image.toString()] == undefined || true) {
             /*
             Here we find the "n" similar images to the central image, using KNN method.
             We also define the coordinates for each of those similar images.
             */
             // Wait until neighbouring images is found
-            nearest_neighbors(middle_image, nr_similar_images, start_year, end_year).then(() => {
+            nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
                 // --- selecting location of similar layer and plotting those images:
                 const center_x = parseFloat(d3.select("image#center").attr("x"));
                 const center_y = parseFloat(d3.select("image#center").attr("y"));

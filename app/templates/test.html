@@ -87,7 +87,7 @@
             <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
             OmniArt is a large scale artistic benchmark dataset aggregated from multiple collections around the world.
             </p>
-            
+
             <br>
 
             <h5 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART EXPLORATION?</h5>
@@ -157,7 +157,7 @@
             </select>
         </div>
     </div>
-    
+
 </body>
 
 <script type="text/javascript">
@@ -253,7 +253,7 @@
 
     var center = middle.append("svg");
 
-    // Set the positions of slider based on page ratio: 
+    // Set the positions of slider based on page ratio:
 
     const filtering_section = document.getElementById("filtering_section");
     filtering_section.style.position = 'absolute';
@@ -289,7 +289,7 @@
                 .duration(0)
                 .style("opacity", 0)
                 .remove();
-            
+
             d3.select('p#value-range').text(val);
             change_dissimilar_images();
             if (document.getElementById("similar_too").checked === true)
@@ -308,7 +308,7 @@
             //     .duration(0)
             //     .style("opacity", 0)
             //     .remove();
-            
+
             // d3.select('p#value-range').text(val);
             // change_dissimilar_images();
             // if (document.getElementById("similar_too").checked === true)
@@ -322,7 +322,7 @@
             // }
         });
 
-    
+
     var gRange = d3
         .select('div#slider-range')
         .append('svg')
@@ -791,7 +791,7 @@
 
 
 
-    
+
 
     function change_dissimilar_images() {
         start_time = parseInt(sliderRange.value()[0]);
@@ -914,7 +914,7 @@
             end_time = parseInt(sliderRange.value()[1]);
             category = document.getElementById("general_cats").value
         }
-        
+
 
         // Remove all current images
         d3.selectAll("g#middle_image")
@@ -962,7 +962,7 @@
                 //     plot_dissimilar_images(images_ids_subset, transition=false);
                 // }
             });
-        // } 
+        // }
         // else {
         //     similar_locs = selected_locs_dict[middle_image.toString()];
         //     nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
@@ -1064,7 +1064,17 @@
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
-        middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
+        let start_time = parseInt(sliderRange.value()[0]);
+        let end_time = parseInt(sliderRange.value()[1]);
+        let category = document.getElementById("general_cats").value
+
+        let filtered_ids = available_ids.filter(filter_func);
+        function filter_func(my_id){
+            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
+            && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
+        }
+
+        middle_image = filtered_ids[Math.floor(Math.random() * filtered_ids.length)];
         set_center(center, middle_image).then(() => {
             change_similar_images(plot_dissimilar=false);
             change_dissimilar_images();

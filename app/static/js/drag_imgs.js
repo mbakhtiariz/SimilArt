@@ -40,6 +40,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
+			
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
@@ -55,6 +56,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
         	set_center(center, middle_image);
 			
 			change_similar_images();
+			change_dissimilar_images();
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {

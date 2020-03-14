@@ -53,6 +53,7 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
         	set_center(center, middle_image);
 			// handle_stacks();
 			change_similar_images();
+			change_dissimilar_images();
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {

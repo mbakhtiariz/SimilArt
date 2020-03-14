@@ -905,7 +905,7 @@
             .style("opacity", 0)
             .remove();
 
-        if (selected_locs_dict[middle_image.toString()] == undefined || true) {
+        // if (selected_locs_dict[middle_image.toString()] == undefined || true) {
             /*
             Here we find the "n" similar images to the central image, using KNN method.
             We also define the coordinates for each of those similar images.
@@ -926,27 +926,28 @@
                 selected_locs_dict[middle_image.toString()] = similar_locs;
                 selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 
-                if (plot_dissimilar) {
-                    // Update outside images for similarity score
-                    plot_dissimilar_images(images_ids_subset, transition=false);
-                }
+                // if (plot_dissimilar) {
+                //     // Update outside images for similarity score
+                //     plot_dissimilar_images(images_ids_subset, transition=false);
+                // }
             });
-        } else {
-            similar_locs = selected_locs_dict[middle_image.toString()];
-            nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
-            // Start i from 1 to filter-out central image:
-            for (var i=0; i < similar_locs.length; i++) {
-                meta_data_painting = data[nearest_ids[i+1]]
-                artwork_name = meta_data_painting['artwork_name']
-                artist_full_name = meta_data_painting['artist_full_name']
-                creation_year = meta_data_painting['creation_year']
-                cosine_sim = (Math.round(cos_sims_nearest[i+1] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100)
-                appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
-                    similar_locs[i], artwork_name, artist_full_name,
-                    sim_score, creation_year);
-            }
-        }
+        // } 
+        // else {
+        //     similar_locs = selected_locs_dict[middle_image.toString()];
+        //     nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
+        //     // Start i from 1 to filter-out central image:
+        //     for (var i=0; i < similar_locs.length; i++) {
+        //         meta_data_painting = data[nearest_ids[i+1]]
+        //         artwork_name = meta_data_painting['artwork_name']
+        //         artist_full_name = meta_data_painting['artist_full_name']
+        //         creation_year = meta_data_painting['creation_year']
+        //         cosine_sim = (Math.round(cos_sims_nearest[i+1] * 100) / 100).toFixed(2);
+        //         sim_score = Math.round(cosine_sim * 100)
+        //         appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
+        //             similar_locs[i], artwork_name, artist_full_name,
+        //             sim_score, creation_year);
+        //     }
+        // }
     }
 
     function redo() {

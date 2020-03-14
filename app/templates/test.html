@@ -936,18 +936,25 @@
                 .style("opacity", 0)
                 .remove();
                 // --- selecting location of similar layer and plotting those images:
-                const center_x = parseFloat(d3.select("image#center").attr("x"));
-                const center_y = parseFloat(d3.select("image#center").attr("y"));
-                const center_width = parseFloat(d3.select("image#center").attr("width"));
-                const center_height = parseFloat(d3.select("image#center").attr("height"));
-                const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
+                try{
+                    const center_x = parseFloat(d3.select("image#center").attr("x"));               
+                    const center_y = parseFloat(d3.select("image#center").attr("y"));
+                    const center_width = parseFloat(d3.select("image#center").attr("width"));
+                    const center_height = parseFloat(d3.select("image#center").attr("height"));
+                    const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
 
-                // !!!!!!!!!!!!!! modified this to not have images on border
-                const outer = {"x": 20, "y": 20, "width": middle_width-50, "height": middle_height-50};
-                var similar_locs = [];
-                similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest, similar_locs, similar_image_size);
-                selected_locs_dict[middle_image.toString()] = similar_locs;
-                selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
+                    // !!!!!!!!!!!!!! modified this to not have images on border
+                    const outer = {"x": 20, "y": 20, "width": middle_width-50, "height": middle_height-50};
+                    var similar_locs = [];
+                    similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest, similar_locs, similar_image_size);
+                    selected_locs_dict[middle_image.toString()] = similar_locs;
+                    selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
+                }
+                catch (exception){
+                    console.log("caught an expception!!!!!!!!!!!!!!!!!!!!",d3.select("image#center"));
+                    change_similar_images();
+                    return
+                }
 
                 // if (plot_dissimilar) {
                 //     // Update outside images for similarity score

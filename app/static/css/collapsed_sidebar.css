@@ -31,7 +31,7 @@ body {
   color: #f1f1f1;
 }
 
-/* 
+/*
 .sidebar .drop_btn {
   text-decoration: none;
   font-size: 1rem;
@@ -89,7 +89,7 @@ body {
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
-} 
+}
 
 .sidebar .btn:hover{
   /* color:#17a2b8; */
@@ -117,4 +117,3 @@ body {
 /* .sidebar .search_key, .search_key_label{
   margin-left: 30px;
 } */
-

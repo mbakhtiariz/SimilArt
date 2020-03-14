@@ -14,7 +14,7 @@ var sim_scores_nearest = []
 // Functions needed for the nearest neighbor queries
 function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
 	console.log('Getting nearest neighbors...');
-
+	
 	var promise = new Promise(function(resolve, reject) {
 		NEIGHBORS_LISTENER = new Listener(function () {
 			// setTimeout(resolve, 10);

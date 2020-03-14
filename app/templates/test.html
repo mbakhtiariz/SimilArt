@@ -144,7 +144,7 @@
 
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
-            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too">
+            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
             <label for="similar_too" style="color:whitesmoke"> Filter similar images too</label><br>
         </div>
 
@@ -773,6 +773,16 @@
             change_similar_images();
         }
     }
+
+    function filter_similars(){
+        if (document.getElementById("similar_too").checked){
+        change_dissimilar_images();
+        change_similar_images();
+        }
+    }
+
+
+
     
 
     function change_dissimilar_images() {

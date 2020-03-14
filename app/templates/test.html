@@ -787,7 +787,6 @@
             && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
-        console.log("#########################",images_ids, data['1000']);
         sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
@@ -912,7 +911,20 @@
             We also define the coordinates for each of those similar images.
             */
             // Wait until neighbouring images is found
+            middle.append("text").text('Loading ...')
+                .attr("class","middle")
+                .attr("id","filter_loading")
+                .style("fill","whitesmoke")
+                .style("stroke-width","0")
+                .attr("x","10")
+                .attr("y","22");
+
             nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+                d3.selectAll("#filter_loading")
+                .transition()
+                .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
                 // --- selecting location of similar layer and plotting those images:
                 const center_x = parseFloat(d3.select("image#center").attr("x"));
                 const center_y = parseFloat(d3.select("image#center").attr("y"));

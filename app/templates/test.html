@@ -108,7 +108,7 @@
             <br>
             <label for="search_key" class="search_key_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Key:</label>
             <div class="autocomplete">
-                <input type="text" id="search_key" class="search_key" name="search_key" value="" style="margin-left: 20px;margin-right: 20px;">
+                <input type="text" id="search_key" class="search_key" name="search_key" value="" style="margin-left: 20px;">
             </div>
             <br><br>
             <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a>
@@ -131,19 +131,6 @@
                 Amsterdam, The Netherlands</address>
         </div>
 
-        <!-- <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
-
-            <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
-            <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)" value="">
-            <br><br>
-            <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
-            <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)" value="">
-
-
-            <br><br>
-            <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
-        </div> -->
-
     </div>
 
     <div id="container"></div>
@@ -162,7 +149,7 @@
         <!-- category filter: -->
         <div id="cat_div">
             <label for="general_cats", style="color:#757575"> Filter category:</label>
-            <select id="general_cats" name="general_cats" style="background-color: white;", onchange="filter_dissimilar()">
+            <select id="general_cats" name="general_cats" style="background-color: white;", onchange="change_dissimilar_images()">
                 <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
             </select>
         </div>
@@ -260,12 +247,7 @@
 
     var center = middle.append("svg");
 
-    //  ------------ this works dont remove -------------
     // Set the positions of slider based on page ratio: 
-
-    // alert(svgheight);
-    // alert(svgwidth);
-
 
     const filtering_section = document.getElementById("filtering_section");
     filtering_section.style.position = 'absolute';
@@ -297,21 +279,16 @@
                 .style("opacity", 0)
                 .remove();
             d3.select('p#value-range').text(val);
-            filter_dissimilar();
-        //   d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'));
+            change_dissimilar_images();
         })
         .on('start', val => {
             d3.select('p#value-range').text(val);
-            filter_dissimilar();
-        //   d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'));
+            change_dissimilar_images();
         });
 
     
     var gRange = d3
         .select('div#slider-range')
-        // .style('position','absolute')
-        // .style('top','550px')
-        // .style('z-index','0')
         .append('svg')
         .attr('width', svgwidth)
         .attr('height', 100)
@@ -406,14 +383,6 @@
         // .attr('fill', 'white');
 
     menubutton.on('click', function() {
-
-        // // remove blue color of pre-clicked update buttons
-        // document.getElementById("end_year_update").style.color = "#818181";
-        // document.getElementById("end_year_update").style.backgroundColor = "#111";
-
-        // document.getElementById("search_key_update").style.color = "#818181";
-        // document.getElementById("search_key_update").style.backgroundColor = "#111";
-
         // open the encapsolated menu bar
         openNav()
 
@@ -685,20 +654,10 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-    function change_dissimilar_images(category="all", start_time=-2500, end_time = 2017) {
-        console.log("3--start and end year for Filtering:",start_time, end_time);
-        var temp_time;
-        if(start_time > end_time){
-            // alert("[Filtering Warning]: The end year should be later or equal to start year. So we swapped your request order for creayears!");
-            [start_time, end_time] = [end_time, start_time]
-            console.log("6666--start and end year for Filtering:",start_time, end_time);
-        };
-        if(end_time > 2017){
-            end_time = 2017;
-        };
-        if(start_time < -2500){
-            start_time < -2500;
-        };
+    function change_dissimilar_images() {
+        start_time = parseInt(sliderRange.value()[0]);
+        end_time = parseInt(sliderRange.value()[1]);
+        category = document.getElementById("general_cats").value
 
         images_ids = available_ids.filter(n => !nearest_ids.includes(n));
         filtered_ids = images_ids.filter(filter_fun);
@@ -797,75 +756,6 @@
             autocomplete(document.getElementById("search_key"), artists_list_cased);
         }
     });
-
-
-    // let filter_start_year_input = document.getElementById("start_year");
-    // filter_start_year_input.addEventListener("keyup", function(event) {
-    //     if (event.keyCode === 13) {
-    //         // event.preventDefault();
-    //         filter_dissimilar();
-    //     }
-    // });
-
-
-    // let filter_end_year_input = document.getElementById("end_year");
-    // filter_end_year_input.addEventListener("keyup", function(event) {
-    //     if (event.keyCode === 13) {
-    //         // event.preventDefault();
-    //         filter_dissimilar();
-
-    //     }
-    // });
-
-
-
-    function filter_dissimilar(){
-
-        // change the color of pressed button to blue
-        // document.getElementById("end_year_update").style.color = "#f1f1f1";
-        // document.getElementById("end_year_update").style.backgroundColor = "#17a2b8";
-
-        // document.getElementById("search_key_update").style.color = "#f1f1f1";
-        // document.getElementById("search_key_update").style.backgroundColor = "#17a2b8";
-
-        // Get the requested years to filter images
-        // let start_point = document.getElementById("start_year").value;
-        // let end_point = document.getElementById("end_year").value;
-
-        console.log("changed.........")
-        let start_point = sliderRange.value()[0];
-        let end_point = sliderRange.value()[1];
-        console.log("changed.........", start_point, end_point)
-
-        // use some predefined values, if user pressed sumbmit without choosing a value
-        if(start_point == ""){
-            start_point = "-2500";
-        };
-
-        if(end_point == ""){
-            end_point = "2017";
-        };
-
-        start_year = parseInt(start_point);
-        end_year = parseInt(end_point);
-
-        if(Number.isNaN(start_year) || Number.isNaN(start_year)){
-            alert("[Filtering Error] You have entered text instead of number. You should enter some number between -2500 to 2017.");
-            return;
-        };
-
-        category = document.getElementById("general_cats").value
-        // choose dis-similar images.
-        change_dissimilar_images(category,start_year, end_year);
-        // if (document.getElementById("").value === true){
-        //     change_similar_images(start_year, end_year)
-        // };
-
-
-        // close the navigation bar.
-        closeNav()
-    }
-
 
 
     function handle_stacks(){

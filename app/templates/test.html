@@ -543,6 +543,55 @@
         });
         // .attr('fill', 'white');
 
+    var info_button_circle;
+    var info_button = button_svg.append("g");
+    info_button.append("circle")
+        .attr("class", "button")
+        .attr("cx", button_size / 1.2 + button_size / 2 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
+        .attr('cy', button_size / 2)
+        .attr("r", button_size / 2)
+        .style('opacity', 0)
+        .on("mouseover", function(d){
+            info_button_circle = this;
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Show information overlay")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    info_button.append("image")
+        .attr("class", "button")
+        .attr("href", "static/icons/" + 'info.png')
+        .attr("height", button_size / 2.3)
+        .attr("width", button_size / 2.3)
+        .attr("x", button_size / 1.2 + button_size / 3.4 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
+        .attr('y', button_size / 3.4)
+        .attr("clip-path", "url(#clip)")
+        .style('opacity', 1)
+        .on("mouseover", function(){
+            d3.select(info_button_circle).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Show information overlay")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){
+            d3.select(info_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+        // .attr('fill', 'white');
+
     undo_button.on('click', function() {
         console.log('go back to previous image');
         undo();

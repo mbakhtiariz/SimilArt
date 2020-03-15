@@ -87,7 +87,7 @@
             <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
             OmniArt is a large scale artistic benchmark dataset aggregated from multiple collections around the world.
             </p>
-            
+
             <br>
 
             <h5 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART EXPLORATION?</h5>
@@ -111,14 +111,16 @@
                 <input type="text" id="search_key" class="search_key" name="search_key" value="" style="margin-left: 20px;">
             </div>
             <br><br>
-            <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a>
+            <label for="search_key" class="search_key_label" id="search_results_header" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Results:</label>
+            <!-- <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a> -->
+            <div id="search_results"></div>
         </div>
 
 
         <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;">
             <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
-            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> kylian.vangeijtenbeek [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Barry Hendriks: <br> ? [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Iulia Ionescu: <br> ? [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Martine Toering: <br> martine.toering [at] gmail [dot] com</p>
@@ -157,7 +159,7 @@
             </select>
         </div>
     </div>
-    
+
 </body>
 
 <script type="text/javascript">
@@ -210,6 +212,14 @@
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
 
+    // Add listener to close side menu if we click anywhere on the page (except the menu button)
+    document.getElementById("page").addEventListener("click", function(e) {
+        if (e.target.id != "menu_button") closeNav();
+    });
+    document.getElementById("filtering_section").addEventListener("click", function(e) {
+        closeNav();
+    });
+
     var NEIGHBORS_LISTENER;
     var SIM_SCORE_LISTENER;
     var removal_transition_speed = 500;
@@ -257,7 +267,7 @@
 
     var center = middle.append("svg");
 
-    // Set the positions of slider based on page ratio: 
+    // Set the positions of slider based on page ratio:
 
     const filtering_section = document.getElementById("filtering_section");
     filtering_section.style.position = 'absolute';
@@ -312,7 +322,7 @@
             //     .duration(0)
             //     .style("opacity", 0)
             //     .remove();
-            
+
             // d3.select('p#value-range').text(val);
             // change_dissimilar_images();
             // if (document.getElementById("similar_too").checked === true)
@@ -326,7 +336,7 @@
             // }
         });
 
-    
+
     var gRange = d3
         .select('div#slider-range')
         .append('svg')
@@ -376,6 +386,7 @@
     var menubutton_circle;
     menubutton.append("circle")
         .attr("class", "button")
+        .attr("id", "menu_button")
         .attr("cx", button_size / 2)
         .attr("cy", button_size / 2)
         .attr("r", button_size / 2)
@@ -681,6 +692,241 @@
     })
 
 
+    // -----------------------------------------------------------
+    // Search results
+
+    let search_results = [];
+    let result_idx = 0;
+
+    let search_img_size = 150;
+    let search_button_radius = 20;
+    let search_width = 250;
+    let search_img_margin = (search_width - search_img_size) / 2;
+    let button_margins = (search_img_margin - (2*search_button_radius)) / 2;
+
+    // Add area for resulting images
+    let search_results_area = d3.select("#search_results")
+        .append("svg")
+            .attr("width", search_width) // Generally 210px wide
+            .attr("height", search_img_size);
+
+    let search_results_details = d3.select("#search_results")
+        .append("div")
+            .attr("id", "search_details")
+            .style("width", "210px")
+            .style("height", "150px")
+            .style("margin-left", "30px")
+            .style("margin-right", "30px")
+            .style("margin-top", "20px");
+
+    // Add rectangle that displays resulting images location
+    search_results_area.append("rect")
+        .attr("class", "searchImage")
+        .attr("x", search_img_margin)
+        .attr("width", search_img_size)
+        .attr("height", search_img_size)
+        .attr("pointer-events", "visible")
+        .style("fill", "none")
+        .style("stroke-width", 5)
+        .style("stroke", "grey")
+        .style("opacity", 0.6);
+
+    // Add button for scrolling right
+    let search_right = search_results_area.append("circle")
+        .attr("id", "search_results_right")
+        .attr("class", "button")
+        .attr("cx", search_width - button_margins - search_button_radius)
+        .attr("cy", 0.5*search_img_size)
+        .attr("r", search_button_radius)
+        .style("opacity", 0)
+        .style("fill", "grey")
+        .on("click", function() {
+            if (search_results.length == 0) return // If no results, do nothing
+
+            result_idx++;
+            if (result_idx >= search_results.length) result_idx = 0;
+            set_result_img(search_results[result_idx])
+        })
+        .on("mouseover", function(d){
+            info_button_circle = this;
+            d3.select(this).style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll right")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    // Add right scroll icon
+    search_results_area.append("image")
+		.attr("href", "static/icons/" + 'right.png')
+        .attr("class", "button")
+		.attr("height", button_size / 2)
+        .attr("width", button_size / 2)
+        .attr("x", search_width - button_margins - 1.5*search_button_radius)
+        .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
+		.attr("clip-path", "url(#clip)");
+
+
+
+    // Add button for scrolling left
+    let search_left = search_results_area.append("circle")
+        .attr("id", "search_results_left")
+        .attr("class", "button")
+        .attr("cx", button_margins + search_button_radius)
+        .attr("cy", 0.5*search_img_size)
+        .attr("r", search_button_radius)
+        .style("opacity", 0)
+        .style("fill", "grey")
+        .on("click", function() {
+            if (search_results.length == 0) return // If no results, do nothing
+
+            result_idx--;
+            if (result_idx < 0) result_idx = search_results.length - 1;
+            set_result_img(search_results[result_idx])
+        })
+        .on("mouseover", function(d){
+            info_button_circle = this;
+            d3.select(this).style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll left")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    // Add left scroll icon
+    search_results_area.append("image")
+        .attr("href", "static/icons/" + 'left.png')
+        .attr("class", "button")
+        .attr("height", button_size / 2)
+        .attr("width", button_size / 2)
+        .attr("x", button_margins + 0.5*search_button_radius)
+        .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
+        .attr("clip-path", "url(#clip)");
+
+    function set_result_img(id) {
+        // Display image in correct dimensions
+        let result_img = new Image();
+        result_img.onload = function () {
+            let img_width = result_img.width;
+        	let img_height = result_img.height;
+        	var ratio = img_width / img_height;
+        	// If image width > height
+        	if (ratio > 1) {
+        		img_width = search_img_size;
+        		img_height = search_img_size / ratio;
+        	// If image height > width
+        	} else {
+        		img_width = search_img_size * ratio;
+        		img_height = search_img_size;
+        	}
+            let image_x = (search_img_size * 0.5 - img_width / 2) + search_img_margin;
+        	let image_y = (search_img_size * 0.5 - img_height / 2);
+
+            search_results_area.selectAll(".searchImage").remove(); // Remove old rect
+            search_results_area.append("image") // Add new image
+                .attr("class", "searchImage")
+        		.attr("href", imgs_path + id + ".jpg")
+        		.attr("height", img_height)
+        		.attr("width", img_width)
+                .attr("x", image_x)
+                .attr("y", image_y)
+                .attr("pointer-events", "visible")
+        		.attr("clip-path", "url(#clip)");
+            search_results_area.append("rect") // Add rect for click events
+                .attr("class", "searchImage")
+                .attr("height", img_height)
+                .attr("width", img_width)
+                .attr("x", image_x)
+                .attr("y", image_y)
+                .attr("filter", "url(#glow)")
+                .attr("pointer-events", "visible")
+                .style("fill", "none")
+                .on('click', function() { // On click, set to center image
+        			var modalImg = document.getElementById("img01");
+        			modalImg.src = data[d3.select("image.searchImage").attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+
+        			handle_stacks();
+
+                    // change middle_image variable and call function, both from test.html;
+        			middle_image = (imgs_path + id + ".jpg").replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
+                    d3.select('image#center').transition()
+        				.duration(removal_transition_speed_middle_image)
+        				.style('opacity', 0)
+        				.remove();
+        			d3.select('rect#center').remove();
+                	set_center(center, middle_image);
+        			// handle_stacks();
+        			change_similar_images();
+        			change_dissimilar_images();
+                });
+        }
+        result_img.src = imgs_path + id + ".jpg";
+        // Get the metadata
+        let artwork_name = data[id]['artwork_name'];
+        let artist_full_name = data[id]['artist_full_name'];
+        let creation_year = data[id]['creation_year'];
+        let num_results = (search_results.length).toString();
+        let num_results_str = "Search Results [" + (result_idx+1).toString() + "/" + num_results + "]:";
+        document.getElementById("search_results_header").innerHTML = num_results_str;
+        document.getElementById('search_details').innerHTML = "<i>" + artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ")</b>";
+    }
+
+    // This functions handles any search by click/enter. These listeners are set in autocomplete.js
+    function handle_search() {
+        search_cat = document.getElementById("search_cat").value.toLowerCase();
+        // Set the correct lookup dictionary depending on artname/artist name
+        if(search_cat === "art name") {
+            dictionary = artnames_to_ids;
+        } else {
+            dictionary = artists_to_ids;
+        }
+
+        let dict_search_key = stripHtml(document.getElementById("search_key").value).toLowerCase();
+        let results = dictionary[dict_search_key];
+
+        // If we have results
+        if (results !== undefined && dict_search_key != ""){
+            search_results = results; // Set the global variable
+            result_idx = 0; // Reset the results index for looping
+            set_result_img(search_results[0]) // Set the results image
+
+        // If no results
+        } else {
+            search_results_area.selectAll(".searchImage").remove(); // Remove old image
+            search_results_area.append("rect")
+                .attr("class", "searchImage")
+                .attr("x", search_img_margin)
+                .attr("width", search_img_size)
+                .attr("height", search_img_size)
+                .attr("pointer-events", "visible")
+                .style("fill", "none")
+                .style("stroke-width", 3)
+                .style("stroke", "grey")
+                .style("opacity", 0.6);
+            document.getElementById("search_results_header").innerHTML = "Search Results:";
+            document.getElementById('search_details').innerHTML = "No results found.";
+            // alert("Searched image not found...");
+        }
+    }
+
+
+    // -----------------------------------------------------------
+
+
     // This can be used to execute code once a flag become true
     function TrueListener(callback, init_val=false) {
         this.value = init_val;
@@ -713,6 +959,13 @@
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+    // Function for sanitizing strings from the data that contain HTML characters
+    function stripHtml(html) {
+       var tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+
     function get_meta(listener) {
         fetch("static/subset_meta.json").then(response => {
             if (response.ok) {
@@ -731,18 +984,31 @@
                 console.log("Data loaded");
                 artnames_to_ids = {};
                 artists_to_ids = {};
-                artnames_list_cased = [];
+                artnames_list_cased = new Set();
                 artists_list_cased = new Set();
                 for(const key in data){
-                    let art_name = data[key]['artwork_name'];
-                    let artist_name = data[key]['artist_full_name'];
+                    let art_name =  stripHtml(data[key]['artwork_name']);
+                    let artist_name =  stripHtml(data[key]['artist_full_name']);
+                    // For dictionary keys, strip HTML characters and do lowercasing
+                    let art_name_lower = art_name.toLowerCase();
+                    let artist_name_lower = artist_name.toLowerCase();
+
                     // Mapping from lowercased names to artwork id for search
-                    artnames_to_ids[art_name.toLowerCase()] = key;
-                    artists_to_ids[artist_name.toLowerCase()] = key;
+                    if (artnames_to_ids[art_name_lower] == undefined) {
+                        artnames_to_ids[art_name_lower] = [key];
+                    } else {
+                        artnames_to_ids[art_name_lower].push(key);
+                    }
+                    if (artists_to_ids[artist_name_lower] == undefined) {
+                        artists_to_ids[artist_name_lower] = [key];
+                    } else {
+                        artists_to_ids[artist_name_lower].push(key);
+                    }
                     // List of upper/lowercased names (as in dataset) for autocompletion
-                    artnames_list_cased.push(art_name);
+                    artnames_list_cased.add(art_name);
                     artists_list_cased.add(artist_name);
                 }
+                artnames_list_cased = Array.from(artnames_list_cased); //from set to list
                 artists_list_cased = Array.from(artists_list_cased); //from set to list
                 // Sort the autocompletion lists
                 artnames_list_cased.sort();
@@ -791,7 +1057,6 @@
         change_similar_images();
         }
     }
-
 
     function change_dissimilar_images() {
         start_time = parseInt(sliderRange.value()[0]);
@@ -884,13 +1149,7 @@
         closeNav();
     }
 
-    let search_key_input = document.getElementById("search_key");
-    search_key_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            my_set_center();
-        }
-    });
-
+    // Listeners for autocomplete
     let search_cat_selection = document.getElementById("search_cat");
     search_cat_selection.addEventListener("change", function(event) {
         const value = event.target.value;
@@ -922,7 +1181,7 @@
             end_time = parseInt(sliderRange.value()[1]);
             category = document.getElementById("general_cats").value
         }
-        
+
 
         // Remove all current images
         d3.selectAll("g#middle_image")
@@ -978,7 +1237,7 @@
                 //     plot_dissimilar_images(images_ids_subset, transition=false);
                 // }
             });
-        // } 
+        // }
         // else {
         //     similar_locs = selected_locs_dict[middle_image.toString()];
         //     nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
@@ -1121,7 +1380,17 @@
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
-        middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
+        let start_time = parseInt(sliderRange.value()[0]);
+        let end_time = parseInt(sliderRange.value()[1]);
+        let category = document.getElementById("general_cats").value
+
+        let filtered_ids = available_ids.filter(filter_func);
+        function filter_func(my_id){
+            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
+            && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
+        }
+
+        middle_image = filtered_ids[Math.floor(Math.random() * filtered_ids.length)];
         set_center(center, middle_image).then(() => {
             change_similar_images(plot_dissimilar=false);
             change_dissimilar_images();

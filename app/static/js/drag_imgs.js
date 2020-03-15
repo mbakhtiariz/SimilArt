@@ -40,12 +40,12 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
-			
+
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
 			handle_stacks();
-			
+
             // change middle_image variable and call function, both from test.html;
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
             d3.select('image#center').transition()
@@ -54,7 +54,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				.remove();
 			d3.select('rect#center').remove();
         	set_center(center, middle_image);
-			
+
 			change_similar_images();
 			change_dissimilar_images();
 		})
@@ -66,8 +66,8 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		    if (length_artist_name > 5)
 		    	artist_full_name = artist_full_name.replace(/\s/g,'');
 
-        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
-        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" +
+        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') +
 				"</b> (" + creation_year + "). " +
 				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
 				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
@@ -97,7 +97,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
             	} else {
             		return tX+20+"px"
             	}
-            }) 
+            })
         })
 		.on("mouseout", function(d){
 			clearTimeout(timer_tooltip);
@@ -107,7 +107,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("class", "image-outline")
 		.attr("width", img_width)
 		.attr("height", img_height);
-	
+
 	imageGroup.call(
 		d3.drag()
 		.on("drag", dragged)

@@ -66,7 +66,7 @@ def get_sim_scores(info):
 def create_meta_json():
     print("Creating subset_meta.json file")
     # Get correct paths
-    
+
 
     # Make and store json file
     with open(current_path / Path(r'app/static/subset_meta.json'), 'w') as outfile:

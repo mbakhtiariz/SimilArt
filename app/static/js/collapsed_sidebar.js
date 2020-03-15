@@ -3,13 +3,14 @@ function openNav() {
 }
 
 
+// window.onclick = function(event) {
+//     console.log(event.target);
+//     if (event.target == document.getElementById("page")) {
+//         closeNav();
+//     }
+// }
+
 function closeNav() {
-  // close_other_navs("");
-  // sleep(500).then(() => {
-  // document.getElementById("mySidebar").style.width = "0";
-  // document.getElementById("menu_main").style.marginLeft= "0";
-  // });
-  
   // Check if all sidebars are collapsed or not
   let other_navs_collapsed = true;
   let all_opts = ["about", "search", "contact"];
@@ -32,7 +33,6 @@ function closeNav() {
           // document.getElementById("menu_main").style.marginLeft= "0";
       }, 400);
   }
-
 }
 
 

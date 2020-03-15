@@ -29,6 +29,7 @@ socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;
 	sim_scores_nearest = data.sim_scores;
+	
 	logsss = data.log;
 	console.log(";;;;;;;;;;;;;;;;;;;;", logsss)
 	NEIGHBORS_LISTENER.callback();
@@ -48,12 +49,14 @@ function get_sim_scores(id, ind) {
 		});
 	});
 	socket.emit('get_sim_scores', {id: id, ind: ind});
+	
 	return promise
 }
 
 socket.on('get_sim_scores_data', function(data) {
 	sim_scores_explore = data.sim_scores;
 	SIM_SCORE_LISTENER.callback();
+	// console.log("cos sims explore area:", cos_sims_explore);
 });
 
 // If .callback() is called on a Listener() object, the callback code is executed

@@ -1,16 +1,16 @@
 function appendDraggableImage(url, position, i_list, artwork_name, artist_full_name,
-		similarity, creation_year, transition=true) {
+		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
 	var img = new Image();
 	img.onload = function () {
 		appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
-			similarity, creation_year, transition);
+			similarity, creation_year, general_type, artwork_type, dominant_color, transition);
 	}
 	img.src = url;
 	img.i_list = i_list;
 }
 
 function appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
-		similarity, creation_year, transition=true) {
+		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -68,7 +68,10 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 
         	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
         		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
-        		"</b> (" + creation_year + "). " +
+				"</b> (" + creation_year + "). " +
+				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
+				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
+				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color + "<br><br>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
 			return tooltip.style("visibility", "visible");
 			}, time_till_tooltip_appearance);

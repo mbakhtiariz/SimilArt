@@ -832,15 +832,18 @@
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
                 creation_year = meta_data_painting["creation_year"]
+                general_type = meta_data_painting['general_type'];
+                artwork_type = meta_data_painting['artwork_type'];
+                dominant_color = meta_data_painting['dominant_color'];
                 // Convert to percentage
                 sim_score = Math.round(sim_scores_explore[i] * 100)
                 id_image = images_ids_subset[i].toString()
                 if (transition) {
                 setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                    creation_year, transition);
+                    creation_year, general_type, artwork_type, dominant_color, transition);
                 } else {
                     appendDraggableImage(imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                    creation_year, transition);
+                    creation_year, general_type, artwork_type, dominant_color, transition);
                 }
             };
 

@@ -348,9 +348,12 @@ function add_rect(borders, all_borders, container, x, y, width, height, center, 
 	const artwork_name = meta_data_painting['artwork_name'],
 		artist_full_name = meta_data_painting['artist_full_name'],
 		creation_year = meta_data_painting['creation_year'];
+		general_type = meta_data_painting['general_type'];
+		artwork_type = meta_data_painting['artwork_type'];
+		dominant_color = meta_data_painting['dominant_color'];
 	const cosine_sim = (Math.round(sim_score * 100) / 100).toFixed(2);
 	sim_score = Math.round(cosine_sim * 100);
-	appendImage("static/subset/"+id+".jpg", [x, y], artwork_name, artist_full_name, sim_score, creation_year);
+	appendImage("static/subset/"+id+".jpg", [x, y], artwork_name, artist_full_name, sim_score, creation_year, general_type, artwork_type, dominant_color);
 	add_border(all_borders, "top", x, y, x+width, y);
 	add_border(all_borders, "bottom", x, y+height, x+width, y+height);
 	add_border(all_borders, "left", x, y, x, y+height);

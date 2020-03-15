@@ -1059,9 +1059,6 @@
     }
 
 
-
-
-
     function change_dissimilar_images() {
         start_time = parseInt(sliderRange.value()[0]);
         end_time = parseInt(sliderRange.value()[1]);
@@ -1286,11 +1283,16 @@
             artwork_name = meta_data_painting['artwork_name']
             artist_full_name = meta_data_painting['artist_full_name']
             creation_year = meta_data_painting['creation_year']
+
+            general_type = meta_data_painting['general_type']
+            artwork_type = meta_data_painting['artwork_type']
+            dominant_color = meta_data_painting['dominant_color']
+
             // Convert to percentage
             sim_score = Math.round(sim_scores_nearest[i+1] * 100)
             appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
                 similar_locs[i], artwork_name, artist_full_name,
-                sim_score, creation_year);
+                sim_score, creation_year, general_type, artwork_type, dominant_color);
         }
         change_dissimilar_images();
     }
@@ -1329,11 +1331,15 @@
             artwork_name = meta_data_painting['artwork_name']
             artist_full_name = meta_data_painting['artist_full_name']
             creation_year = meta_data_painting['creation_year']
+
+            general_type = meta_data_painting['general_type']
+            artwork_type = meta_data_painting['artwork_type']
+            dominant_color = meta_data_painting['dominant_color']
             // Convert to percentage
             sim_score = Math.round(sim_scores_nearest[i+1] * 100)
             appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
                 similar_locs[i], artwork_name, artist_full_name,
-                sim_score, creation_year);
+                sim_score, creation_year, general_type, artwork_type, dominant_color);
         }
         change_dissimilar_images();
 

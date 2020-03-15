@@ -530,6 +530,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 		// lines = draw_borders(container, borders, lines);
 		failCounter = 0; // If we are here we succeeded in placing, so reset the fail counter
 	}
+	similar_locs = locations
 }
 
 // This function first loads the images, then calls the main function

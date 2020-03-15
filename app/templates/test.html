@@ -298,23 +298,24 @@
         // slider color:
         .fill('#56B8CF')
         .on('end', val => {
-            d3.selectAll("g#outside_image")
-                .transition()
-                .duration(0)
-                .style("opacity", 0)
-                .remove();
-
-            d3.select('p#value-range').text(val);
-            change_dissimilar_images();
+            console.log("===================================================");
             if (document.getElementById("similar_too").checked === true)
             {
                 d3.selectAll("g#middle_image")
-                .transition()
-                .duration(removal_transition_speed)
+                // .transition()
+                // .duration(removal_transition_speed)
                 .style("opacity", 0)
                 .remove();
                 change_similar_images();
             }
+            d3.selectAll("g#outside_image")
+                // .transition()
+                // .duration(0)
+                .style("opacity", 0)
+                .remove();
+
+            d3.select('p#value-range').text(val);
+            // change_dissimilar_images();
         })
         .on('start', val => {
             // d3.selectAll("g#outside_image")
@@ -869,9 +870,8 @@
         				.remove();
         			d3.select('rect#center').remove();
                 	set_center(center, middle_image);
-        			// handle_stacks();
         			change_similar_images();
-        			change_dissimilar_images();
+        			// change_dissimilar_images();
                 });
         }
         result_img.src = imgs_path + id + ".jpg";
@@ -1045,16 +1045,18 @@
     // ---------------- Helper Functions ------------------
 
     function chnage_category(){
-        change_dissimilar_images();
         if (document.getElementById("similar_too").checked){
             change_similar_images();
+        }
+        else{
+            change_dissimilar_images();
         }
     }
 
     function filter_similars(){
         if (document.getElementById("similar_too").checked){
-        change_dissimilar_images();
-        change_similar_images();
+            change_similar_images();
+            // change_dissimilar_images();
         }
     }
 
@@ -1064,14 +1066,17 @@
         end_time = parseInt(sliderRange.value()[1]);
         category = document.getElementById("general_cats").value
 
-        images_ids = available_ids.filter(n => !nearest_ids.includes(n));
-        filtered_ids = images_ids.filter(filter_func);
+        nearest_ids_str = nearest_ids.map(x => x.toString());
+        images_ids = available_ids.filter(filter_func);
+        filtered_ids = images_ids.filter(x => !nearest_ids_str.includes(x));
+        console.log("?????", nearest_ids)
+        console.log("!!!!!", nearest_ids_str)
         function filter_func(my_id){
             return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
             && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
-        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
+        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5); // shuffles the list
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5); // Shuffle a second time
@@ -1224,6 +1229,14 @@
                     console.log('Similar Locations:', similar_locs);
                     selected_locs_dict[middle_image.toString()] = similar_locs;
                     selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
+
+
+                    //update dissimlar images then!
+                    d3.selectAll("g#outside_image")
+                    .style("opacity", 0)
+                    .remove();
+                    change_dissimilar_images();
+
                 }
                 catch (exception){
                     console.log("caught an expception!!!!!!!!!!!!!!!!!!!!",d3.select("image#center"));
@@ -1401,7 +1414,7 @@
         middle_image = filtered_ids[Math.floor(Math.random() * filtered_ids.length)];
         set_center(center, middle_image).then(() => {
             change_similar_images(plot_dissimilar=false);
-            change_dissimilar_images();
+            // change_dissimilar_images();
         })
         console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker

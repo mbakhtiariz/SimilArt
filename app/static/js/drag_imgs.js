@@ -56,7 +56,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
         	set_center(center, middle_image);
 
 			change_similar_images();
-			change_dissimilar_images();
+			// change_dissimilar_images();
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {

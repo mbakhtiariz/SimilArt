@@ -29,9 +29,6 @@ socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;
 	sim_scores_nearest = data.sim_scores;
-	
-	logsss = data.log;
-	console.log(";;;;;;;;;;;;;;;;;;;;", logsss)
 	NEIGHBORS_LISTENER.callback();
 	console.log("nearest ids:", nearest_ids);
 });

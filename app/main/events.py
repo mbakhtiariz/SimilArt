@@ -41,7 +41,7 @@ def nearest_neighbors(info):
     def is_valid(sample_year, sample_cat):
         return start_time <= sample_year <= end_time and (category == sample_cat or category == "all")
 
-    for iter in range(5):
+    for iter in range(4):
         query_size = min(n * (5 ** iter), 150000)
         print(f"!!!!!!!!!!!!!!!!! querying iter {iter} for {query_size} nearest neighbors")
         dists, ids, sim_scores = features.nearest(int(id), query_size)
@@ -52,7 +52,7 @@ def nearest_neighbors(info):
     num_samples = min(n, len(filtered_ids))
     filtered_dists = [dist for id, dist in zip(ids, dists) if is_valid(data[id]["creation_year"], data[id]["general_type"])][:num_samples]
     filtered_sim_scores = [sim_score for id, sim_score in zip(ids, sim_scores) if is_valid(data[id]["creation_year"], data[id]["general_type"])][:num_samples]
-    emit('nearest_neighbors_data', {'dists': filtered_dists, 'ids': filtered_ids, 'sim_scores': filtered_sim_scores, 'log': category})
+    emit('nearest_neighbors_data', {'dists': filtered_dists, 'ids': filtered_ids, 'sim_scores': filtered_sim_scores})
 
 @socketio.on('get_sim_scores')
 def get_sim_scores(info):

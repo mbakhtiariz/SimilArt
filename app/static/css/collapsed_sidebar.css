@@ -31,6 +31,11 @@ body {
   color: #f1f1f1;
 }
 
+#search_results {
+    width: 250px;
+    height: 300px;
+}
+
 /*
 .sidebar .drop_btn {
   text-decoration: none;

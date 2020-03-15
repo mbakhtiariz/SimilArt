@@ -2,6 +2,21 @@ function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;
+
+  var name2results;
+  if (document.getElementById("search_cat").value == "Art name") {
+      name2results = artnames_to_ids;
+  } else {
+      name2results = artists_to_ids;
+  }
+
+  // On enter, close autocomplete list
+  inp.addEventListener("keydown", function(e) {
+      if (event.keyCode === 13) {
+          closeAllLists();
+      }
+  });
+
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
       var a, b, i, val = this.value;
@@ -23,7 +38,8 @@ function autocomplete(inp, arr) {
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
           b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
+          let num_results = name2results[arr[i].toLowerCase()].length;
+          b.innerHTML += (arr[i].substr(val.length) + " ("+ num_results.toString() +")");
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
@@ -35,6 +51,7 @@ function autocomplete(inp, arr) {
               closeAllLists();
           });
           a.appendChild(b);
+          b.addEventListener("click", handle_search);
         }
       }
   });
@@ -61,6 +78,7 @@ function autocomplete(inp, arr) {
           /*and simulate a click on the "active" item:*/
           if (x) x[currentFocus].click();
         }
+        handle_search();
       }
   });
   function addActive(x) {
@@ -93,4 +111,4 @@ function autocomplete(inp, arr) {
 document.addEventListener("click", function (e) {
     closeAllLists(e.target);
 });
-} 
+}

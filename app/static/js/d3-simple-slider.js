@@ -6,7 +6,7 @@ typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-
 }(this, function (exports, d3Array, d3Axis, d3Dispatch, d3Drag, d3Ease, d3Scale, d3Selection) { 'use strict';
 
 var UPDATE_DURATION = 200;
-var SLIDER_END_PADDING = 8;
+var SLIDER_END_PADDING = 0;
 var KEYBOARD_NUMBER_STEPS = 100;
 
 var top = 1;

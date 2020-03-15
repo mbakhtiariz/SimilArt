@@ -295,6 +295,10 @@
         .width(svgwidth * .95)
         .default([-2500, 2017])
         .step(1)
+        .ticks(20)
+        .handle('M -8, 0 a .025,.025 0 1,1 10,0 a 0.25,0.25 0 1,1 -10,0')
+        // .domain([-2500, 2017]) 
+        // .marks(2017) 
         // slider color:
         .fill('#56B8CF')
         .on('end', val => {

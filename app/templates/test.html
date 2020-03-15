@@ -724,7 +724,7 @@
         .attr("height", search_img_size)
         .attr("pointer-events", "visible")
         .style("fill", "none")
-        .style("stroke-width", 3)
+        .style("stroke-width", 5)
         .style("stroke", "grey")
         .style("opacity", 0.6);
 
@@ -879,7 +879,7 @@
         let num_results = (search_results.length).toString();
         let num_results_str = "Search Results [" + (result_idx+1).toString() + "/" + num_results + "]:";
         document.getElementById("search_results_header").innerHTML = num_results_str;
-        document.getElementById('search_details').innerHTML = artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ")</b>";
+        document.getElementById('search_details').innerHTML = "<i>" + artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ")</b>";
     }
 
     // This functions handles any search by click/enter. These listeners are set in autocomplete.js
@@ -892,7 +892,7 @@
             dictionary = artists_to_ids;
         }
 
-        let dict_search_key = document.getElementById("search_key").value.toLowerCase();
+        let dict_search_key = stripHtml(document.getElementById("search_key").value).toLowerCase();
         let results = dictionary[dict_search_key];
 
         // If we have results
@@ -916,7 +916,7 @@
                 .style("opacity", 0.6);
             document.getElementById("search_results_header").innerHTML = "Search Results:";
             document.getElementById('search_details').innerHTML = "No results found.";
-            alert("Searched image not found...");
+            // alert("Searched image not found...");
         }
     }
 
@@ -956,6 +956,13 @@
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+    // Function for sanitizing strings from the data that contain HTML characters
+    function stripHtml(html) {
+       var tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+
     function get_meta(listener) {
         fetch("static/subset_meta.json").then(response => {
             if (response.ok) {
@@ -977,18 +984,22 @@
                 artnames_list_cased = new Set();
                 artists_list_cased = new Set();
                 for(const key in data){
-                    let art_name = data[key]['artwork_name'];
-                    let artist_name = data[key]['artist_full_name'];
+                    let art_name =  stripHtml(data[key]['artwork_name']);
+                    let artist_name =  stripHtml(data[key]['artist_full_name']);
+                    // For dictionary keys, strip HTML characters and do lowercasing
+                    let art_name_lower = art_name.toLowerCase();
+                    let artist_name_lower = artist_name.toLowerCase();
+
                     // Mapping from lowercased names to artwork id for search
-                    if (artnames_to_ids[art_name.toLowerCase()] == undefined) {
-                        artnames_to_ids[art_name.toLowerCase()] = [key];
+                    if (artnames_to_ids[art_name_lower] == undefined) {
+                        artnames_to_ids[art_name_lower] = [key];
                     } else {
-                        artnames_to_ids[art_name.toLowerCase()].push(key);
+                        artnames_to_ids[art_name_lower].push(key);
                     }
-                    if (artists_to_ids[artist_name.toLowerCase()] == undefined) {
-                        artists_to_ids[artist_name.toLowerCase()] = [key];
+                    if (artists_to_ids[artist_name_lower] == undefined) {
+                        artists_to_ids[artist_name_lower] = [key];
                     } else {
-                        artists_to_ids[artist_name.toLowerCase()].push(key);
+                        artists_to_ids[artist_name_lower].push(key);
                     }
                     // List of upper/lowercased names (as in dataset) for autocompletion
                     artnames_list_cased.add(art_name);

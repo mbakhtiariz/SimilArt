@@ -10,16 +10,10 @@ function autocomplete(inp, arr) {
       name2results = artists_to_ids;
   }
 
-  // On enter, close autocomplete list
-  inp.addEventListener("keydown", function(e) {
-      if (event.keyCode === 13) {
-          closeAllLists();
-      }
-  });
-
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
       var a, b, i, val = this.value;
+
       /*close any already open lists of autocompleted values*/
       closeAllLists();
       if (!val) { return false;}
@@ -33,25 +27,28 @@ function autocomplete(inp, arr) {
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        array_i = arr[i];
+        if (array_i.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          let num_results = name2results[arr[i].toLowerCase()].length;
-          b.innerHTML += (arr[i].substr(val.length) + " ("+ num_results.toString() +")");
+          b.innerHTML = "<strong>" + array_i.substr(0, val.length) + "</strong>";
+          let num_results = name2results[array_i.toLowerCase()].length;
+          b.innerHTML += (array_i.substr(val.length) + " ("+ num_results.toString() +")");
           /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          b.innerHTML += "<input type='hidden' value='" + array_i + "'>";
+          let my_input = array_i;
           /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
+          b.addEventListener("click", function(e) {
               /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
+              // inp.value = this.getElementsByTagName("input")[0].value;
+              inp.value = my_input;
               /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
               closeAllLists();
+              handle_search();
           });
           a.appendChild(b);
-          b.addEventListener("click", handle_search);
         }
       }
   });
@@ -78,6 +75,7 @@ function autocomplete(inp, arr) {
           /*and simulate a click on the "active" item:*/
           if (x) x[currentFocus].click();
         }
+        closeAllLists();
         handle_search();
       }
   });

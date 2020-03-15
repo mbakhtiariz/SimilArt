@@ -288,23 +288,23 @@
         // slider color:
         .fill('#56B8CF')
         .on('end', val => {
+            if (document.getElementById("similar_too").checked === true)
+            {
+                d3.selectAll("g#middle_image")
+                // .transition()
+                // .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
+                change_similar_images();
+            }
             d3.selectAll("g#outside_image")
-                .transition()
-                .duration(0)
+                // .transition()
+                // .duration(0)
                 .style("opacity", 0)
                 .remove();
             
             d3.select('p#value-range').text(val);
             change_dissimilar_images();
-            if (document.getElementById("similar_too").checked === true)
-            {
-                d3.selectAll("g#middle_image")
-                .transition()
-                .duration(removal_transition_speed)
-                .style("opacity", 0)
-                .remove();
-                change_similar_images();
-            }
         })
         .on('start', val => {
             // d3.selectAll("g#outside_image")
@@ -793,22 +793,21 @@
     }
 
 
-
-    
-
     function change_dissimilar_images() {
         start_time = parseInt(sliderRange.value()[0]);
         end_time = parseInt(sliderRange.value()[1]);
         category = document.getElementById("general_cats").value
 
-        images_ids = available_ids.filter(n => !nearest_ids.includes(n));
-        filtered_ids = images_ids.filter(filter_func);
+        nearest_ids_str = nearest_ids.map(x => x.toString());
+        images_ids = available_ids.filter(filter_func);
+        filtered_ids = images_ids.filter(x => !nearest_ids_str.includes(x));
+
         function filter_func(my_id){
             return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
             && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
-        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
+        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5); // shuffles the list
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5); // Shuffle a second time

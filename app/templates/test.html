@@ -26,6 +26,7 @@
 
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/checkbox.css">
 
     <script src="../static/js/collapsed_sidebar.js"></script>
 
@@ -145,8 +146,14 @@
 
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
-            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
-            <label for="similar_too" style="color:whitesmoke"> Filter similarity area</label><br>
+            <!-- <div class="checkbox">
+                <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
+                <span class="checkmark"></span>
+            </div> -->
+            <label class="checkbox" for="similar_too" style="color:whitesmoke"> Filter similarity area
+                <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
+                <span class="checkmark"></span>
+            </label><br>
         </div>
 
         <!-- Area for showing the time filter values -->

@@ -172,13 +172,28 @@
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
 
+    var stroke_color_images_high_similarity = [51, 96, 255]; // rgb
+    var stroke_color_images_low_similarity = [160, 255, 112]; // rgb
+
+    // Interpolate between two [r, g, b] colors with percentage p between 0 and 1
+    //https://stackoverflow.com/questions/14482226/how-can-i-get-the-color-halfway-between-two-colors
+    function colourGradientor(p, rgb_beginning, rgb_end){
+        var w = p * 2 - 1;
+        var w1 = (w + 1) / 2.0;
+        var w2 = 1 - w1;
+        var rgb = [parseInt(rgb_beginning[0] * w1 + rgb_end[0] * w2),
+                    parseInt(rgb_beginning[1] * w1 + rgb_end[1] * w2),
+                    parseInt(rgb_beginning[2] * w1 + rgb_end[2] * w2)];
+
+        return rgb;
+    };
+
     var filter_sec_top = svgheight + 'px';
     var timeslider_width = svgwidth * .95
     var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
     var filter_cat_padding_left = svgwidth - 300 + 'px';//timeslider_padding_left - 10 + 'px';
     var filter_cat_padding_top = height_navbar - 40 + 'px';
     var filter_checkbox_padding_left = timeslider_padding_left - 10 + 'px';
-
 </script>
 
 <!-- Import dragable images code -->
@@ -1114,7 +1129,6 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-
     function change_category(){
         if (document.getElementById("similar_too").checked){
             handle_stacks();
@@ -1192,7 +1206,7 @@
                 }
             };
 
-            console.log("change dissimilar");
+            // console.log("change dissimilar");
 
         });
 
@@ -1535,7 +1549,7 @@
             change_similar_images(plot_dissimilar=false);
             // change_dissimilar_images();
         })
-        console.log("Page ready");
+        // console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
 

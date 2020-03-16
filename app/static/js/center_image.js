@@ -73,6 +73,17 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 	var dominant_color = meta_data_painting['dominant_color'];
 	document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp " + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '" /></svg>' + dominant_color;
 
+    var rgb = stroke_color_images_high_similarity;
+    var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+    center_obj.append('rect')
+    	.attr("x",  center_image_x)
+		.attr("y", center_image_y)
+		.attr("height", img_height)
+		.attr("width", img_width)
+		.attr("id", 'border')
+		.attr("class", "image-outline")
+		.style("stroke", hexColor);
+
 	center_obj.append('rect')
 		.attr("x",  center_image_x)
 		.attr("y", center_image_y)
@@ -108,6 +119,8 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		.on("mouseout", function(){
 			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
+
+	center_obj.raise();
 
 	center_obj
         .style('opacity', 0)

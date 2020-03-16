@@ -53,6 +53,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				.style('opacity', 0)
 				.remove();
 			d3.select('rect#center').remove();
+			d3.select('rect#border').remove();
         	set_center(center, middle_image);
 
 			change_similar_images();
@@ -103,11 +104,14 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
 
+	var rgb = colourGradientor(similarity / 100, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+	var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
 	var rectOutline = imageGroup.append("rect")
 		.attr("class", "image-outline")
 		.attr("width", img_width)
-		.attr("height", img_height);
-
+		.attr("height", img_height)
+		.style("stroke", hexColor);
+	
 	imageGroup.call(
 		d3.drag()
 		.on("drag", dragged)

@@ -18,35 +18,22 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <!-- drop down menu bar -->
-    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-
     <!-- Layout stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
 
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/checkbox.css">
 
     <script src="../static/js/collapsed_sidebar.js"></script>
 
     <!-- Slider -->
     <script src="../static/js/d3-simple-slider.js"></script>
-    <!-- <script src="../static/js/slider.js"></script> -->
-
-
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="d3RangeSlider.js"></script>
-    <link href="d3RangeSlider.css" rel="stylesheet"> -->
-
-
 
 </head>
 
 
 <body>
-    <!-- <div id="dissimilar_label" class="label">Dissimilar images</div> -->
-    <!-- <div id="similar_label" class="label">Similar images</div> -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
@@ -106,13 +93,12 @@
             <div id="search_results"></div>
         </div>
 
-
         <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;">
             <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> kylian.vangeijtenbeek [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Barry Hendriks: <br> ? [at] gmail [dot] com</p>
-            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Iulia Ionescu: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Iulia Ionescu: <br> iulia [dot] ionescu [at] student [dot] uva [dot] nl</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Martine Toering: <br> martine.toering [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Gjorgji Strezoski: <br> g.strezoski [at] uva [dot] nl</p>
 
@@ -136,8 +122,10 @@
 
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
-            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
-            <label for="similar_too" style="color:whitesmoke"> Filter similarity area</label><br>
+            <label class="checkbox" for="similar_too" style="color:whitesmoke"> Filter similarity area
+                <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
+                <span class="checkmark"></span>
+            </label><br>
         </div>
 
         <!-- Area for showing the time filter values -->
@@ -145,7 +133,6 @@
 
         <!-- category filter: -->
         <div id="cat_div">
-            <!-- <label for="general_cats", style="color:#757575"> Filter category:</label> -->
             <label for="general_cats", style="color:whitesmoke"> Filter category:</label>
             <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="change_category()">
                 <option>all</option>
@@ -162,7 +149,6 @@
             </select>
         </div>
     </div>
-
 </body>
 
 <script type="text/javascript">

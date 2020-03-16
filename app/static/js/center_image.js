@@ -120,6 +120,8 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 			clearTimeout(timer_tooltip);
 			return tooltip.style("visibility", "hidden");});
 
+	center_obj.raise();
+
 	center_obj
         .style('opacity', 0)
         .transition()

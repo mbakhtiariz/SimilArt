@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %}{% endblock %}</title>
+    <title>OmniArt Exploration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -723,8 +723,8 @@
             .attr("id", "search_details")
             .style("width", "210px")
             .style("height", "150px")
-            .style("margin-left", "30px")
-            .style("margin-right", "30px")
+            .style("margin-left", "20px")
+            .style("margin-right", "20px")
             .style("margin-top", "20px");
 
     // Add rectangle that displays resulting images location
@@ -740,7 +740,16 @@
         .style("opacity", 0.6);
 
     // Add button for scrolling right
-    let search_right = search_results_area.append("circle")
+    let search_right = search_results_area.append("g")
+        .on("click", function() {
+            if (search_results.length == 0) return // If no results, do nothing
+
+            result_idx++;
+            if (result_idx >= search_results.length) result_idx = 0;
+            set_result_img(search_results[result_idx])
+        });
+
+    let search_right_circle = search_right.append("circle")
         .attr("id", "search_results_right")
         .attr("class", "button")
         .attr("cx", search_width - button_margins - search_button_radius)
@@ -748,15 +757,8 @@
         .attr("r", search_button_radius)
         .style("opacity", 0)
         .style("fill", "grey")
-        .on("click", function() {
-            if (search_results.length == 0) return // If no results, do nothing
-
-            result_idx++;
-            if (result_idx >= search_results.length) result_idx = 0;
-            set_result_img(search_results[result_idx])
-        })
         .on("mouseover", function(d){
-            info_button_circle = this;
+
             d3.select(this).style('opacity', 0.6)
             timer_tooltip = setTimeout(function () {
                 tooltip_buttons.html("Scroll right")
@@ -772,19 +774,41 @@
         });
 
     // Add right scroll icon
-    search_results_area.append("image")
+    search_right.append("image")
 		.attr("href", "static/icons/" + 'right.png')
         .attr("class", "button")
 		.attr("height", button_size / 2)
         .attr("width", button_size / 2)
         .attr("x", search_width - button_margins - 1.5*search_button_radius)
         .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
-		.attr("clip-path", "url(#clip)");
+		.attr("clip-path", "url(#clip)")
+        .on("mouseover", function(d){
+            search_right_circle.style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll right")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
 
 
 
     // Add button for scrolling left
-    let search_left = search_results_area.append("circle")
+    let search_left = search_results_area.append("g")
+    .on("click", function() {
+        if (search_results.length == 0) return // If no results, do nothing
+
+        result_idx--;
+        if (result_idx < 0) result_idx = search_results.length - 1;
+        set_result_img(search_results[result_idx])
+    });
+
+    let search_circle_left = search_left.append("circle")
         .attr("id", "search_results_left")
         .attr("class", "button")
         .attr("cx", button_margins + search_button_radius)
@@ -792,15 +816,7 @@
         .attr("r", search_button_radius)
         .style("opacity", 0)
         .style("fill", "grey")
-        .on("click", function() {
-            if (search_results.length == 0) return // If no results, do nothing
-
-            result_idx--;
-            if (result_idx < 0) result_idx = search_results.length - 1;
-            set_result_img(search_results[result_idx])
-        })
         .on("mouseover", function(d){
-            info_button_circle = this;
             d3.select(this).style('opacity', 0.6)
             timer_tooltip = setTimeout(function () {
                 tooltip_buttons.html("Scroll left")
@@ -816,14 +832,27 @@
         });
 
     // Add left scroll icon
-    search_results_area.append("image")
+    search_left.append("image")
         .attr("href", "static/icons/" + 'left.png')
         .attr("class", "button")
         .attr("height", button_size / 2)
         .attr("width", button_size / 2)
         .attr("x", button_margins + 0.5*search_button_radius)
         .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
-        .attr("clip-path", "url(#clip)");
+        .attr("clip-path", "url(#clip)")
+        .on("mouseover", function(d){
+            search_circle_left.style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll left")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
 
     function set_result_img(id) {
         // Display image in correct dimensions
@@ -1132,33 +1161,33 @@
 
     }
 
-    function my_set_center(){
-        search_cat = document.getElementById("search_cat").value.toLowerCase();
-        if(search_cat === "art name")
-        {
-            dictionary = artnames_to_ids;
-        }
-        else
-        {
-            dictionary = artists_to_ids;
-        }
-        let dict_search_key = document.getElementById("search_key").value.toLowerCase();
-        image_to_be_set = dictionary[dict_search_key];
-        if (image_to_be_set !== undefined && dict_search_key != ""){
-            handle_stacks();
-            middle_image = image_to_be_set;
-            d3.select('image#center').remove();
-            d3.select('rect#center').remove();
-            set_center(center, image_to_be_set).then(() => {
-                change_similar_images();
-                change_dissimilar_images();
-            });
-        }
-        else{
-            alert("Searched image not found...");
-        }
-        closeNav();
-    }
+    // function my_set_center(){
+    //     search_cat = document.getElementById("search_cat").value.toLowerCase();
+    //     if(search_cat === "art name")
+    //     {
+    //         dictionary = artnames_to_ids;
+    //     }
+    //     else
+    //     {
+    //         dictionary = artists_to_ids;
+    //     }
+    //     let dict_search_key = document.getElementById("search_key").value.toLowerCase();
+    //     image_to_be_set = dictionary[dict_search_key];
+    //     if (image_to_be_set !== undefined && dict_search_key != ""){
+    //         handle_stacks();
+    //         middle_image = image_to_be_set;
+    //         d3.select('image#center').remove();
+    //         d3.select('rect#center').remove();
+    //         set_center(center, image_to_be_set).then(() => {
+    //             change_similar_images();
+    //             change_dissimilar_images();
+    //         });
+    //     }
+    //     else{
+    //         alert("Searched image not found...");
+    //     }
+    //     closeNav();
+    // }
 
     // Listeners for autocomplete
     let search_cat_selection = document.getElementById("search_cat");

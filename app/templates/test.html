@@ -171,6 +171,8 @@
     var dissimilar_image_size = 70;
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
+    var timer_loading;
+    var time_till_loading_appearance = 1500;
 
     var stroke_color_images_high_similarity = [51, 96, 255]; // rgb
     var stroke_color_images_low_similarity = [160, 255, 112]; // rgb
@@ -240,6 +242,7 @@
     var removal_transition_speed = 500;
     var appearance_transition_speed = 500;
     var overlay_transition_speed = 1000;
+    var appearance_transition_loading = 1000;
     var removal_transition_speed_middle_image = 0;
     var time_to_suspend_middle_image_after_click = 0;
     var undo_stack = [];
@@ -1287,20 +1290,28 @@
             We also define the coordinates for each of those similar images.
             */
             // Wait until neighbouring images is found
-            middle.append("text").text('Loading ...')
-                .attr("class","middle")
-                .attr("id","filter_loading")
-                .style("fill","whitesmoke")
-                .style("stroke-width","0")
-                .attr("x","10")
-                .attr("y","22");
+            timer_loading = setTimeout(function () {
+                middle.append("text").text('Loading...')
+                    .attr("class","middle")
+                    .attr("id","filter_loading")
+                    .style("fill","darkgrey")
+                    .style("stroke-width","0")
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(appearance_transition_loading)
+                    .style('opacity', 1)
+                    .attr("x","10")
+                    .attr("y","22");
+            }, time_till_loading_appearance);
 
             nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+                clearTimeout(timer_loading);
                 d3.selectAll("#filter_loading")
                 .transition()
-                .duration(removal_transition_speed)
+                .duration(appearance_transition_loading)
                 .style("opacity", 0)
                 .remove();
+
                 // --- selecting location of similar layer and plotting those images:
                 try{
                     const center_x = parseFloat(d3.select("image#center").attr("x"));
@@ -1337,6 +1348,7 @@
                 //     plot_dissimilar_images(images_ids_subset, transition=false);
                 // }
             });
+
         // }
         // else {
         //     similar_locs = selected_locs_dict[middle_image.toString()];

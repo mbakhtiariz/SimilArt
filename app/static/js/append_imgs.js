@@ -1,14 +1,14 @@
-function appendImage(url, position, artwork_name, artist_full_name, similarity, creation_year) {
+function appendImage(url, position, artwork_name, artist_full_name, similarity, creation_year, general_type, artwork_type, dominant_color) {
 	var img = new Image();
 	img.onload = function () {
 		middleImageHelper(url, position, img, artwork_name, artist_full_name,
-			similarity, creation_year);
+			similarity, creation_year, general_type, artwork_type, dominant_color);
 	}
 	img.src = url;
 }
 
 function middleImageHelper(url, position, img, artwork_name, artist_full_name,
-		similarity, creation_year) {
+		similarity, creation_year, general_type, artwork_type, dominant_color) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -50,9 +50,11 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 				.style('opacity', 0)
 				.remove();
 			d3.select('rect#center').remove();
+			d3.select('rect#border').remove();
         	set_center(center, middle_image);
 			// handle_stacks();
 			change_similar_images();
+			// change_dissimilar_images();
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
@@ -64,7 +66,10 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 
         	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
         		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
-        		"</b> (" + creation_year + "). " +
+				"</b> (" + creation_year + "). " + 
+				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
+				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
+				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color + "<br><br>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);

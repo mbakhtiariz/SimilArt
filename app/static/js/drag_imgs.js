@@ -1,16 +1,16 @@
 function appendDraggableImage(url, position, i_list, artwork_name, artist_full_name,
-		similarity, creation_year, transition=true) {
+		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
 	var img = new Image();
 	img.onload = function () {
 		appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
-			similarity, creation_year, transition);
+			similarity, creation_year, general_type, artwork_type, dominant_color, transition);
 	}
 	img.src = url;
 	img.i_list = i_list;
 }
 
 function appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
-		similarity, creation_year, transition=true) {
+		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -40,11 +40,12 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
+
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
 			handle_stacks();
-			
+
             // change middle_image variable and call function, both from test.html;
 			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
             d3.select('image#center').transition()
@@ -52,9 +53,11 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				.style('opacity', 0)
 				.remove();
 			d3.select('rect#center').remove();
+			d3.select('rect#border').remove();
         	set_center(center, middle_image);
-			
+
 			change_similar_images();
+			// change_dissimilar_images();
 		})
 		.on("mouseover", function(d){
 			timer_tooltip = setTimeout(function () {
@@ -64,9 +67,12 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		    if (length_artist_name > 5)
 		    	artist_full_name = artist_full_name.replace(/\s/g,'');
 
-        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
-        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
-        		"</b> (" + creation_year + "). " +
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" +
+        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') +
+				"</b> (" + creation_year + "). " +
+				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
+				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
+				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color + "<br><br>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
 			return tooltip.style("visibility", "visible");
 			}, time_till_tooltip_appearance);
@@ -92,7 +98,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
             	} else {
             		return tX+20+"px"
             	}
-            }) 
+            })
         })
 		.on("mouseout", function(d){
 			clearTimeout(timer_tooltip);
@@ -110,14 +116,34 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		d3.drag()
 		.on("drag", dragged)
 	);
-	
 	if (transition) {
-	imageGroup
-        .style('opacity', 0)
-        .transition()
-	    .duration(appearance_transition_speed)
-        .style("opacity", 1);
-    };
+		imageElem
+			.attr("height", img_height * 1.5)
+			.attr("width", img_width * 1.5)
+			.attr('x', -img_width * 0.25)
+			.attr('y', -img_height * 0.25)
+			.transition()
+			.delay(function(d,i){ return 100*i; })
+			.duration(appearance_transition_speed)
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr("height", img_height)
+			.attr("width", img_width)
+			.ease(d3.easeBounce);
+		rectOutline
+			.attr("height", img_height * 1.5)
+			.attr("width", img_width * 1.5)
+			.attr('x', -img_width * 0.25)
+			.attr('y', -img_height * 0.25)
+			.transition()
+			.delay(function(d,i){ return 100*i; })
+			.duration(appearance_transition_speed)
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr("height", img_height)
+			.attr("width", img_width)
+			.ease(d3.easeBounce);
+    }
 }
 
 function dragged(d) {

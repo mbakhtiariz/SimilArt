@@ -348,9 +348,12 @@ function add_rect(borders, all_borders, container, x, y, width, height, center, 
 	const artwork_name = meta_data_painting['artwork_name'],
 		artist_full_name = meta_data_painting['artist_full_name'],
 		creation_year = meta_data_painting['creation_year'];
+		general_type = meta_data_painting['general_type'];
+		artwork_type = meta_data_painting['artwork_type'];
+		dominant_color = meta_data_painting['dominant_color'];
 	const cosine_sim = (Math.round(sim_score * 100) / 100).toFixed(2);
-	sim_score = Math.round(sim_score * 100);
-	appendImage("static/subset/"+id+".jpg", [x, y], artwork_name, artist_full_name, sim_score, creation_year);
+	sim_score = Math.round(cosine_sim * 100);
+	appendImage("static/subset/"+id+".jpg", [x, y], artwork_name, artist_full_name, sim_score, creation_year, general_type, artwork_type, dominant_color);
 	add_border(all_borders, "top", x, y, x+width, y);
 	add_border(all_borders, "bottom", x, y+height, x+width, y+height);
 	add_border(all_borders, "left", x, y, x, y+height);
@@ -436,7 +439,8 @@ function load_images(path, ids) {
 }
 
 // Main function for calculating new image positions and adding them
-function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores) {
+// locations is empty list
+function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, imgSize) {
 	// Center image position
 	const center_x = center["x"],
 		center_y = center["y"],
@@ -473,7 +477,6 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 	// var lines = [];
 	// lines = draw_borders(container, borders, lines);
 	var dirIdx = 0; // Direction index, corresponding with the `directions` list
-	const imgSize = 70;
 
 	var failCounter = 0;
 	for (var i=1; i<img_ids.length; i++) {
@@ -507,6 +510,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			i--; // We want to try this index again
 			continue;
 		} else {
+			locations.push([x,y]);
 			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id, sim_score);
 		}
 
@@ -526,12 +530,14 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 		// lines = draw_borders(container, borders, lines);
 		failCounter = 0; // If we are here we succeeded in placing, so reset the fail counter
 	}
+	similar_locs = locations
 }
 
 // This function first loads the images, then calls the main function
 // In practise, only this one should be called to use the image loading
-function similar_layout(container, img_ids, center, outer, data, sim_scores) {
+// locations is empty list
+function similar_layout(container, img_ids, center, outer, data, sim_scores, locations, img_size) {
 	load_images("static/subset/", img_ids).then(imgs => {
-		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores);
+		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, img_size);
 	});
 }

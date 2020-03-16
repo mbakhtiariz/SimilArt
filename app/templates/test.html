@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %}{% endblock %}</title>
+    <title>OmniArt Exploration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,22 @@
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
 
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
+
     <script src="../static/js/collapsed_sidebar.js"></script>
+
+    <!-- Slider -->
+    <script src="../static/js/d3-simple-slider.js"></script>
+    <!-- <script src="../static/js/slider.js"></script> -->
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="d3RangeSlider.js"></script>
+    <link href="d3RangeSlider.css" rel="stylesheet"> -->
+
+
+
 </head>
 
 
@@ -50,51 +65,105 @@
     </div>
 
     <div  id="myheader" class="header" style='opacity: 0;'>
-        <h6 style="background-color:#d88562; text-align: center; width: 100%; top:0;left: 0; z-index: 0;color: white; font-weight: bold;font-; margin-bottom: 0;font-family:  Times New Roman;">
-            OmniArt Exploration
-        </h6>
 
-
+        <!-- the main menu icons -->
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="btn closebtn" onclick="closeNav()">×</a>
+            <!-- <a href="javascript:void(0)" class="btn" onclick="open_about_nav()">About</a>
             <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Search</a>
-            <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_search_nav()">Contact</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_filter_nav()">Filter</a> -->
+
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('about')">About</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('search')">Search</a>
+            <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('contact')">Contact</a>
+            <!-- <a href="javascript:void(0)" class="btn" onclick="open_selected_nav('filter')">Filter</a> -->
         </div>
 
-        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px;">
-            <label for="search_cat" class="select_btn_label" style="margin-left: 30px;margin-top: 7px;" >Based on:</label>
+
+        <!-- about us side bar -->
+        <div id="about_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #D2B48C; color:#111;">
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART?</h4>
+            <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
+            OmniArt is a large scale artistic benchmark dataset aggregated from multiple collections around the world.
+            </p>
+
             <br>
-            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 30px; background-color: white;">
+
+            <h5 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART EXPLORATION?</h5>
+            <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
+                In OmniArt-Exploration we aim to visulize the similar and dis-similar images to one specific selected image. .... (This should be modified).
+            </p>
+        </div>
+
+
+        <!-- sidebar that appears after clicking on search buttun -->
+        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; ">
+            <label for="search_cat" class="select_btn_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px;font-size: medium; font-weight: bolder;" >Based on:</label>
+            <br>
+            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;">
                 <option>Art name</option>
                 <option>Artist full name</option>
             </select>
             <br>
-            <label for="search_key" class="search_key_label">Search Key:</label>
-            <input type="text" id="search_key" class="search_key" name="search_key" value="">
+            <label for="search_key" class="search_key_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Key:</label>
+            <div class="autocomplete">
+                <input type="text" id="search_key" class="search_key" name="search_key" value="" style="margin-left: 20px;">
+            </div>
             <br><br>
-            <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a>
+            <label for="search_key" class="search_key_label" id="search_results_header" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Results:</label>
+            <!-- <a href="javascript:void(0)" class="btn" id="search_key_update" onclick="my_set_center()">Update</a> -->
+            <div id="search_results"></div>
         </div>
 
-        <div id="filter_mySidebar" class="sidebar" style="margin-left: 250px;">
-    
-            <label for="start_year" class="start_year_label" id="start_year_label">Start year:</label>
-            <input type="text" class="start_year" id="start_year" name="start_year" placeholder="-2500 to 2017 (e.g. -5)" value="">
-            <br><br>
-            <label for="end_year" class="end_year_label" id="end_year_label">End year:</label>
-            <input type="text" class="end_year" id="end_year" name="end_year" placeholder="-2500 to 2017 (e.g. 100)" value="">
-            
-    
-            <br><br>
-            <a href="javascript:void(0)" class="btn"  id="end_year_update" onclick="filter_dissimilar()">Update</a>
+
+        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;">
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> kylian.vangeijtenbeek [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Barry Hendriks: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Iulia Ionescu: <br> ? [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Martine Toering: <br> martine.toering [at] gmail [dot] com</p>
+            <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Gjorgji Strezoski: <br> g.strezoski [at] uva [dot] nl</p>
+
+            <br>
+
+            <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Address:</h4>
+            <address style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Science Park 904 <br>
+                Amsterdam, The Netherlands</address>
         </div>
-    
 
     </div>
+
     <div id="container"></div>
+        <div id="overlay" onclick="info_off()">
+        </div>
+
+    <div id="filtering_section" class="align-items-center filtering_section" style='opacity: 0;'>
+
+        <!-- slider: -->
+        <div id="slider-range"></div>
+
+        <!-- check box to add filter on similar area: -->
+        <div id="similar_too_div">
+            <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
+            <label for="similar_too" style="color:whitesmoke"> Filter similar images too</label><br>
+        </div>
+
+        <!-- category filter: -->
+        <div id="cat_div">
+            <!-- <label for="general_cats", style="color:#757575"> Filter category:</label> -->
+            <label for="general_cats", style="color:whitesmoke"> Filter category:</label>
+            <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="change_category()">
+                <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
+            </select>
+        </div>
+    </div>
+
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 19;
+    var height_navbar = 100;
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
     var center_image_size = 200;
@@ -103,8 +172,8 @@
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
 
-    var stroke_color_images_high_similarity = [51, 96, 255];
-    var stroke_color_images_low_similarity = [160, 255, 112];
+    var stroke_color_images_high_similarity = [51, 96, 255]; // rgb
+    var stroke_color_images_low_similarity = [160, 255, 112]; // rgb
 
     // Interpolate between two [r, g, b] colors with percentage p between 0 and 1
     //https://stackoverflow.com/questions/14482226/how-can-i-get-the-color-halfway-between-two-colors
@@ -118,6 +187,13 @@
 
         return rgb;
     };
+
+    var filter_sec_top = svgheight + 'px';
+    var timeslider_width = svgwidth * .95
+    var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
+    var filter_cat_padding_left = svgwidth - 300 + 'px';//timeslider_padding_left - 10 + 'px';
+    var filter_cat_padding_top = height_navbar - 40 + 'px';
+    var filter_checkbox_padding_left = timeslider_padding_left - 10 + 'px';
 </script>
 
 <!-- Import dragable images code -->
@@ -133,6 +209,9 @@
 <script src="../static/js/nearest_neighbors.js"></script>
 <!-- Import for loading screen -->
 <script src="../static/js/loading.js"></script>
+<!-- Import for autocompletion of search bar -->
+<script src="../static/js/autocomplete.js"></script>
+
 
 <script type="text/javascript">
     // Container for the loading screen
@@ -148,14 +227,30 @@
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
 
+    // Add listener to close side menu if we click anywhere on the page (except the menu button)
+    document.getElementById("page").addEventListener("click", function(e) {
+        if ((e.target.id != "menu_button") && (e.target.id != "menu_button_icon")) closeNav();
+    });
+    document.getElementById("filtering_section").addEventListener("click", function(e) {
+        closeNav();
+    });
+
+    var NEIGHBORS_LISTENER;
+    var SIM_SCORE_LISTENER;
     var removal_transition_speed = 500;
     var appearance_transition_speed = 500;
+    var overlay_transition_speed = 1000;
     var removal_transition_speed_middle_image = 0;
     var time_to_suspend_middle_image_after_click = 0;
     var undo_stack = [];
+    var undo_locs = [];
+    var undo_ids = [];
     var redo_stack = [];
+    var redo_locs = [];
+    var redo_ids = [];
     var old_middle_image = "";
     var selected_locs_dict = {};
+    var selected_nearest_ids_dict = {};
     var imgs_path = "static/subset/";
     var defs = svg.append("defs");
     var middle_x = svgwidth * 0.25;
@@ -172,7 +267,10 @@
     middle.append("rect")
         .attr("class", "middle")
         .attr("width", middle_width)
-        .attr("height", middle_height);
+        .attr("height", middle_height)
+        .attr("rx","0px")
+        .attr("ry","0px");
+
 
     var filter = middle.append("filter")
         .attr("id","blur");
@@ -184,6 +282,98 @@
 
     var center = middle.append("svg");
 
+    // Set the positions of slider based on page ratio:
+
+    const filtering_section = document.getElementById("filtering_section");
+    filtering_section.style.position = 'absolute';
+    filtering_section.style.top = filter_sec_top;//svgheight + 'px';
+    filtering_section.style.paddingTop = '0';
+
+    const filtering_checkbox_section = document.getElementById("similar_too_div");
+    // alert(filtering_cat_section.innerHTML)
+    filtering_checkbox_section.style.position = 'absolute';
+    filtering_checkbox_section.style.top = '60px';
+    filtering_checkbox_section.style.left = filter_checkbox_padding_left;
+
+    const filtering_cat_section = document.getElementById("cat_div");
+    // alert(filtering_cat_section.innerHTML)
+    filtering_cat_section.style.position = 'absolute';
+    filtering_cat_section.style.top = '60px';
+    filtering_cat_section.style.left = filter_cat_padding_left;
+
+
+    // Range slider for time filter
+    var sliderRange = d3
+        .sliderBottom()
+        .min(-2500)
+        .max(2017)
+        .width(svgwidth * .95)
+        .default([-2500, 2017])
+        .step(1)
+        .ticks(20)
+        .handle('M -8, 0 a .025,.025 0 1,1 10,0 a 0.25,0.25 0 1,1 -10,0')
+        // .domain([-2500, 2017])
+        // .marks(2017)
+        // slider color:
+        .fill('#56B8CF')
+        .on('end', val => {
+            console.log("===================================================");
+            if (document.getElementById("similar_too").checked === true)
+            {
+                d3.selectAll("g#middle_image")
+                // .transition()
+                // .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
+                handle_stacks();
+                change_similar_images();
+            }
+            else {
+                d3.selectAll("g#outside_image")
+                    // .transition()
+                    // .duration(0)
+                    .style("opacity", 0)
+                    .remove();
+
+                d3.select('p#value-range').text(val);
+                change_dissimilar_images();
+            }
+        })
+        .on('start', val => {
+            // d3.selectAll("g#outside_image")
+            //     .transition()
+            //     .duration(0)
+            //     .style("opacity", 0)
+            //     .remove();
+
+            // d3.select('p#value-range').text(val);
+            // change_dissimilar_images();
+            // if (document.getElementById("similar_too").checked === true)
+            // {
+            //     d3.selectAll("g#middle_image")
+            //     .transition()
+            //     .duration(removal_transition_speed)
+            //     .style("opacity", 0)
+            //     .remove();
+            //     change_similar_images();
+            // }
+        });
+
+
+    var gRange = d3
+        .select('div#slider-range')
+        .append('svg')
+        .attr('width', svgwidth)
+        .attr('height', 100)
+        .append('g')
+        .attr('transform', 'translate('+timeslider_padding_left+',10)')
+        .call(sliderRange);
+
+
+
+
+
+    // -----------------------------------------------------------
 
     // tooltip
     var tooltip = d3.select("#container")
@@ -219,6 +409,7 @@
     var menubutton_circle;
     menubutton.append("circle")
         .attr("class", "button")
+        .attr("id", "menu_button")
         .attr("cx", button_size / 2)
         .attr("cy", button_size / 2)
         .attr("r", button_size / 2)
@@ -242,6 +433,7 @@
 
     menubutton.append("image")
 		.attr("href", "static/icons/" + 'menu.png')
+        .attr("id", "menu_button_icon")
         .attr("class", "button")
 		.attr("height", button_size / 2)
         .attr("width", button_size / 2)
@@ -266,14 +458,6 @@
         // .attr('fill', 'white');
 
     menubutton.on('click', function() {
-        
-        // // remove blue color of pre-clicked update buttons
-        // document.getElementById("end_year_update").style.color = "#818181";
-        // document.getElementById("end_year_update").style.backgroundColor = "#111";
-
-        // document.getElementById("search_key_update").style.color = "#818181";
-        // document.getElementById("search_key_update").style.backgroundColor = "#111";
-        
         // open the encapsolated menu bar
         openNav()
 
@@ -434,6 +618,85 @@
         });
         // .attr('fill', 'white');
 
+    var info_overlay = d3.select("#overlay")
+          .append("svg")
+          .attr("preserveAspectRatio", "none")
+          .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
+    info_overlay.append("text")
+          .attr("text-anchor", "middle")
+          .style("opacity", 0)
+          .attr("id", "overlaytext1")
+          .style("font-family", "Copperplate Gothic Light")
+          .style("fill", "white")
+          .attr("x", svgwidth*0.5)
+          .attr("y", svgheight*0.25+20)
+          .text("Your center painting: Click to expand")
+    info_overlay.append("text")
+          .style("fill", "white")
+          .style("opacity", 0)
+          .attr("id", "overlaytext2")
+          .style("font-family", "Copperplate Gothic Light")
+          .attr("x", middle_x)
+          .attr("y", middle_y-10)
+          .text("Paintings with visual similarity")
+    info_overlay.append("text")
+          .style("fill", "white")
+          .style("opacity", 0)
+          .attr("id", "overlaytext3")
+          .style("font-family", "Copperplate Gothic Light")
+          .attr("x", 20)
+          .attr("y", 60)
+          .text("Exploration area: Click to see visual similarity")
+
+    var info_button_circle;
+    var info_button = button_svg.append("g")
+    info_button.append("circle")
+        .attr("class", "button")
+        .attr("cx", button_size / 1.2 + button_size / 2 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
+        .attr('cy', button_size / 2)
+        .attr("r", button_size / 2)
+        .style('opacity', 0)
+        .on("mouseover", function(d){
+            info_button_circle = this;
+            d3.select(this).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Help")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    info_button.append("image")
+        .attr("class", "button")
+        .attr("href", "static/icons/" + 'help.png')
+        .attr("height", button_size / 1.6)
+        .attr("width", button_size / 1.6)
+        .attr("x", button_size / 1.2 + button_size / 4.9 + button_size / 1.2 + button_size / 1.2 + button_size / 1.2)
+        .attr('y', button_size / 4.9)
+        .attr("clip-path", "url(#clip)")
+        .style('opacity', 1)
+        .on("mouseover", function(){
+            d3.select(info_button_circle).style('opacity', 0.3)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Help")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){
+            d3.select(info_button_circle).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+        // .attr('fill', 'white');
+
     undo_button.on('click', function() {
         console.log('go back to previous image');
         undo();
@@ -442,11 +705,279 @@
         console.log('redo images');
         redo()
     });
+    info_button.on('click', function() {
+        info_on()
+    });
+
     // Listener for if the json has been created
     socket.on('json_loaded', function () {
         console.log("JSON CREATED");
         get_meta();
     })
+
+
+    // -----------------------------------------------------------
+    // Search results
+
+    let search_results = [];
+    let result_idx = 0;
+
+    let search_img_size = 150;
+    let search_button_radius = 20;
+    let search_width = 250;
+    let search_img_margin = (search_width - search_img_size) / 2;
+    let button_margins = (search_img_margin - (2*search_button_radius)) / 2;
+
+    // Add area for resulting images
+    let search_results_area = d3.select("#search_results")
+        .append("svg")
+            .attr("width", search_width) // Generally 210px wide
+            .attr("height", search_img_size);
+
+    let search_results_details = d3.select("#search_results")
+        .append("div")
+            .attr("id", "search_details")
+            .style("width", "210px")
+            .style("height", "150px")
+            .style("margin-left", "20px")
+            .style("margin-right", "20px")
+            .style("margin-top", "20px");
+
+    // Add rectangle that displays resulting images location
+    search_results_area.append("rect")
+        .attr("class", "searchImage")
+        .attr("x", search_img_margin)
+        .attr("width", search_img_size)
+        .attr("height", search_img_size)
+        .attr("pointer-events", "visible")
+        .style("fill", "none")
+        .style("stroke-width", 5)
+        .style("stroke", "grey")
+        .style("opacity", 0.6);
+
+    // Add button for scrolling right
+    let search_right = search_results_area.append("g")
+        .on("click", function() {
+            if (search_results.length == 0) return // If no results, do nothing
+
+            result_idx++;
+            if (result_idx >= search_results.length) result_idx = 0;
+            set_result_img(search_results[result_idx])
+        });
+
+    let search_right_circle = search_right.append("circle")
+        .attr("id", "search_results_right")
+        .attr("class", "button")
+        .attr("cx", search_width - button_margins - search_button_radius)
+        .attr("cy", 0.5*search_img_size)
+        .attr("r", search_button_radius)
+        .style("opacity", 0)
+        .style("fill", "grey")
+        .on("mouseover", function(d){
+
+            d3.select(this).style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll right")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    // Add right scroll icon
+    search_right.append("image")
+		.attr("href", "static/icons/" + 'right.png')
+        .attr("class", "button")
+		.attr("height", button_size / 2)
+        .attr("width", button_size / 2)
+        .attr("x", search_width - button_margins - 1.5*search_button_radius)
+        .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
+		.attr("clip-path", "url(#clip)")
+        .on("mouseover", function(d){
+            search_right_circle.style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll right")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+
+
+    // Add button for scrolling left
+    let search_left = search_results_area.append("g")
+    .on("click", function() {
+        if (search_results.length == 0) return // If no results, do nothing
+
+        result_idx--;
+        if (result_idx < 0) result_idx = search_results.length - 1;
+        set_result_img(search_results[result_idx])
+    });
+
+    let search_circle_left = search_left.append("circle")
+        .attr("id", "search_results_left")
+        .attr("class", "button")
+        .attr("cx", button_margins + search_button_radius)
+        .attr("cy", 0.5*search_img_size)
+        .attr("r", search_button_radius)
+        .style("opacity", 0)
+        .style("fill", "grey")
+        .on("mouseover", function(d){
+            d3.select(this).style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll left")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            d3.select(this).style('opacity', 0)
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    // Add left scroll icon
+    search_left.append("image")
+        .attr("href", "static/icons/" + 'left.png')
+        .attr("class", "button")
+        .attr("height", button_size / 2)
+        .attr("width", button_size / 2)
+        .attr("x", button_margins + 0.5*search_button_radius)
+        .attr("y", 0.5*search_img_size - 0.5*search_button_radius)
+        .attr("clip-path", "url(#clip)")
+        .on("mouseover", function(d){
+            search_circle_left.style('opacity', 0.6)
+            timer_tooltip = setTimeout(function () {
+                tooltip_buttons.html("Scroll left")
+                return tooltip_buttons.style("visibility", "visible");
+            }, time_till_tooltip_appearance);
+        })
+        .on("mousemove", function(){
+            return tooltip_buttons.style("top", (event.pageY+10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+            clearTimeout(timer_tooltip);
+            return tooltip_buttons.style("visibility", "hidden");
+        });
+
+    function set_result_img(id) {
+        // Display image in correct dimensions
+        let result_img = new Image();
+        result_img.onload = function () {
+            let img_width = result_img.width;
+        	let img_height = result_img.height;
+        	var ratio = img_width / img_height;
+        	// If image width > height
+        	if (ratio > 1) {
+        		img_width = search_img_size;
+        		img_height = search_img_size / ratio;
+        	// If image height > width
+        	} else {
+        		img_width = search_img_size * ratio;
+        		img_height = search_img_size;
+        	}
+            let image_x = (search_img_size * 0.5 - img_width / 2) + search_img_margin;
+        	let image_y = (search_img_size * 0.5 - img_height / 2);
+
+            search_results_area.selectAll(".searchImage").remove(); // Remove old rect
+            search_results_area.append("image") // Add new image
+                .attr("class", "searchImage")
+        		.attr("href", imgs_path + id + ".jpg")
+        		.attr("height", img_height)
+        		.attr("width", img_width)
+                .attr("x", image_x)
+                .attr("y", image_y)
+                .attr("pointer-events", "visible")
+        		.attr("clip-path", "url(#clip)");
+            search_results_area.append("rect") // Add rect for click events
+                .attr("class", "searchImage")
+                .attr("height", img_height)
+                .attr("width", img_width)
+                .attr("x", image_x)
+                .attr("y", image_y)
+                .attr("filter", "url(#glow)")
+                .attr("pointer-events", "visible")
+                .style("fill", "none")
+                .on('click', function() { // On click, set to center image
+        			var modalImg = document.getElementById("img01");
+        			modalImg.src = data[d3.select("image.searchImage").attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+
+                    closeNav();
+        			handle_stacks();
+
+                    // change middle_image variable and call function, both from test.html;
+        			middle_image = (imgs_path + id + ".jpg").replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
+                    d3.select('image#center').transition()
+        				.duration(removal_transition_speed_middle_image)
+        				.style('opacity', 0)
+        				.remove();
+        			d3.select('rect#center').remove();
+                	set_center(center, middle_image);
+        			change_similar_images();
+        			// change_dissimilar_images();
+                });
+        }
+        result_img.src = imgs_path + id + ".jpg";
+        // Get the metadata
+        let artwork_name = data[id]['artwork_name'];
+        let artist_full_name = data[id]['artist_full_name'];
+        let creation_year = data[id]['creation_year'];
+        let num_results = (search_results.length).toString();
+        let num_results_str = "Search Results [" + (result_idx+1).toString() + "/" + num_results + "]:";
+        document.getElementById("search_results_header").innerHTML = num_results_str;
+        document.getElementById('search_details').innerHTML = "<i>" + artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ")</b>";
+    }
+
+    // This functions handles any search by click/enter. These listeners are set in autocomplete.js
+    function handle_search() {
+        search_cat = document.getElementById("search_cat").value.toLowerCase();
+        // Set the correct lookup dictionary depending on artname/artist name
+        if(search_cat === "art name") {
+            dictionary = artnames_to_ids;
+        } else {
+            dictionary = artists_to_ids;
+        }
+
+        let dict_search_key = stripHtml(document.getElementById("search_key").value).toLowerCase();
+        let results = dictionary[dict_search_key];
+
+        // If we have results
+        if (results !== undefined && dict_search_key != ""){
+            search_results = results; // Set the global variable
+            result_idx = 0; // Reset the results index for looping
+            set_result_img(search_results[0]) // Set the results image
+
+        // If no results
+        } else {
+            search_results_area.selectAll(".searchImage").remove(); // Remove old image
+            search_results_area.append("rect")
+                .attr("class", "searchImage")
+                .attr("x", search_img_margin)
+                .attr("width", search_img_size)
+                .attr("height", search_img_size)
+                .attr("pointer-events", "visible")
+                .style("fill", "none")
+                .style("stroke-width", 3)
+                .style("stroke", "grey")
+                .style("opacity", 0.6);
+            document.getElementById("search_results_header").innerHTML = "Search Results:";
+            document.getElementById('search_details').innerHTML = "No results found.";
+            // alert("Searched image not found...");
+        }
+    }
+
+
+    // -----------------------------------------------------------
 
 
     // This can be used to execute code once a flag become true
@@ -476,10 +1007,16 @@
     var outside_subset = [];
     var dissimilar_locs = [];
     var similar_locs = [];
-    var temp_similar_locs = [];
 
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    // Function for sanitizing strings from the data that contain HTML characters
+    function stripHtml(html) {
+       var tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
     }
 
     function get_meta(listener) {
@@ -500,66 +1037,105 @@
                 console.log("Data loaded");
                 artnames_to_ids = {};
                 artists_to_ids = {};
+                artnames_list_cased = new Set();
+                artists_list_cased = new Set();
                 for(const key in data){
-                    let art_name = data[key]['artwork_name'].toLowerCase();
-                    let artist_name = data[key]['artist_full_name'].toLowerCase();
-                    artnames_to_ids[art_name] = key;
-                    artists_to_ids[artist_name] = key;
+                    let art_name =  stripHtml(data[key]['artwork_name']);
+                    let artist_name =  stripHtml(data[key]['artist_full_name']);
+                    // For dictionary keys, strip HTML characters and do lowercasing
+                    let art_name_lower = art_name.toLowerCase();
+                    let artist_name_lower = artist_name.toLowerCase();
+
+                    // Mapping from lowercased names to artwork id for search
+                    if (artnames_to_ids[art_name_lower] == undefined) {
+                        artnames_to_ids[art_name_lower] = [key];
+                    } else {
+                        artnames_to_ids[art_name_lower].push(key);
+                    }
+                    if (artists_to_ids[artist_name_lower] == undefined) {
+                        artists_to_ids[artist_name_lower] = [key];
+                    } else {
+                        artists_to_ids[artist_name_lower].push(key);
+                    }
+                    // List of upper/lowercased names (as in dataset) for autocompletion
+                    artnames_list_cased.add(art_name);
+                    artists_list_cased.add(artist_name);
                 }
+                artnames_list_cased = Array.from(artnames_list_cased); //from set to list
+                artists_list_cased = Array.from(artists_list_cased); //from set to list
+                // Sort the autocompletion lists
+                artnames_list_cased.sort();
+                artists_list_cased.sort();
+                // Finally set the listener to true
                 listener.set(true);
             }
         });
     }
 
     // create grid for possible locations of images
-    var i;
-    var j;
-    var grid_similar = [];
     var grid_dissimilar = [];
+    function calculate_dissimilar_grid() {
+        let num_locs = 0; // Keep track of how many locations *should* be in `grid_dissimilar`
+        for (var i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
+            for (var j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
 
-    for (i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
-        for (j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
+                // skip middle section and randomize button
+                if ((i + dissimilar_image_size > (middle_x - 5) && i < (middle_x + middle_width + 5)) &&
+                        (j + dissimilar_image_size > (middle_y - 5) && j < (middle_y + middle_height + 5)) ||
+                        (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
 
-            // skip middle section and randomize button
-            if ((i + dissimilar_image_size > middle_x && i < (middle_x + middle_width)) &&
-                    (j + dissimilar_image_size > middle_y && j < (middle_y + middle_height)) ||
-                    (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
+                    continue;
 
-                continue;
-
-            grid_dissimilar.push([i, j]);
+                grid_dissimilar.push([i, j]);
+                num_locs++;
+            }
         }
     }
+    calculate_dissimilar_grid();
 
     // global vars for nearest and explore images ids
     var images_ids_subset
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-    function change_dissimilar_images(start_time=-2500, end_time = 2017) {
-        // console.log("3--start and end year for Filtering:",start_time, end_time);
-        var temp_time;
-        if(start_time > end_time){
-            // alert("[Filtering Warning]: The end year should be later or equal to start year. So we swapped your request order for creayears!");
-            [start_time, end_time] = [end_time, start_time]
-            // console.log("6666--start and end year for Filtering:",start_time, end_time);
-        };
-        if(end_time > 2017){
-            end_time = 2017;
-        };
-        if(start_time < -2500){
-            start_time < -2500;
-        };
+    function change_category(){
+        if (document.getElementById("similar_too").checked){
+            handle_stacks();
+            change_similar_images();
+        }
+        else{
+            change_dissimilar_images();
+        }
+    }
 
-        images_ids = available_ids.filter(n => !nearest_ids.includes(n));
-        filtered_ids = images_ids.filter(filter_fun);
-        function filter_fun(my_id){
-            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time;
+    function filter_similars(){
+        if (document.getElementById("similar_too").checked){
+            handle_stacks();
+            change_similar_images();
+            // change_dissimilar_images();
+        }
+    }
+
+
+    function change_dissimilar_images() {
+        start_time = parseInt(sliderRange.value()[0]);
+        end_time = parseInt(sliderRange.value()[1]);
+        category = document.getElementById("general_cats").value
+
+        nearest_ids_str = nearest_ids.map(x => x.toString());
+        images_ids = available_ids.filter(filter_func);
+        filtered_ids = images_ids.filter(x => !nearest_ids_str.includes(x));
+        console.log("?????", nearest_ids)
+        console.log("!!!!!", nearest_ids_str)
+        function filter_func(my_id){
+            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
+            && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
         }
 
-        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
+        sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5); // shuffles the list
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
+        grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5); // Shuffle a second time
         dissimilar_locs = grid_dissimilar.slice(0, nr_dissimilar_images);
 
         plot_dissimilar_images(images_ids_subset);
@@ -568,7 +1144,6 @@
     function plot_dissimilar_images(images_ids_subset, transition=true) {
 
         images_ids_subset_int = images_ids_subset.map(Number)
-        get_cosine_sim(middle_image, images_ids_subset_int);
 
         // Remove all current images
         d3.selectAll("g#outside_image")
@@ -577,19 +1152,27 @@
             .style("opacity", 0)
             .remove();
 
-        // Sleep for 100 ms until similarity found
-        sleep(100).then(() => {
+        // Wait until similarity found
+        get_sim_scores(middle_image, images_ids_subset_int).then(() => {
             // --- selecting location of dis-similar layer and plotting those images:
-            var i;
             for (i = 0; i < images_ids_subset.length; i++) {
                 meta_data_painting = data[images_ids_subset[i]]
                 artwork_name = meta_data_painting['artwork_name']
                 artist_full_name = meta_data_painting['artist_full_name']
                 creation_year = meta_data_painting["creation_year"]
-                cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100);
-                appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                    creation_year, transition)
+                general_type = meta_data_painting['general_type'];
+                artwork_type = meta_data_painting['artwork_type'];
+                dominant_color = meta_data_painting['dominant_color'];
+                // Convert to percentage
+                sim_score = Math.round(sim_scores_explore[i] * 100)
+                id_image = images_ids_subset[i].toString()
+                if (transition) {
+                setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
+                    creation_year, general_type, artwork_type, dominant_color, transition);
+                } else {
+                    appendDraggableImage(imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
+                    creation_year, general_type, artwork_type, dominant_color, transition);
+                }
             };
 
             // console.log("change dissimilar");
@@ -598,97 +1181,44 @@
 
     }
 
-    function my_set_center(){
-        search_cat = document.getElementById("search_cat").value.toLowerCase();
-        if(search_cat === "art name")
-        {
-            dictionary = artnames_to_ids;
-        }
-        else
-        {
-            dictionary = artists_to_ids;
-        }
-        let dict_search_key = document.getElementById("search_key").value.toLowerCase();
-        image_to_be_set = dictionary[dict_search_key];
-        if (image_to_be_set !== undefined && dict_search_key != ""){
-            handle_stacks();
-            middle_image = image_to_be_set;
-            d3.select('image#center').remove();
-            d3.select('rect#center').remove();
-            set_center(center, image_to_be_set);
-            change_similar_images();
-        }
-        else{
-            alert("Searched image not found...");
-        }
-        closeNav();
-    }
+    // function my_set_center(){
+    //     search_cat = document.getElementById("search_cat").value.toLowerCase();
+    //     if(search_cat === "art name")
+    //     {
+    //         dictionary = artnames_to_ids;
+    //     }
+    //     else
+    //     {
+    //         dictionary = artists_to_ids;
+    //     }
+    //     let dict_search_key = document.getElementById("search_key").value.toLowerCase();
+    //     image_to_be_set = dictionary[dict_search_key];
+    //     if (image_to_be_set !== undefined && dict_search_key != ""){
+    //         handle_stacks();
+    //         middle_image = image_to_be_set;
+    //         d3.select('image#center').remove();
+    //         d3.select('rect#center').remove();
+    //         set_center(center, image_to_be_set).then(() => {
+    //             change_similar_images();
+    //             change_dissimilar_images();
+    //         });
+    //     }
+    //     else{
+    //         alert("Searched image not found...");
+    //     }
+    //     closeNav();
+    // }
 
-    let search_key_input = document.getElementById("search_key");
-    search_key_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            my_set_center();
-        }
-    });
-
-
-    let filter_start_year_input = document.getElementById("start_year");
-    filter_start_year_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            // event.preventDefault();
-            filter_dissimilar();
+    // Listeners for autocomplete
+    let search_cat_selection = document.getElementById("search_cat");
+    search_cat_selection.addEventListener("change", function(event) {
+        const value = event.target.value;
+        if (value == "Art name") {
+            autocomplete(document.getElementById("search_key"), artnames_list_cased);
+        } else {
+            autocomplete(document.getElementById("search_key"), artists_list_cased);
         }
     });
-
-
-    let filter_end_year_input = document.getElementById("end_year");
-    filter_end_year_input.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            // event.preventDefault();
-            filter_dissimilar();
-
-        }
-    });
-
-    
-
-    function filter_dissimilar(){
-
-        // change the color of pressed button to blue
-        // document.getElementById("end_year_update").style.color = "#f1f1f1";
-        // document.getElementById("end_year_update").style.backgroundColor = "#17a2b8";
-
-        // document.getElementById("search_key_update").style.color = "#f1f1f1";
-        // document.getElementById("search_key_update").style.backgroundColor = "#17a2b8";
-
-        // Get the requested years to filter images
-        let start_point = document.getElementById("start_year").value;
-        let end_point = document.getElementById("end_year").value;
-
-        // use some predefined values, if user pressed sumbmit without choosing a value
-        if(start_point == ""){
-            start_point = "-2500";
-        };
-
-        if(end_point == ""){
-            end_point = "2017";
-        }
-
-        start_year = parseInt(start_point);
-        end_year = parseInt(end_point);
-
-        if(Number.isNaN(start_year) || Number.isNaN(start_year)){
-            alert("[Filtering Error] You have entered text instead of number. You should enter some number between -2500 to 2017.");
-            return;
-        };
-
-        // choose dis-similar images.
-        change_dissimilar_images(start_year, end_year);
-
-        // close the navigation bar.
-        closeNav()
-    }
-
 
 
     function handle_stacks(){
@@ -696,67 +1226,103 @@
         After clicking on a image central image changes. Here we add the current image before updating the central image.
         So we will be able to retrieve this state after pushing the update button.
          */
+        console.log(similar_locs);
         undo_stack.push(middle_image);
+        undo_locs.push(similar_locs);
+        undo_ids.push(nearest_ids);
     }
 
 
-    function change_similar_images() {
-        /*
-        Here we find the "n" similar images to the central image, using KNN method.
-        We also define the coordinates for each of those similar images.
-        */
-        nearest_neighbors(middle_image, nr_similar_images);
-
+    function change_similar_images(start_time=-5000, end_time=2020, category="all", plot_dissimilar=true) {
         // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
-        if (selected_locs_dict[middle_image.toString()] == undefined) {
-            grid_similar = grid_similar.sort(() => Math.random() - 0.5);
-            temp_similar_locs = grid_similar.slice(0, nr_similar_images);
-            selected_locs_dict[middle_image.toString()] = temp_similar_locs;
+        console.log("change similar");
+        if (document.getElementById("similar_too").checked === true){
+            start_time = parseInt(sliderRange.value()[0]);
+            end_time = parseInt(sliderRange.value()[1]);
+            category = document.getElementById("general_cats").value
         }
-        else {
-            temp_similar_locs = selected_locs_dict[middle_image.toString()];
-        }
-        similar_locs = temp_similar_locs;
+
 
         // Remove all current images
         d3.selectAll("g#middle_image")
             .transition()
             .duration(removal_transition_speed)
             .style("opacity", 0)
-            .remove()
+            .remove();
 
-        // Sleep for 500 ms until neighbouring images is found
-        sleep(500).then(() => {
-            // --- selecting location of similar layer and plotting those images:
-            var i;
-            const center_x = parseFloat(d3.select("image#center").attr("x"));
-            const center_y = parseFloat(d3.select("image#center").attr("y"));
-            const center_width = parseFloat(d3.select("image#center").attr("width"));
-            const center_height = parseFloat(d3.select("image#center").attr("height"));
-            const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
-            const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
-            
-            similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest);
+        // if (selected_locs_dict[middle_image.toString()] == undefined || true) {
+            /*
+            Here we find the "n" similar images to the central image, using KNN method.
+            We also define the coordinates for each of those similar images.
+            */
+            // Wait until neighbouring images is found
+            middle.append("text").text('Loading ...')
+                .attr("class","middle")
+                .attr("id","filter_loading")
+                .style("fill","whitesmoke")
+                .style("stroke-width","0")
+                .attr("x","10")
+                .attr("y","22");
 
-            // Start i from 1 to filter-out central image:
-            // for (i = 1; i < nearest_ids.length; i++) {
-            //     meta_data_painting = data[nearest_ids[i]]
-            //     artwork_name = meta_data_painting['artwork_name']
-            //     artist_full_name = meta_data_painting['artist_full_name']
-            //     creation_year = meta_data_painting['creation_year']
-            //     cosine_sim = (Math.round(cos_sims_nearest[i] * 100) / 100).toFixed(2);
-            //     sim_score = Math.round(cosine_sim * 100)
-            //     appendImage(imgs_path + nearest_ids[i].toString() + ".jpg",
-            //         similar_locs[i-1], artwork_name, artist_full_name,
-            //         sim_score, creation_year);
-            // };
+            nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+                d3.selectAll("#filter_loading")
+                .transition()
+                .duration(removal_transition_speed)
+                .style("opacity", 0)
+                .remove();
+                // --- selecting location of similar layer and plotting those images:
+                try{
+                    const center_x = parseFloat(d3.select("image#center").attr("x"));
+                    const center_y = parseFloat(d3.select("image#center").attr("y"));
+                    const center_width = parseFloat(d3.select("image#center").attr("width"));
+                    const center_height = parseFloat(d3.select("image#center").attr("height"));
+                    const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
 
-            // Update outside images for similarity score
-            plot_dissimilar_images(images_ids_subset, transition=false)
-            // console.log("change similar");
+                    // !!!!!!!!!!!!!! modified this to not have images on border
+                    const outer = {"x": 20, "y": 20, "width": middle_width-40, "height": middle_height-40};
+                    var similar_locs = [];
+                    similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
+                    console.log('Similar Locations:', similar_locs);
+                    selected_locs_dict[middle_image.toString()] = similar_locs;
+                    selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 
-        });
 
+                    //update dissimlar images then!
+                    d3.selectAll("g#outside_image")
+                    .style("opacity", 0)
+                    .remove();
+                    change_dissimilar_images();
+
+                }
+                catch (exception){
+                    console.log("caught an expception!!!!!!!!!!!!!!!!!!!!",d3.select("image#center"));
+                    handle_stacks();
+                    change_similar_images();
+                    return
+                }
+
+                // if (plot_dissimilar) {
+                //     // Update outside images for similarity score
+                //     plot_dissimilar_images(images_ids_subset, transition=false);
+                // }
+            });
+        // }
+        // else {
+        //     similar_locs = selected_locs_dict[middle_image.toString()];
+        //     nearest_ids = selected_nearest_ids_dict[middle_image.toString()];
+        //     // Start i from 1 to filter-out central image:
+        //     for (var i=0; i < similar_locs.length; i++) {
+        //         meta_data_painting = data[nearest_ids[i+1]]
+        //         artwork_name = meta_data_painting['artwork_name']
+        //         artist_full_name = meta_data_painting['artist_full_name']
+        //         creation_year = meta_data_painting['creation_year']
+        //         cosine_sim = (Math.round(cos_sims_nearest[i+1] * 100) / 100).toFixed(2);
+        //         sim_score = Math.round(cosine_sim * 100)
+        //         appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
+        //             similar_locs[i], artwork_name, artist_full_name,
+        //             sim_score, creation_year);
+        //     }
+        // }
     }
 
     function redo() {
@@ -767,34 +1333,117 @@
 
         // remove current image from redo stack:
         middle_image = redo_stack.pop();
+
+        undo_locs.push(similar_locs);
+        similar_locs = redo_locs.pop();
+        undo_ids.push(nearest_ids);
+        nearest_ids = redo_ids.pop();
         d3.select('image#center').remove();
         d3.select('rect#center').remove();
         set_center(center, middle_image);
-        change_similar_images();
+        d3.selectAll("g#middle_image")
+            .transition()
+            .duration(removal_transition_speed)
+            .style("opacity", 0)
+            .remove();
+
+        // Start i from 1 to filter-out central image:
+        for (var i=0; i < similar_locs.length; i++) {
+            meta_data_painting = data[nearest_ids[i+1]]
+            artwork_name = meta_data_painting['artwork_name']
+            artist_full_name = meta_data_painting['artist_full_name']
+            creation_year = meta_data_painting['creation_year']
+
+            general_type = meta_data_painting['general_type']
+            artwork_type = meta_data_painting['artwork_type']
+            dominant_color = meta_data_painting['dominant_color']
+
+            // Convert to percentage
+            sim_score = Math.round(sim_scores_nearest[i+1] * 100)
+            appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
+                similar_locs[i], artwork_name, artist_full_name,
+                sim_score, creation_year, general_type, artwork_type, dominant_color);
+        }
+        change_dissimilar_images();
     }
 
     function undo() {
-        
-        // to stop undo if it is empty. 
+
+        // to stop undo if it is empty.
         if (undo_stack.length === 0){
             return;
         };
-
+        console.log(undo_locs)
         redo_stack.push(middle_image);
         // // to stop keep the image id of last image but do not have an extra undo on it.
         // if (redo_stack.length === 0){
         //     redo_stack.push(middle_image);
         //     return;
         // };
-
         // remove current image from undo stack:
         middle_image = undo_stack.pop();
+
+        redo_locs.push(similar_locs);
+        similar_locs = undo_locs.pop();
+        redo_ids.push(nearest_ids);
+        nearest_ids = undo_ids.pop();
         d3.select('image#center').remove();
         d3.select('rect#center').remove();
         set_center(center, middle_image);
-        change_similar_images();
+        d3.selectAll("g#middle_image")
+            .transition()
+            .duration(removal_transition_speed)
+            .style("opacity", 0)
+            .remove();
+
+        for (var i=0; i < similar_locs.length; i++) {
+            meta_data_painting = data[nearest_ids[i+1]]
+            artwork_name = meta_data_painting['artwork_name']
+            artist_full_name = meta_data_painting['artist_full_name']
+            creation_year = meta_data_painting['creation_year']
+
+            general_type = meta_data_painting['general_type']
+            artwork_type = meta_data_painting['artwork_type']
+            dominant_color = meta_data_painting['dominant_color']
+            // Convert to percentage
+            sim_score = Math.round(sim_scores_nearest[i+1] * 100)
+            appendImage(imgs_path + nearest_ids[i+1].toString() + ".jpg",
+                similar_locs[i], artwork_name, artist_full_name,
+                sim_score, creation_year, general_type, artwork_type, dominant_color);
+        }
+        change_dissimilar_images();
 
     }
+    function info_on() {
+        console.log('show information overlay');
+        document.getElementById("overlay").style.display = "block";
+        d3.select("#overlaytext1")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
+        d3.select("#overlaytext2")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
+        d3.select("#overlaytext3")
+          .transition()
+          .duration(overlay_transition_speed)
+          .style("opacity", 1);
+    }
+    function info_off() {
+        console.log('remove information overlay');
+        document.getElementById("overlay").style.display = "none";
+        d3.select("#overlaytext1")
+          .transition()
+          .style("opacity", 0);
+        d3.select("#overlaytext2")
+          .transition()
+          .style("opacity", 0);
+        d3.select("#overlaytext3")
+          .transition()
+          .style("opacity", 0);
+    }
+
     // ----------------------------------------------------------------------------
 
 
@@ -804,19 +1453,37 @@
     var middle_image;
     var artnames_to_ids;
     var artists_to_ids;
+    var artnames_list_cased; // List with artnames with upper/lower casing as in dataset
+    var artists_list_cased; // List with artist names with upper/lower casing as in dataset
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page
     DATA_LOADED = new TrueListener(function() {
-        middle_image = available_ids[Math.floor(Math.random() * available_ids.length)];
-        handle_stacks();
-        set_center(center, middle_image);
-        
-        change_similar_images();
-        change_dissimilar_images();
-        
+        let start_time = parseInt(sliderRange.value()[0]);
+        let end_time = parseInt(sliderRange.value()[1]);
+        let category = document.getElementById("general_cats").value
+
+        let filtered_ids = available_ids.filter(filter_func);
+        function filter_func(my_id){
+            return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time
+            && (category.toLowerCase() === "all" || data[my_id]["general_type"] === category);
+        }
+
+        middle_image = filtered_ids[Math.floor(Math.random() * filtered_ids.length)];
+        set_center(center, middle_image).then(() => {
+            change_similar_images(plot_dissimilar=false);
+            // change_dissimilar_images();
+        })
+        // console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
-        
+
+        // Turn on the autocompletion
+        if (document.getElementById("search_cat").value == "Art name") {
+            autocomplete(document.getElementById("search_key"), artnames_list_cased);
+        } else {
+            autocomplete(document.getElementById("search_key"), artists_list_cased);
+        }
+
         setTimeout(clearIntervals(), 500);
 
     })
@@ -840,6 +1507,8 @@
                 .duration(time)
                 .style("opacity", 1);
                 d3.select(".header")
+                .style('opacity', 1);
+                d3.select("#filtering_section")
                 .style('opacity', 1);
             });
     }

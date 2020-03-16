@@ -4,24 +4,30 @@ var center_image_y;
 function set_center(center_obj, img_id) {
 	toString(img_id);
 	var img = new Image();
-	img.onload = function () {
-		img_width = img.width;
-		img_height = img.height;
-
-		var ratio = img_width / img_height;
-		// If image width > height
-		if (ratio > 1) {
-			img_width = center_image_size;
-			img_height = center_image_size / ratio;
-		// If image height > width
-		} else {
-			img_width = center_image_size * ratio;
-			img_height = center_image_size;
-		};
-		set_center_main(center_obj, img_id, img_width, img_height);
-	}
 	const url = "static/subset/" + img_id + ".jpg";
-	img.src = url;
+
+	// Return a promise that executes the main code. After set_center_main has() has finished the promise is resolved.
+	var promise = new Promise(function(resolve, reject) {
+		img.onload = function () {
+			img_width = img.width;
+			img_height = img.height;
+
+			var ratio = img_width / img_height;
+			// If image width > height
+			if (ratio > 1) {
+				img_width = center_image_size;
+				img_height = center_image_size / ratio;
+			// If image height > width
+			} else {
+				img_width = center_image_size * ratio;
+				img_height = center_image_size;
+			};
+			set_center_main(center_obj, img_id, img_width, img_height);
+			resolve();
+		}
+		img.src = url;
+	});
+	return promise
 }
 
 function set_center_main(center_obj, img_id, img_width, img_height) {
@@ -53,14 +59,19 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 	// Change information of pop up middle image
 	meta_data_painting = data[middle_image];
     var artwork_name = meta_data_painting['artwork_name'].replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ');
-    var artist_full_name = meta_data_painting['artist_full_name'];
+	var artist_full_name = meta_data_painting['artist_full_name'];
+
+
     // If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
     length_artist_name = artist_full_name.split(' ').length;
     if (length_artist_name > 5)
     	artist_full_name = artist_full_name.replace(/\s/g,'');
     artist_full_name = artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
-    var creation_year = meta_data_painting["creation_year"];
-    document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").";
+	var creation_year = meta_data_painting["creation_year"];
+	var general_type = meta_data_painting['general_type'];
+	var artwork_type = meta_data_painting['artwork_type'];
+	var dominant_color = meta_data_painting['dominant_color'];
+	document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp " + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp" + dominant_color;
 
     var rgb = stroke_color_images_high_similarity;
     var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
@@ -69,6 +80,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		.attr("y", center_image_y)
 		.attr("height", img_height)
 		.attr("width", img_width)
+		.attr("id", 'border')
 		.attr("class", "image-outline")
 		.style("stroke", hexColor);
 
@@ -98,7 +110,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		})
 		.on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + ").");
+        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color );
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

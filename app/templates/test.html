@@ -896,6 +896,7 @@
         			var modalImg = document.getElementById("img01");
         			modalImg.src = data[d3.select("image.searchImage").attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
+                    closeNav();
         			handle_stacks();
 
                     // change middle_image variable and call function, both from test.html;

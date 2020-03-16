@@ -232,53 +232,53 @@ function slider(orientation, scale) {
       .attr('tabindex', 0)
       .attr('fill', 'white')
       .attr('stroke', '#777')
-      .on('keydown', function(d, i) {
-        var change = step || (domain[1] - domain[0]) / KEYBOARD_NUMBER_STEPS;
-
-        // TODO: Don't need to loop over value because we know which element needs to change
-        function newValue(adjustedValue) {
-          return value.map(function(d, j) {
-            if (value.length === 2) {
-              return j === i
-                ? i === 0
-                  ? Math.min(adjustedValue, alignedValue(value[1]))
-                  : Math.max(adjustedValue, alignedValue(value[0]))
-                : d;
-            } else {
-              return j === i ? adjustedValue : d;
-            }
-          });
-        }
-
-        switch (d3Selection.event.key) {
-          case 'ArrowLeft':
-          case 'ArrowDown':
-            slider.value(newValue(+value[i] - change));
-            d3Selection.event.preventDefault();
-            break;
-          case 'PageDown':
-            slider.value(newValue(+value[i] - 2 * change));
-            d3Selection.event.preventDefault();
-            break;
-          case 'ArrowRight':
-          case 'ArrowUp':
-            slider.value(newValue(+value[i] + change));
-            d3Selection.event.preventDefault();
-            break;
-          case 'PageUp':
-            slider.value(newValue(+value[i] + 2 * change));
-            d3Selection.event.preventDefault();
-            break;
-          case 'Home':
-            slider.value(newValue(domain[0]));
-            d3Selection.event.preventDefault();
-            break;
-          case 'End':
-            slider.value(newValue(domain[1]));
-            d3Selection.event.preventDefault();
-            break;
-        }
-      });
+      // .on('keydown', function(d, i) {
+      //   var change = step || (domain[1] - domain[0]) / KEYBOARD_NUMBER_STEPS;
+      //
+      //   // TODO: Don't need to loop over value because we know which element needs to change
+      //   function newValue(adjustedValue) {
+      //     return value.map(function(d, j) {
+      //       if (value.length === 2) {
+      //         return j === i
+      //           ? i === 0
+      //             ? Math.min(adjustedValue, alignedValue(value[1]))
+      //             : Math.max(adjustedValue, alignedValue(value[0]))
+      //           : d;
+      //       } else {
+      //         return j === i ? adjustedValue : d;
+      //       }
+      //     });
+      //   }
+      //
+      //   switch (d3Selection.event.key) {
+      //     case 'ArrowLeft':
+      //     case 'ArrowDown':
+      //       slider.value(newValue(+value[i] - change));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //     case 'PageDown':
+      //       slider.value(newValue(+value[i] - 2 * change));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //     case 'ArrowRight':
+      //     case 'ArrowUp':
+      //       slider.value(newValue(+value[i] + change));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //     case 'PageUp':
+      //       slider.value(newValue(+value[i] + 2 * change));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //     case 'Home':
+      //       slider.value(newValue(domain[0]));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //     case 'End':
+      //       slider.value(newValue(domain[1]));
+      //       d3Selection.event.preventDefault();
+      //       break;
+      //   }
+      // });
 
     if (displayValue && value.length === 1) {
       handleEnter

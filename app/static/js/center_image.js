@@ -71,7 +71,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 	var general_type = meta_data_painting['general_type'];
 	var artwork_type = meta_data_painting['artwork_type'];
 	var dominant_color = meta_data_painting['dominant_color'];
-	document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp " + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp" + dominant_color;
+	document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp " + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '" /></svg>' + dominant_color;
 
     var rgb = stroke_color_images_high_similarity;
     var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
@@ -110,7 +110,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		})
 		.on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color );
+        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color );
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

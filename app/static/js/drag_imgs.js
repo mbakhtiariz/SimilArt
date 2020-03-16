@@ -72,7 +72,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				"</b> (" + creation_year + "). " +
 				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
 				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
-				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + dominant_color + "<br><br>" +
+				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color + "<br><br>" +
 				"<em>Similarity:</em> &nbsp" + similarity + "%");
 			return tooltip.style("visibility", "visible");
 			}, time_till_tooltip_appearance);

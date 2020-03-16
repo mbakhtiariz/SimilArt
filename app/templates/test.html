@@ -154,7 +154,7 @@
         <div id="cat_div">
             <!-- <label for="general_cats", style="color:#757575"> Filter category:</label> -->
             <label for="general_cats", style="color:whitesmoke"> Filter category:</label>
-            <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="chnage_category()">
+            <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="change_category()">
                 <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
             </select>
         </div>
@@ -310,6 +310,7 @@
                 // .duration(removal_transition_speed)
                 .style("opacity", 0)
                 .remove();
+                handle_stacks();
                 change_similar_images();
             }
             else {
@@ -1081,8 +1082,9 @@
 
     // ---------------- Helper Functions ------------------
 
-    function chnage_category(){
+    function change_category(){
         if (document.getElementById("similar_too").checked){
+            handle_stacks();
             change_similar_images();
         }
         else{
@@ -1092,6 +1094,7 @@
 
     function filter_similars(){
         if (document.getElementById("similar_too").checked){
+            handle_stacks();
             change_similar_images();
             // change_dissimilar_images();
         }
@@ -1260,7 +1263,7 @@
                     const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
 
                     // !!!!!!!!!!!!!! modified this to not have images on border
-                    const outer = {"x": 20, "y": 20, "width": middle_width-50, "height": middle_height-50};
+                    const outer = {"x": 20, "y": 20, "width": middle_width-40, "height": middle_height-40};
                     var similar_locs = [];
                     similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
                     console.log('Similar Locations:', similar_locs);
@@ -1277,6 +1280,7 @@
                 }
                 catch (exception){
                     console.log("caught an expception!!!!!!!!!!!!!!!!!!!!",d3.select("image#center"));
+                    handle_stacks();
                     change_similar_images();
                     return
                 }

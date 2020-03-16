@@ -1058,23 +1058,25 @@
     }
 
     // create grid for possible locations of images
-    var i;
-    var j;
     var grid_dissimilar = [];
+    function calculate_dissimilar_grid() {
+        let num_locs = 0; // Keep track of how many locations *should* be in `grid_dissimilar`
+        for (var i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
+            for (var j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
 
-    for (i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
-        for (j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
+                // skip middle section and randomize button
+                if ((i + dissimilar_image_size > (middle_x - 5) && i < (middle_x + middle_width + 5)) &&
+                        (j + dissimilar_image_size > (middle_y - 5) && j < (middle_y + middle_height + 5)) ||
+                        (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
 
-            // skip middle section and randomize button
-            if ((i + dissimilar_image_size > (middle_x - 5) && i < (middle_x + middle_width + 5)) &&
-                    (j + dissimilar_image_size > (middle_y - 5) && j < (middle_y + middle_height + 5)) ||
-                    (i < button_size * 4 + 0.5 && j < button_size * 4 + 0.5))
+                    continue;
 
-                continue;
-
-            grid_dissimilar.push([i, j]);
+                grid_dissimilar.push([i, j]);
+                num_locs++;
+            }
         }
     }
+    calculate_dissimilar_grid();
 
     // global vars for nearest and explore images ids
     var images_ids_subset

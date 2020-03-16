@@ -219,67 +219,6 @@ redo_button.append("image")
         return tooltip_buttons.style("visibility", "hidden");
     });
 
-var info_overlay = d3.select("#overlay")
-    .append("svg")
-    .attr("preserveAspectRatio", "none")
-    .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
-info_overlay.append("text")
-    .attr("text-anchor", "middle")
-    .attr("id", "overlaytext1")
-    .attr("class", "overlaytext")
-    .text("Your center painting:")
-    .style("font-weight", "bold")
-    .style("opacity", 0);
-info_overlay.append("text")
-    .attr("text-anchor", "middle")
-    .attr("id", "overlaytext1b")
-    .attr("class", "overlaytext")
-    .text("Click to expand")
-    .style("opacity", 0);
-info_overlay.append("rect")
-    .attr("id", "highlight_center")
-    .attr("class", "highlight")
-    .style("stroke", "white")
-    .style("opacity", 0);
-info_overlay.append("rect")
-    .attr("id", "highlight_middle")
-    .attr("class", "highlight")
-    .attr("width", middle_width)
-    .attr("height", middle_height)
-    .attr("x", middle_x)
-    .attr("y", middle_y)
-    .style("opacity", 0);
-info_overlay.append("text")
-    .attr("id", "overlaytext2")
-    .attr("class", "overlaytext")
-    .attr("x", middle_x+10)
-    .attr("y", middle_y+25)
-    .text("Paintings with visual similarity")
-    .style("font-weight", "bold")
-    .style("opacity", 0);
-info_overlay.append("text")
-    .attr("id", "overlaytext3")
-    .attr("class", "overlaytext")
-    .attr("x", 20)
-    .attr("y", 70)
-    .text("Exploration area")
-    .style("font-weight", "bold")
-    .style("opacity", 0);
-info_overlay.append("text")
-    .attr("id", "overlaytext3b")
-    .attr("class", "overlaytext")
-    .attr("x", 20)
-    .attr("y", 90)
-    .text("Click any painting to make center painting")
-    .style("opacity", 0);
-info_overlay.append("text")
-    .attr("id", "overlaytext3c")
-    .attr("class", "overlaytext")
-    .attr("x", 20)
-    .attr("y", 110)
-    .text("Cluster images by dragging")
-    .style("opacity", 0);
-
 var info_button_circle;
 var info_button = button_svg.append("g")
 info_button.append("circle")

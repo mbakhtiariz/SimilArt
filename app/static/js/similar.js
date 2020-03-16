@@ -1,6 +1,5 @@
 function change_similar_images(start_time=-5000, end_time=2020, category="all", plot_dissimilar=true) {
     // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
-    console.log("change similar");
     if (document.getElementById("similar_too").checked === true){
         start_time = parseInt(sliderRange.value()[0]);
         end_time = parseInt(sliderRange.value()[1]);

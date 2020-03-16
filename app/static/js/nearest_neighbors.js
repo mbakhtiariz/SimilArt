@@ -1,7 +1,7 @@
 // Connection needed for the nearest neighbor queries
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
-	console.log('Websocket connected!');
+	// console.log('Websocket connected!');
 });
 
 // distances and nearest neighbor ids are stored in variables below

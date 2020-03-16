@@ -185,13 +185,28 @@
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
 
+    var stroke_color_images_high_similarity = [51, 96, 255]; // rgb
+    var stroke_color_images_low_similarity = [160, 255, 112]; // rgb
+
+    // Interpolate between two [r, g, b] colors with percentage p between 0 and 1
+    //https://stackoverflow.com/questions/14482226/how-can-i-get-the-color-halfway-between-two-colors
+    function colourGradientor(p, rgb_beginning, rgb_end){
+        var w = p * 2 - 1;
+        var w1 = (w + 1) / 2.0;
+        var w2 = 1 - w1;
+        var rgb = [parseInt(rgb_beginning[0] * w1 + rgb_end[0] * w2),
+                    parseInt(rgb_beginning[1] * w1 + rgb_end[1] * w2),
+                    parseInt(rgb_beginning[2] * w1 + rgb_end[2] * w2)];
+
+        return rgb;
+    };
+
     var filter_sec_top = svgheight + 'px';
     var timeslider_width = svgwidth * .95
     var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
     var filter_cat_padding_left = svgwidth - 300 + 'px';//timeslider_padding_left - 10 + 'px';
     var filter_cat_padding_top = height_navbar - 40 + 'px';
     var filter_checkbox_padding_left = timeslider_padding_left - 10 + 'px';
-
 </script>
 
 <!-- Import dragable images code -->
@@ -634,34 +649,65 @@
         // .attr('fill', 'white');
 
     var info_overlay = d3.select("#overlay")
-          .append("svg")
-          .attr("preserveAspectRatio", "none")
-          .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
+        .append("svg")
+        .attr("preserveAspectRatio", "none")
+        .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
     info_overlay.append("text")
-          .attr("text-anchor", "middle")
-          .style("opacity", 0)
-          .attr("id", "overlaytext1")
-          .style("font-family", "Copperplate Gothic Light")
-          .style("fill", "white")
-          .attr("x", svgwidth*0.5)
-          .attr("y", svgheight*0.25+20)
-          .text("Your center painting: Click to expand")
+        .attr("text-anchor", "middle")
+        .attr("id", "overlaytext1")
+        .attr("class", "overlaytext")
+        .text("Your center painting:")
+        .style("font-weight", "bold")
+        .style("opacity", 0);
     info_overlay.append("text")
-          .style("fill", "white")
-          .style("opacity", 0)
-          .attr("id", "overlaytext2")
-          .style("font-family", "Copperplate Gothic Light")
-          .attr("x", middle_x)
-          .attr("y", middle_y-10)
-          .text("Paintings with visual similarity")
+        .attr("text-anchor", "middle")
+        .attr("id", "overlaytext1b")
+        .attr("class", "overlaytext")
+        .text("Click to expand")
+        .style("opacity", 0);
+    info_overlay.append("rect")
+        .attr("id", "highlight_center")
+        .attr("class", "highlight")
+        .style("stroke", "white")
+        .style("opacity", 0);
+    info_overlay.append("rect")
+        .attr("id", "highlight_middle")
+        .attr("class", "highlight")
+        .attr("width", middle_width)
+        .attr("height", middle_height)
+        .attr("x", middle_x)
+        .attr("y", middle_y)
+        .style("opacity", 0);
     info_overlay.append("text")
-          .style("fill", "white")
-          .style("opacity", 0)
-          .attr("id", "overlaytext3")
-          .style("font-family", "Copperplate Gothic Light")
-          .attr("x", 20)
-          .attr("y", 60)
-          .text("Exploration area: Click to see visual similarity")
+        .attr("id", "overlaytext2")
+        .attr("class", "overlaytext")
+        .attr("x", middle_x+10)
+        .attr("y", middle_y+25)
+        .text("Paintings with visual similarity")
+        .style("font-weight", "bold")
+        .style("opacity", 0);
+    info_overlay.append("text")
+        .attr("id", "overlaytext3")
+        .attr("class", "overlaytext")
+        .attr("x", 20)
+        .attr("y", 70)
+        .text("Exploration area")
+        .style("font-weight", "bold")
+        .style("opacity", 0);
+    info_overlay.append("text")
+        .attr("id", "overlaytext3b")
+        .attr("class", "overlaytext")
+        .attr("x", 20)
+        .attr("y", 90)
+        .text("Click any painting to make center painting")
+        .style("opacity", 0);
+    info_overlay.append("text")
+        .attr("id", "overlaytext3c")
+        .attr("class", "overlaytext")
+        .attr("x", 20)
+        .attr("y", 110)
+        .text("Cluster images by dragging")
+        .style("opacity", 0);
 
     var info_button_circle;
     var info_button = button_svg.append("g")
@@ -1113,7 +1159,6 @@
     var nearest_ids
 
     // ---------------- Helper Functions ------------------
-
     function change_category(){
         if (document.getElementById("similar_too").checked){
             handle_stacks();
@@ -1191,7 +1236,7 @@
                 }
             };
 
-            console.log("change dissimilar");
+            // console.log("change dissimilar");
 
         });
 
@@ -1432,32 +1477,77 @@
     }
     function info_on() {
         console.log('show information overlay');
+        const center_x = parseFloat(d3.select("image#center").attr("x"))
+        const center_y = parseFloat(d3.select("image#center").attr("y"))
+        const center_width = parseFloat(d3.select("image#center").attr("width"))
+        const center_height = parseFloat(d3.select("image#center").attr("height"))
         document.getElementById("overlay").style.display = "block";
+        d3.select("#highlight_center")
+            .attr("width", center_width)
+            .attr("height", center_height)
+            .attr("x", middle_x + center_x)
+            .attr("y", middle_y + center_y)
+            .transition()
+            .style("opacity", 1);
+        d3.select("#highlight_middle")    
+            .transition()
+            .style("opacity", 1);
         d3.select("#overlaytext1")
-          .transition()
-          .duration(overlay_transition_speed)
-          .style("opacity", 1);
+            .attr("x", middle_x + center_x + 0.5*center_width)
+            .attr("y", middle_y + center_y + 0.5*center_height)
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
+        d3.select("#overlaytext1b")
+            .attr("x", middle_x + center_x + 0.5*center_width)
+            .attr("y", middle_y + center_y + 0.5*center_height + 30)
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
         d3.select("#overlaytext2")
-          .transition()
-          .duration(overlay_transition_speed)
-          .style("opacity", 1);
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
         d3.select("#overlaytext3")
-          .transition()
-          .duration(overlay_transition_speed)
-          .style("opacity", 1);
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
+        d3.select("#overlaytext3b")
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
+        d3.select("#overlaytext3c")
+            .transition()
+            .duration(overlay_transition_speed)
+            .style("opacity", 1);
     }
     function info_off() {
         console.log('remove information overlay');
         document.getElementById("overlay").style.display = "none";
         d3.select("#overlaytext1")
-          .transition()
-          .style("opacity", 0);
+            .transition()
+            .style("opacity", 0);
+        d3.select("#overlaytext1b")
+            .transition()
+            .style("opacity", 0);
         d3.select("#overlaytext2")
-          .transition()
-          .style("opacity", 0);
+            .transition()
+            .style("opacity", 0);
         d3.select("#overlaytext3")
-          .transition()
-          .style("opacity", 0);
+            .transition()
+            .style("opacity", 0);
+        d3.select("#overlaytext3b")
+            .transition()
+            .style("opacity", 0);
+        d3.select("#overlaytext3c")
+            .transition()
+            .style("opacity", 0);
+        d3.select("#highlight_middle")
+            .transition()
+            .style("opacity", 0);
+        d3.select("#highlight_center")
+            .transition()
+            .style("opacity", 0);
     }
 
     // ----------------------------------------------------------------------------
@@ -1489,7 +1579,7 @@
             change_similar_images(plot_dissimilar=false);
             // change_dissimilar_images();
         })
-        console.log("Page ready");
+        // console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
 

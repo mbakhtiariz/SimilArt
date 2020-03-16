@@ -147,15 +147,28 @@
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
             <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
-            <label for="similar_too" style="color:whitesmoke"> Filter similar images too</label><br>
+            <label for="similar_too" style="color:whitesmoke"> Filter similarity area</label><br>
         </div>
+
+        <!-- Area for showing the time filter values -->
+        <div id="time_filter_values"></div>
 
         <!-- category filter: -->
         <div id="cat_div">
             <!-- <label for="general_cats", style="color:#757575"> Filter category:</label> -->
             <label for="general_cats", style="color:whitesmoke"> Filter category:</label>
             <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="change_category()">
-                <option>all</option><option>print</option> <option>photograph</option> <option>sculpture</option> <option>design</option> <option>weapons and armor</option> <option>drawing</option> <option>painting</option> <option>craft</option> <option>installation</option> <option>textile</option>
+                <option>all</option>
+                <option>print</option>
+                <option>photograph</option>
+                <option>sculpture</option>
+                <option>design</option>
+                <option>weapons and armor</option>
+                <option>drawing</option>
+                <option>painting</option>
+                <option>craft</option>
+                <option>installation</option>
+                <option>textile</option>
             </select>
         </div>
     </div>
@@ -280,6 +293,14 @@
     filtering_checkbox_section.style.top = '60px';
     filtering_checkbox_section.style.left = filter_checkbox_padding_left;
 
+    const time_values_section = document.getElementById("time_filter_values");
+    // alert(filtering_cat_section.innerHTML)
+    time_values_section.innerHTML = "From <span>2500 BC</span> To <span>2017 AD</span>";
+    time_values_section.style.position = 'absolute';
+    time_values_section.style.top = '60px';
+    time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
+
+
     const filtering_cat_section = document.getElementById("cat_div");
     // alert(filtering_cat_section.innerHTML)
     filtering_cat_section.style.position = 'absolute';
@@ -301,6 +322,15 @@
         // .marks(2017)
         // slider color:
         .fill('#56B8CF')
+        .on('drag', function () {
+            let start_time = parseInt(sliderRange.value()[0]);
+            start_time = Math.abs(start_time) == start_time ? start_time.toString()+" AD" : Math.abs(start_time).toString()+" BC";
+            let end_time = parseInt(sliderRange.value()[1]);
+            end_time = Math.abs(end_time) == end_time ? end_time.toString()+" AD" : Math.abs(end_time).toString()+" BC";
+
+            time_values_section.innerHTML = "From <span>" + start_time + "</span> To <span>" + end_time + "</span>";
+            time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
+        })
         .on('end', val => {
             console.log("===================================================");
             if (document.getElementById("similar_too").checked === true)

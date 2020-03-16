@@ -18,7 +18,8 @@ time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.
 const filtering_cat_section = document.getElementById("cat_div");
 filtering_cat_section.style.position = 'absolute';
 filtering_cat_section.style.top = '60px';
-filtering_cat_section.style.left = filter_cat_padding_left;
+// filtering_cat_section.style.left = filter_cat_padding_left;
+filtering_cat_section.style.right = filter_cat_padding_right;
 
 // Range slider for time filter
 var sliderRange = d3

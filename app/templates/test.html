@@ -214,7 +214,7 @@
 
     // Add listener to close side menu if we click anywhere on the page (except the menu button)
     document.getElementById("page").addEventListener("click", function(e) {
-        if (e.target.id != "menu_button") closeNav();
+        if ((e.target.id != "menu_button") && (e.target.id != "menu_button_icon")) closeNav();
     });
     document.getElementById("filtering_section").addEventListener("click", function(e) {
         closeNav();
@@ -297,8 +297,8 @@
         .step(1)
         .ticks(20)
         .handle('M -8, 0 a .025,.025 0 1,1 10,0 a 0.25,0.25 0 1,1 -10,0')
-        // .domain([-2500, 2017]) 
-        // .marks(2017) 
+        // .domain([-2500, 2017])
+        // .marks(2017)
         // slider color:
         .fill('#56B8CF')
         .on('end', val => {
@@ -417,6 +417,7 @@
 
     menubutton.append("image")
 		.attr("href", "static/icons/" + 'menu.png')
+        .attr("id", "menu_button_icon")
         .attr("class", "button")
 		.attr("height", button_size / 2)
         .attr("width", button_size / 2)
@@ -1222,7 +1223,7 @@
                 .remove();
                 // --- selecting location of similar layer and plotting those images:
                 try{
-                    const center_x = parseFloat(d3.select("image#center").attr("x"));               
+                    const center_x = parseFloat(d3.select("image#center").attr("x"));
                     const center_y = parseFloat(d3.select("image#center").attr("y"));
                     const center_width = parseFloat(d3.select("image#center").attr("width"));
                     const center_height = parseFloat(d3.select("image#center").attr("height"));
@@ -1282,7 +1283,7 @@
 
         // remove current image from redo stack:
         middle_image = redo_stack.pop();
-        
+
         undo_locs.push(similar_locs);
         similar_locs = redo_locs.pop();
         undo_ids.push(nearest_ids);
@@ -1344,7 +1345,7 @@
             .duration(removal_transition_speed)
             .style("opacity", 0)
             .remove();
-        
+
         for (var i=0; i < similar_locs.length; i++) {
             meta_data_painting = data[nearest_ids[i+1]]
             artwork_name = meta_data_painting['artwork_name']

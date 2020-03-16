@@ -2,14 +2,6 @@ function openNav() {
   document.getElementById("mySidebar").style.width = "250px";
 }
 
-
-// window.onclick = function(event) {
-//     console.log(event.target);
-//     if (event.target == document.getElementById("page")) {
-//         closeNav();
-//     }
-// }
-
 function closeNav() {
   // Check if all sidebars are collapsed or not
   let other_navs_collapsed = true;

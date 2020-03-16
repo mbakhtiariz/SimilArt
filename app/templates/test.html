@@ -152,26 +152,74 @@
 </body>
 
 <script type="text/javascript">
-    var height_navbar = 100;
+    // Constants -------------------------------------------------//
+    const height_navbar = 100;
+    const center_image_size = 200;
+    const similar_image_size = 70;
+    const dissimilar_image_size = 70;
+    const time_till_tooltip_appearance = 500;
+    const time_till_loading_appearance = 1500;
+    const stroke_color_images_high_similarity = [51, 96, 255]; // rgb
+    const stroke_color_images_low_similarity = [160, 255, 112]; // rgb
+    const removal_transition_speed = 500;
+    const appearance_transition_speed = 500;
+    const overlay_transition_speed = 1000;
+    const appearance_transition_loading = 1000;
+    const removal_transition_speed_middle_image = 0;
+    const time_to_suspend_middle_image_after_click = 0;
+    const imgs_path = "static/subset/";
+    const nr_similar_images = 80;
+    const nr_dissimilar_images = 30;
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    // Variables -------------------------------------------------//
     var svgwidth = document.body.clientWidth;
     var svgheight = document.body.clientHeight - height_navbar;
-    var center_image_size = 200;
-    var similar_image_size = 70;
-    var dissimilar_image_size = 70;
     var timer_tooltip;
-    var time_till_tooltip_appearance = 500;
     var timer_loading;
-    var time_till_loading_appearance = 1500;
-
-    var stroke_color_images_high_similarity = [51, 96, 255]; // rgb
-    var stroke_color_images_low_similarity = [160, 255, 112]; // rgb
-
     var filter_sec_top = svgheight + 'px';
     var timeslider_width = svgwidth * .95
     var timeslider_padding_left = (svgwidth - timeslider_width) * 0.5;
     var filter_cat_padding_left = svgwidth - 300 + 'px';
     var filter_cat_padding_top = height_navbar - 40 + 'px';
     var filter_checkbox_padding_left = timeslider_padding_left - 10 + 'px';
+    var NEIGHBORS_LISTENER;
+    var SIM_SCORE_LISTENER;
+    var undo_stack = [];
+    var undo_locs = [];
+    var undo_ids = [];
+    var redo_stack = [];
+    var redo_locs = [];
+    var redo_ids = [];
+    var old_middle_image = "";
+    var selected_locs_dict = {};
+    var selected_nearest_ids_dict = {};
+    var outside_images = [];
+    var outside_subset = [];
+    var dissimilar_locs = [];
+    var similar_locs = [];
+    var tmp_ids = {{ tmp_ids |safe }}; // Small list of the first 10000 images in subset folder
+    var images_ids_subset; // global vars for nearest and explore images ids
+    var nearest_ids; // global vars for nearest and explore images ids
+    var data; // Data loading from json
+    var available_ids; // Data loading from json
+    var middle_image; // Data loading from json
+    var artnames_to_ids; // Data loading from json
+    var artists_to_ids; // Data loading from json
+    var artnames_list_cased; // Data loading from json: List with artnames with upper/lower casing as in dataset
+    var artists_list_cased; // Data loading from json: List with artist names with upper/lower casing as in dataset
+    var middle_x = svgwidth * 0.25;
+    var middle_y = svgheight * 0.25 - height_navbar / 2 ;
+    var middle_width = svgwidth * 0.5;
+    var middle_height = svgwidth * 0.25;
+    var loading;
+    var svg;
+    var middle;
+    var filter;
+    var center;
+    var defs;
 </script>
 
 <!-- Import dragable images code -->
@@ -192,51 +240,20 @@
 
 
 <script type="text/javascript">
+    // Draw screen -------------------------------------------------//
     // Container for the loading screen
-    var loading = d3.select("#container").append("div")
+    loading = d3.select("#container").append("div")
         .attr("id", "loading");
-    // Small list of the first 10000 images in subset folder
-    var tmp_ids = {{ tmp_ids |safe }};
+    
     // Display the loading screen
     loading_screen(loading, tmp_ids);
 
-    var svg = d3.select("#container").append("svg")
+    svg = d3.select("#container").append("svg")
         .attr("preserveAspectRatio", "none")
         .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
         .attr("id", "page");
 
-    // Add listener to close side menu if we click anywhere on the page (except the menu button)
-    document.getElementById("page").addEventListener("click", function(e) {
-        if ((e.target.id != "menu_button") && (e.target.id != "menu_button_icon")) closeNav();
-    });
-    document.getElementById("filtering_section").addEventListener("click", function(e) {
-        closeNav();
-    });
-
-    var NEIGHBORS_LISTENER;
-    var SIM_SCORE_LISTENER;
-    var removal_transition_speed = 500;
-    var appearance_transition_speed = 500;
-    var overlay_transition_speed = 1000;
-    var appearance_transition_loading = 1000;
-    var removal_transition_speed_middle_image = 0;
-    var time_to_suspend_middle_image_after_click = 0;
-    var undo_stack = [];
-    var undo_locs = [];
-    var undo_ids = [];
-    var redo_stack = [];
-    var redo_locs = [];
-    var redo_ids = [];
-    var old_middle_image = "";
-    var selected_locs_dict = {};
-    var selected_nearest_ids_dict = {};
-    var imgs_path = "static/subset/";
-    var defs = svg.append("defs");
-    var middle_x = svgwidth * 0.25;
-    var middle_y = svgheight * 0.25 - height_navbar / 2 ;
-    var middle_width = svgwidth * 0.5;
-    var middle_height = svgwidth * 0.25;
-    var middle = svg.append("svg")
+    middle = svg.append("svg")
         .attr("class", "middle")
         .attr("x", middle_x)
         .attr("y", middle_y)
@@ -250,39 +267,32 @@
         .attr("rx","0px")
         .attr("ry","0px");
 
+    defs = svg.append("defs");
 
-    var filter = middle.append("filter")
+    filter = middle.append("filter")
         .attr("id","blur");
 
     filter.append("feGaussianBlur")
         .attr("stdDeviation","3.5")
         .attr("result","coloredBlur");
 
+    center = middle.append("svg");
 
-    var center = middle.append("svg");
+    // Add listeners -------------------------------------------------//
+    // Add listener to close side menu if we click anywhere on the page (except the menu button)
+    document.getElementById("page").addEventListener("click", function(e) {
+        if ((e.target.id != "menu_button") && (e.target.id != "menu_button_icon")) closeNav();
+    });
+    document.getElementById("filtering_section").addEventListener("click", function(e) {
+        closeNav();
+    });
 
     // Listener for if the json has been created
     socket.on('json_loaded', function () {
         get_meta();
     })
-    
-
-    var nr_similar_images = 80;
-    var nr_dissimilar_images = 30;
-    var outside_images = [];
-    var outside_subset = [];
-    var dissimilar_locs = [];
-    var similar_locs = [];
-
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-    }    
-
-    // global vars for nearest and explore images ids
-    var images_ids_subset;
-    var nearest_ids;
-
 </script>
+
 <script src="../static/js/buttons.js"></script>
 <script src="../static/js/filter.js"></script>
 <script src="../static/js/search.js"></script>
@@ -291,16 +301,9 @@
 <script src="../static/js/dissimilar.js"></script>
 <script src="../static/js/undo_redo.js"></script>
 <script src="../static/js/info.js"></script>
-<script>
-    // Data loading from json
-    var data;
-    var available_ids;
-    var middle_image;
-    var artnames_to_ids;
-    var artists_to_ids;
-    var artnames_list_cased; // List with artnames with upper/lower casing as in dataset
-    var artists_list_cased; // List with artist names with upper/lower casing as in dataset
 
+<script type="text/javascript">
+    // Perform actions -------------------------------------------------//
     calculate_dissimilar_grid();
 
     // Once DATA_LOADED is set to true in get_meta(), setup the page

@@ -1,8 +1,5 @@
 // Connection needed for the nearest neighbor queries
 var socket = io.connect('http://' + document.domain + ':' + location.port);
-socket.on('connect', function() {
-	// console.log('Websocket connected!');
-});
 
 // distances and nearest neighbor ids are stored in variables below
 var dists = []
@@ -13,8 +10,6 @@ var sim_scores_nearest = []
 
 // Functions needed for the nearest neighbor queries
 function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
-	// console.log('Getting nearest neighbors...');
-	
 	var promise = new Promise(function(resolve, reject) {
 		NEIGHBORS_LISTENER = new Listener(function () {
 			// setTimeout(resolve, 10);
@@ -30,18 +25,14 @@ socket.on('nearest_neighbors_data', function(data) {
 	nearest_ids = data.ids;
 	sim_scores_nearest = data.sim_scores;
 	NEIGHBORS_LISTENER.callback();
-	console.log("nearest ids:", nearest_ids);
 });
 
 // store similarity scores for outside area
 var sim_scores_explore = []
 
 function get_sim_scores(id, ind) {
-	console.log('Getting similarity scores...');
-
 	var promise = new Promise(function(resolve, reject) {
 		SIM_SCORE_LISTENER = new Listener(function () {
-			// setTimeout(resolve, 10);
 			resolve();
 		});
 	});
@@ -53,7 +44,6 @@ function get_sim_scores(id, ind) {
 socket.on('get_sim_scores_data', function(data) {
 	sim_scores_explore = data.sim_scores;
 	SIM_SCORE_LISTENER.callback();
-	// console.log("cos sims explore area:", cos_sims_explore);
 });
 
 // If .callback() is called on a Listener() object, the callback code is executed

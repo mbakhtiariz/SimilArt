@@ -111,7 +111,6 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		.on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
         	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + ").");
-        	 // <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color );
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

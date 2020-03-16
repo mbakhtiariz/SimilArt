@@ -166,7 +166,7 @@ function dragged(d) {
 	} else if (yborder - height*0.5  < 0){
 		newY = 0
 	}
-	// console.log(xborder)
+
 	// Middle area
 	middle_w = +middle.attr("width")
 	middle_x = +middle.attr("x")

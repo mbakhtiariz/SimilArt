@@ -1,9 +1,14 @@
-function change_similar_images(start_time=-5000, end_time=2020, category="all", plot_dissimilar=true) {
+function change_similar_images(plot_dissimilar=false) {
     // if central image has been seen before use the precomputed locations for similar images otherwise calculate their positions:
     if (document.getElementById("similar_too").checked === true){
         start_time = parseInt(sliderRange.value()[0]);
         end_time = parseInt(sliderRange.value()[1]);
         category = document.getElementById("general_cats").value
+    }
+    else{
+        start_time=-5000
+        end_time=2020
+        category="all"
     }
 
     // Remove all current images
@@ -54,13 +59,16 @@ function change_similar_images(start_time=-5000, end_time=2020, category="all", 
             selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 
             //update dissimlar images then!
-            d3.selectAll("g#outside_image")
-            .style("opacity", 0)
-            .remove();
-            change_dissimilar_images();
+            if (plot_dissimilar)
+            {
+                d3.selectAll("g#outside_image")
+                .style("opacity", 0)
+                .remove();
+                change_dissimilar_images();
+            }
         } catch (exception){
             handle_stacks();
-            change_similar_images();
+            change_similar_images(plot_dissimilar=plot_dissimilar);
             return
         }
     });

@@ -254,6 +254,8 @@ function set_result_img(id) {
                     .style('opacity', 0)
                     .remove();
                 d3.select('rect#center').remove();
+                // d3.select('rect#center').remove();
+                d3.select('rect#border').remove();
                 set_center(center, middle_image);
                 change_similar_images();
             });

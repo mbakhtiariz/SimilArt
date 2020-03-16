@@ -45,8 +45,9 @@ var sliderRange = d3
             d3.selectAll("g#middle_image")
             .style("opacity", 0)
             .remove();
+            
             handle_stacks();
-            change_similar_images();
+            change_similar_images(plot_dissimilar=true);
         } else {
             d3.selectAll("g#outside_image")
                 .style("opacity", 0)
@@ -69,7 +70,7 @@ var gRange = d3
 function change_category(){
     if (document.getElementById("similar_too").checked){
         handle_stacks();
-        change_similar_images();
+        change_similar_images(plot_dissimilar=true);
     }
     else{
         change_dissimilar_images();

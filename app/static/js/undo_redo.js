@@ -38,7 +38,7 @@ function redo() {
             similar_locs[i], artwork_name, artist_full_name,
             sim_score, creation_year, general_type, artwork_type, dominant_color);
     }
-    change_dissimilar_images();
+    // change_dissimilar_images();
 }
 
 function undo() {
@@ -79,7 +79,7 @@ function undo() {
             similar_locs[i], artwork_name, artist_full_name,
             sim_score, creation_year, general_type, artwork_type, dominant_color);
     }
-    change_dissimilar_images();
+    // change_dissimilar_images();
 
 }
 

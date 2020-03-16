@@ -321,7 +321,7 @@
 
         middle_image = filtered_ids[Math.floor(Math.random() * filtered_ids.length)];
         set_center(center, middle_image).then(() => {
-            change_similar_images(plot_dissimilar=false);
+            change_similar_images(plot_dissimilar=true);
         });
 
         imageLoader.terminate(); // Terminate the image loader worker

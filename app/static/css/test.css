@@ -16,6 +16,12 @@ body {
     height: 100%;
 }
 
+* {
+    font-family: "Copperplate Gothic Light"; /* change the font here for everything! */
+    /*font-family: sans-serif;*/
+    /*font-family: arial, "Lato", sans-serif;*/
+}
+
 #time_filter_values {
     color: white;
 }
@@ -79,7 +85,6 @@ body {
     font-weight: bold;
     stroke-width: 0;
     font-size: 0.5em;
-    /*font-family: sans-serif;*/
     text-anchor: start;
 }
 
@@ -122,7 +127,6 @@ body {
 #loading-text-text {
     color: white;
     font-size: 60px;
-    font-family: "Copperplate Gothic Light";
 }
 #tooltip {
     position: relative;
@@ -130,7 +134,6 @@ body {
     width: 140px;
     padding: 2px;
     font-size: 12px;
-    font-family: "Copperplate Gothic Light";
     text-align: center;
     background: white;
     opacity: 0.8;
@@ -144,7 +147,6 @@ body {
     text-align: center;
     padding: 2px;
     font-size: 14px;
-    font-family: "Copperplate Gothic Light";
     text-align: center;
     background: white;
     opacity: 0.8;
@@ -244,7 +246,6 @@ body {
 
 .overlaytext {
     font-size: 18px;
-    font-family: "Copperplate Gothic Light";
     opacity:, 0;
     fill: white;
 }

@@ -67,10 +67,10 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
         	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
         		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
 				"</b> (" + creation_year + "). " + 
-				"<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
-				"<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
-				"<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color + "<br><br>" +
-				"<em>Similarity:</em> &nbsp" + similarity + "%");
+				// "<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
+				// "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
+				// "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color + "<br><br>" +
+				"<em>Similarity:</em>&nbsp" + similarity + "%");
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

@@ -58,7 +58,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 
 	// Change information of pop up middle image
 	meta_data_painting = data[middle_image];
-    var artwork_name = meta_data_painting['artwork_name'].replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ');
+    var artwork_name = meta_data_painting['artwork_name'].replace(/\.$/, "").replace(/_/g, ' ').replace(/|/g, '').replace(/^\w/, c => c.toUpperCase());
 	var artist_full_name = meta_data_painting['artist_full_name'];
 
 
@@ -68,10 +68,10 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
     	artist_full_name = artist_full_name.replace(/\s/g,'');
     artist_full_name = artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
 	var creation_year = meta_data_painting["creation_year"];
-	var general_type = meta_data_painting['general_type'];
-	var artwork_type = meta_data_painting['artwork_type'];
-	var dominant_color = meta_data_painting['dominant_color'];
-	document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp " + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '" /></svg>' + dominant_color;
+	var general_type = meta_data_painting['general_type'].replace(/^\w/, c => c.toUpperCase());
+	var artwork_type = meta_data_painting['artwork_type'].replace(/^\w/, c => c.toUpperCase());
+	var dominant_color = meta_data_painting['dominant_color'].replace(/([a-f])/g, c => c.toUpperCase());
+	document.getElementById('popup_information').innerHTML = "<span style='color:darkgrey;'>" + artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").</span><br><br><br /><span style='color:darkgrey; font-size:0.7em'>" + "<em>General Type:&nbsp" + general_type + "<br>" + "<em>Artwork Type:&nbsp " + artwork_type + "<br>" + "<em>Dominant Color:&nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; stroke: silver; stroke-width: 1px;" /></svg>' + "&nbsp(" + dominant_color + ")</em></span>";
 
     var rgb = stroke_color_images_high_similarity;
     var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
@@ -110,7 +110,8 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		})
 		.on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {
-        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + "). <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color );
+        	tooltip.html(artwork_name + ". <b>" + artist_full_name + "</b> (" + creation_year + ").");
+        	 // <br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type + "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type + "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color );
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);
         })

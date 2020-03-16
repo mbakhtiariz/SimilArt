@@ -1,7 +1,7 @@
 // Connection needed for the nearest neighbor queries
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
-	console.log('Websocket connected!');
+	// console.log('Websocket connected!');
 });
 
 // distances and nearest neighbor ids are stored in variables below
@@ -13,7 +13,7 @@ var cos_sims_nearest = []
 
 // Functions needed for the nearest neighbor queries
 function nearest_neighbors(id, n_neighbors) {
-	console.log('Getting nearest neighbors...');
+	// console.log('Getting nearest neighbors...');
 	socket.emit('nearest_neighbors', {id: id, n: n_neighbors});
 }
 
@@ -21,7 +21,7 @@ socket.on('nearest_neighbors_data', function(data) {
 	dists = data.dists;
 	nearest_ids = data.ids;
 	cos_sims_nearest = data.cos_sims;
-	console.log("nearest ids:", nearest_ids);
+	// console.log("nearest ids:", nearest_ids);
 	// console.log("cos sim nearest:", cos_sims_nearest);
 });
 
@@ -29,7 +29,7 @@ socket.on('nearest_neighbors_data', function(data) {
 var cos_sims_explore = []
 
 function get_cosine_sim(id, ind) {
-	console.log('Getting cosine similarity...');
+	// console.log('Getting cosine similarity...');
 	socket.emit('get_cosine_sim', {id: id, ind: ind});
 }
 

@@ -62,6 +62,16 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
     var creation_year = meta_data_painting["creation_year"];
     document.getElementById('popup_information').innerHTML = artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").";
 
+    var rgb = stroke_color_images_high_similarity;
+    var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+    center_obj.append('rect')
+    	.attr("x",  center_image_x)
+		.attr("y", center_image_y)
+		.attr("height", img_height)
+		.attr("width", img_width)
+		.attr("class", "image-outline")
+		.style("stroke", hexColor);
+
 	center_obj.append('rect')
 		.attr("x",  center_image_x)
 		.attr("y", center_image_y)

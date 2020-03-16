@@ -102,6 +102,22 @@
     var dissimilar_image_size = 70;
     var timer_tooltip;
     var time_till_tooltip_appearance = 500;
+
+    var stroke_color_images_high_similarity = [51, 96, 255];
+    var stroke_color_images_low_similarity = [160, 255, 112];
+
+    // Interpolate between two [r, g, b] colors with percentage p between 0 and 1
+    //https://stackoverflow.com/questions/14482226/how-can-i-get-the-color-halfway-between-two-colors
+    function colourGradientor(p, rgb_beginning, rgb_end){
+        var w = p * 2 - 1;
+        var w1 = (w + 1) / 2.0;
+        var w2 = 1 - w1;
+        var rgb = [parseInt(rgb_beginning[0] * w1 + rgb_end[0] * w2),
+                    parseInt(rgb_beginning[1] * w1 + rgb_end[1] * w2),
+                    parseInt(rgb_beginning[2] * w1 + rgb_end[2] * w2)];
+
+        return rgb;
+    };
 </script>
 
 <!-- Import dragable images code -->
@@ -521,12 +537,12 @@
 
     // ---------------- Helper Functions ------------------
     function change_dissimilar_images(start_time=-2500, end_time = 2017) {
-        console.log("3--start and end year for Filtering:",start_time, end_time);
+        // console.log("3--start and end year for Filtering:",start_time, end_time);
         var temp_time;
         if(start_time > end_time){
             // alert("[Filtering Warning]: The end year should be later or equal to start year. So we swapped your request order for creayears!");
             [start_time, end_time] = [end_time, start_time]
-            console.log("6666--start and end year for Filtering:",start_time, end_time);
+            // console.log("6666--start and end year for Filtering:",start_time, end_time);
         };
         if(end_time > 2017){
             end_time = 2017;
@@ -541,7 +557,6 @@
             return data[my_id]["creation_year"] >= start_time && data[my_id]["creation_year"] <= end_time;
         }
 
-        console.log("#########################",images_ids, data['1000']);
         sorted_images_ids = filtered_ids.sort(() => Math.random() - 0.5);
         images_ids_subset = sorted_images_ids.slice(0, nr_dissimilar_images);
         grid_dissimilar = grid_dissimilar.sort(() => Math.random() - 0.5);
@@ -572,12 +587,12 @@
                 artist_full_name = meta_data_painting['artist_full_name']
                 creation_year = meta_data_painting["creation_year"]
                 cosine_sim = (Math.round(cos_sims_explore[i] * 100) / 100).toFixed(2);
-                sim_score = Math.round(cosine_sim * 100)
+                sim_score = Math.round(cosine_sim * 100);
                 appendDraggableImage(imgs_path + images_ids_subset[i].toString() + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
                     creation_year, transition)
             };
 
-            console.log("change dissimilar");
+            // console.log("change dissimilar");
 
         });
 
@@ -714,14 +729,15 @@
         sleep(500).then(() => {
             // --- selecting location of similar layer and plotting those images:
             var i;
-            console.log("nearest ids:", nearest_ids)
             const center_x = parseFloat(d3.select("image#center").attr("x"));
             const center_y = parseFloat(d3.select("image#center").attr("y"));
             const center_width = parseFloat(d3.select("image#center").attr("width"));
             const center_height = parseFloat(d3.select("image#center").attr("height"));
             const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
             const outer = {"x": 0, "y": 0, "width": middle_width, "height": middle_height};
+            
             similar_layout(middle, nearest_ids, center_info, outer, data, cos_sims_nearest);
+
             // Start i from 1 to filter-out central image:
             // for (i = 1; i < nearest_ids.length; i++) {
             //     meta_data_painting = data[nearest_ids[i]]
@@ -737,7 +753,7 @@
 
             // Update outside images for similarity score
             plot_dissimilar_images(images_ids_subset, transition=false)
-            console.log("change similar");
+            // console.log("change similar");
 
         });
 
@@ -798,8 +814,6 @@
         change_similar_images();
         change_dissimilar_images();
         
-        
-        console.log("Page ready");
         imageLoader.terminate(); // Terminate the image loader worker
         showPage();
         

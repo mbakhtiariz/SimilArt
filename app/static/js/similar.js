@@ -13,56 +13,55 @@ function change_similar_images(start_time=-5000, end_time=2020, category="all", 
         .style("opacity", 0)
         .remove();
 
-    // if (selected_locs_dict[middle_image.toString()] == undefined || true) {
-        /*
-        Here we find the "n" similar images to the central image, using KNN method.
-        We also define the coordinates for each of those similar images.
-        */
-        // Wait until neighbouring images is found
-        timer_loading = setTimeout(function () {
-            middle.append("text").text('Loading...')
-                .attr("class","middle")
-                .attr("id","filter_loading")
-                .style("fill","darkgrey")
-                .style("stroke-width","0")
-                .style('opacity', 0)
-                .transition()
-                .duration(appearance_transition_loading)
-                .style('opacity', 1)
-                .attr("x","10")
-                .attr("y","22");
-        }, time_till_loading_appearance);
-
-        nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
-            clearTimeout(timer_loading);
-            d3.selectAll("#filter_loading")
+    /*
+    Here we find the "n" similar images to the central image, using KNN method.
+    We also define the coordinates for each of those similar images.
+    */
+    // Wait until neighbouring images is found
+    timer_loading = setTimeout(function () {
+        middle.append("text").text('Loading...')
+            .attr("class","middle")
+            .attr("id","filter_loading")
+            .style("fill","darkgrey")
+            .style("stroke-width","0")
+            .style('opacity', 0)
             .transition()
             .duration(appearance_transition_loading)
+            .style('opacity', 1)
+            .attr("x","10")
+            .attr("y","22");
+    }, time_till_loading_appearance);
+
+    nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+        clearTimeout(timer_loading);
+        d3.selectAll("#filter_loading")
+        .transition()
+        .duration(appearance_transition_loading)
+        .style("opacity", 0)
+        .remove();
+
+        // --- selecting location of similar layer and plotting those images:
+        try{
+            const center_x = parseFloat(d3.select("image#center").attr("x"));
+            const center_y = parseFloat(d3.select("image#center").attr("y"));
+            const center_width = parseFloat(d3.select("image#center").attr("width"));
+            const center_height = parseFloat(d3.select("image#center").attr("height"));
+            const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
+            const outer = {"x": 20, "y": 20, "width": middle_width-40, "height": middle_height-40};
+            var similar_locs = [];
+            similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
+            selected_locs_dict[middle_image.toString()] = similar_locs;
+            selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
+
+            //update dissimlar images then!
+            d3.selectAll("g#outside_image")
             .style("opacity", 0)
             .remove();
-
-            // --- selecting location of similar layer and plotting those images:
-            try{
-                const center_x = parseFloat(d3.select("image#center").attr("x"));
-                const center_y = parseFloat(d3.select("image#center").attr("y"));
-                const center_width = parseFloat(d3.select("image#center").attr("width"));
-                const center_height = parseFloat(d3.select("image#center").attr("height"));
-                const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
-                const outer = {"x": 20, "y": 20, "width": middle_width-40, "height": middle_height-40};
-                var similar_locs = [];
-                similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
-                selected_locs_dict[middle_image.toString()] = similar_locs;
-                selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
-
-                //update dissimlar images then!
-                d3.selectAll("g#outside_image")
-                .style("opacity", 0)
-                .remove();
-                change_dissimilar_images();
-            } catch (exception){
-                handle_stacks();
-                change_similar_images();
-                return
-            }
-        });
+            change_dissimilar_images();
+        } catch (exception){
+            handle_stacks();
+            change_similar_images();
+            return
+        }
+    });
 }

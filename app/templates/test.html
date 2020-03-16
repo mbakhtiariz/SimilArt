@@ -20,7 +20,6 @@
 
     <!-- drop down menu bar -->
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Layout stylesheet -->
     <link rel="stylesheet" type="text/css" href="../static/css/test.css">
@@ -310,7 +309,7 @@
 
     const time_values_section = document.getElementById("time_filter_values");
     // alert(filtering_cat_section.innerHTML)
-    time_values_section.innerHTML = "From <span>2500 BC</span> To <span>2017 AD</span>";
+    time_values_section.innerHTML = "From <span>2500 BC</span> to <span>2017 AD</span>";
     time_values_section.style.position = 'absolute';
     time_values_section.style.top = '60px';
     time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
@@ -343,7 +342,7 @@
             let end_time = parseInt(sliderRange.value()[1]);
             end_time = Math.abs(end_time) == end_time ? end_time.toString()+" AD" : Math.abs(end_time).toString()+" BC";
 
-            time_values_section.innerHTML = "From <span>" + start_time + "</span> To <span>" + end_time + "</span>";
+            time_values_section.innerHTML = "From <span>" + start_time + "</span> to <span>" + end_time + "</span>";
             time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
         })
         .on('end', val => {
@@ -1489,7 +1488,7 @@
             .attr("y", middle_y + center_y)
             .transition()
             .style("opacity", 1);
-        d3.select("#highlight_middle")    
+        d3.select("#highlight_middle")
             .transition()
             .style("opacity", 1);
         d3.select("#overlaytext1")

@@ -42,6 +42,12 @@ var sliderRange = d3
         time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
     })
     .on('end', val => {
+        let start_time = parseInt(sliderRange.value()[0]);
+        start_time = Math.abs(start_time) == start_time ? start_time.toString()+" AD" : Math.abs(start_time).toString()+" BC";
+        let end_time = parseInt(sliderRange.value()[1]);
+        end_time = Math.abs(end_time) == end_time ? end_time.toString()+" AD" : Math.abs(end_time).toString()+" BC";
+        time_values_section.innerHTML = "From <span>" + start_time + "</span> to <span>" + end_time + "</span>";
+        time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
         if (document.getElementById("similar_too").checked === true) {
             d3.selectAll("g#middle_image")
             .style("opacity", 0)

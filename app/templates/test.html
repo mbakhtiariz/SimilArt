@@ -80,10 +80,12 @@
         <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; ">
             <label for="search_cat" class="select_btn_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px;font-size: medium; font-weight: bolder;" >Based on:</label>
             <br>
-            <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;">
-                <option>Art name</option>
-                <option>Artist full name</option>
-            </select>
+            <div id="search_cats_container" style="width:200px">
+                <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;">
+                    <option>Art name</option>
+                    <option>Artist full name</option>
+                </select>
+            </div>
             <br>
             <label for="search_key" class="search_key_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;" >Search Key:</label>
             <div class="autocomplete">
@@ -137,7 +139,7 @@
         <div id="cat_container" style="width: 300px">
             <div id="cat_label" for="general_cats" style="position: absolute;">Filter category:</div>
             <div id="cat_div" style="width: 150px;">
-                <select id="general_cats" name="general_cats" onchange="change_category()">
+                <select id="general_cats" name="general_cats">
                     <option>all</option>
                     <option>print</option>
                     <option>photograph</option>

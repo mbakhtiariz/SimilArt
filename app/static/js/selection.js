@@ -1,60 +1,83 @@
-const cat_label = document.getElementById("cat_label");
-cat_label.style.left = Math.max((150 - cat_label.clientWidth) - 10, 0).toString() + "px";
+selections();
 
-var x, i, j, selElmnt, a, b, c;
-var selected_height = 0;
-/* Look for any elements with the class "custom-select": */
-x = [document.getElementById("cat_div")];
-for (i = 0; i < x.length; i++) {
-  selElmnt = x[i].getElementsByTagName("select")[0];
-  /* For each element, create a new DIV that will act as the selected item: */
-  a = document.createElement("DIV");
-  a.setAttribute("class", "select-selected");
-  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-  x[i].appendChild(a);
-  /* For each element, create a new DIV that will contain the option list: */
-  b = document.createElement("DIV");
-  b.setAttribute("class", "select-items select-hide");
-  for (j = 0; j < selElmnt.length; j++) {
-    /* For each option in the original select element,
-    create a new DIV that will act as an option item: */
-    c = document.createElement("DIV");
-    c.innerHTML = selElmnt.options[j].innerHTML;
-    c.addEventListener("click", function(e) {
-        /* When an item is clicked, update the original select box,
-        and the selected item: */
-        var y, i, k, s, h;
-        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-        h = this.parentNode.previousSibling;
-        for (i = 0; i < s.length; i++) {
-          if (s.options[i].innerHTML == this.innerHTML) {
-            s.selectedIndex = i;
-            h.innerHTML = this.innerHTML;
-            y = this.parentNode.getElementsByClassName("same-as-selected");
-            for (k = 0; k < y.length; k++) {
-              y[k].removeAttribute("class");
+function selections() {
+    const cat_label = document.getElementById("cat_label");
+    cat_label.style.left = Math.max((150 - cat_label.clientWidth) - 10, 0).toString() + "px";
+
+    /* Look for any elements with the class "custom-select": */
+    var x = [document.getElementById("cat_div"), document.getElementById("search_cats_container")];
+    for (var i = 0; i < x.length; i++) {
+      var selElmnt, a, b, c;
+      selElmnt = x[i].getElementsByTagName("select")[0];
+      /* For each element, create a new DIV that will act as the selected item: */
+      a = document.createElement("DIV");
+      a.setAttribute("class", "select-selected");
+      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      x[i].appendChild(a);
+      /* For each element, create a new DIV that will contain the option list: */
+      b = document.createElement("DIV");
+      b.setAttribute("class", "select-items select-hide");
+      for (var j = 0; j < selElmnt.length; j++) {
+        /* For each option in the original select element,
+        create a new DIV that will act as an option item: */
+        c = document.createElement("DIV");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.addEventListener("click", function(e) {
+            /* When an item is clicked, update the original select box,
+            and the selected item: */
+            var y, m, k, s, h;
+            s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+            h = this.parentNode.previousSibling;
+            for (m = 0; m < s.length; m++) {
+              if (s.options[m].innerHTML == this.innerHTML) {
+                s.selectedIndex = m;
+                h.innerHTML = this.innerHTML;
+                y = this.parentNode.getElementsByClassName("same-as-selected");
+                for (k = 0; k < y.length; k++) {
+                  y[k].removeAttribute("class");
+                }
+                this.setAttribute("class", "same-as-selected");
+                break;
+              }
             }
-            this.setAttribute("class", "same-as-selected");
-            break;
-          }
+            h.click();
+        });
+        // If category filter menu, add listener for changing selection value and call change_category()
+        if (i == 0) {
+            const elem = c;
+            elem.addEventListener("click", function(e) {
+                document.getElementById("general_cats").value = e.target.innerText;
+        		change_category();
+            });
+        // If search menu, set selection value
+        } else if (i == 1) {
+            const elem = c;
+            elem.addEventListener("click", function(e) {
+                document.getElementById("search_cat").value = e.target.innerText;
+                change_search_cat();
+            });
         }
-		document.getElementById("general_cats").value = e.target.innerText;
-		change_category();
-        h.click();
-    });
-    b.appendChild(c);
-  }
-  x[i].appendChild(b);
-  a.addEventListener("click", function(e) {
-    /* When the select box is clicked, close any other select boxes,
-    and open/close the current select box: */
-    e.stopPropagation();
-    closeAllSelect(this);
-    this.nextSibling.classList.toggle("select-hide");
-	b.style.top = "-" + (b.clientHeight-1).toString() + "px";
-    this.classList.toggle("select-arrow-active");
-  });
+        b.appendChild(c);
+      }
+      x[i].appendChild(b);
+      a.addEventListener("click", function(e) {
+        /* When the select box is clicked, close any other select boxes,
+        and open/close the current select box: */
+        e.stopPropagation();
+        closeAllSelect(this);
+        this.nextSibling.classList.toggle("select-hide");
+        this.classList.toggle("select-arrow-active");
+      });
+      // For the category filter menu, put options above
+      if (i == 0) {
+          const opts = b;
+          a.addEventListener("click", function(e) {
+              opts.style.top = "-" + (opts.clientHeight-1).toString() + "px";
+          });
+      }
+    }
 }
+
 
 function closeAllSelect(elmnt) {
   /* A function that will close all select boxes in the document,

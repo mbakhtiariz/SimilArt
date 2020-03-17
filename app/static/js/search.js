@@ -150,16 +150,15 @@ search_left.append("image")
         return tooltip_buttons.style("visibility", "hidden");
     });
 
-// Listeners for autocomplete
-let search_cat_selection = document.getElementById("search_cat");
-search_cat_selection.addEventListener("change", function(event) {
-    const value = event.target.value;
+// Call this function to change the autocomplete list
+function change_search_cat() {
+    let value = document.getElementById("search_cat").value;
     if (value == "Art name") {
         autocomplete(document.getElementById("search_key"), artnames_list_cased);
     } else {
         autocomplete(document.getElementById("search_key"), artists_list_cased);
     }
-});
+}
 
 // This functions handles any search by click/enter. These listeners are set in autocomplete.js
 function handle_search() {

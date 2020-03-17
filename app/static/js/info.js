@@ -82,7 +82,90 @@ info_overlay.append("text")
     .attr("y", svgheight-15)
     .text("Filter your artworks here")
     .style("font-weight", "bold")
+    .style("opacity", 0)
+info_overlay.append("rect")
+    .attr("class", "highlight")
+    .attr("id","similarity_color")
+    .attr("width", middle_width)
+    .attr("height", middle_height/30)
+    .attr("x", middle_x)
+    .attr("y", middle_y + middle_height + 5)
+    .style("fill","url(#linear-gradient)")
+info_overlay.append("text")
+    .attr("id", "overlaytext5")
+    .attr("class", "overlaytext")
+    .attr("x", middle_x - 60)
+    .attr("y", middle_y + middle_height +  middle_height/10 + 5)
+    .text("Lowest similarity")
+    .style("opacity", 0)
+info_overlay.append("text")
+    .attr("id", "overlaytext6")
+    .attr("class", "overlaytext")
+    .attr("x", middle_x + middle_width -60)
+    .attr("y", middle_y + middle_height +  middle_height/10 + 5)
+    .text("Highest similarity")
     .style("opacity", 0);
+
+
+//Append a defs (for definition) element to your SVG
+var defs = svg.append("defs");
+
+//Append a linearGradient element to the defs and give it a unique id
+var linearGradient = defs.append("linearGradient")
+    .attr("id", "linear-gradient");
+linearGradient
+.attr("x1", "0%")
+.attr("y1", "100%")
+.attr("x2", "100%")
+.attr("y2", "100%");
+ 
+
+var rgb_0 = colourGradientor(0, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_1 = colourGradientor(0.125, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_2 = colourGradientor(0.25,stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_3 = colourGradientor(0.5,stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_4 = colourGradientor(0.75,stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_5 = colourGradientor(0.825, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+var rgb_6 = colourGradientor(1,stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+
+var hexColor_0 =  "#" + ((1 << 24) + (rgb_0[0] << 16) + (rgb_0[1] << 8) + rgb_0[2]).toString(16).slice(1);
+var hexColor_1 =  "#" + ((1 << 24) + (rgb_1[0] << 16) + (rgb_1[1] << 8) + rgb_1[2]).toString(16).slice(1);
+var hexColor_2 =  "#" + ((1 << 24) + (rgb_2[0] << 16) + (rgb_2[1] << 8) + rgb_2[2]).toString(16).slice(1);
+var hexColor_3 =  "#" + ((1 << 24) + (rgb_3[0] << 16) + (rgb_3[1] << 8) + rgb_3[2]).toString(16).slice(1);
+var hexColor_4 =  "#" + ((1 << 24) + (rgb_4[0] << 16) + (rgb_4[1] << 8) + rgb_4[2]).toString(16).slice(1);
+var hexColor_5 =  "#" + ((1 << 24) + (rgb_5[0] << 16) + (rgb_5[1] << 8) + rgb_5[2]).toString(16).slice(1);
+var hexColor_6 =  "#" + ((1 << 24) + (rgb_6[0] << 16) + (rgb_6[1] << 8) + rgb_6[2]).toString(16).slice(1);
+
+//Set the color for the start (0%)
+linearGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", hexColor_0); 
+
+linearGradient.append("stop")
+    .attr("offset", "12%")
+    .attr("stop-color",hexColor_1);
+
+linearGradient.append("stop")
+    .attr("offset", "25%")
+    .attr("stop-color",hexColor_2);
+
+linearGradient.append("stop")
+    .attr("offset", "50%")
+    .attr("stop-color",hexColor_3);
+
+//Set the color for the end (100%)
+linearGradient.append("stop")
+    .attr("offset", "75%")
+    .attr("stop-color",hexColor_4);
+
+linearGradient.append("stop")
+    .attr("offset", "82%")
+    .attr("stop-color",hexColor_5);
+
+//Set the color for the end (100%)
+linearGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color",hexColor_6);
 
 
 function info_on() {
@@ -139,7 +222,15 @@ function info_on() {
     d3.select("#overlaytext4")
         .transition()
         .duration(overlay_transition_speed)
-        .style("opacity", 1);
+        .style("opacity", 1)
+    d3.select("#overlaytext5")
+        .transition()
+        .duration(overlay_transition_speed)
+        .style("opacity", 1)
+    d3.select("#overlaytext6")
+        .transition()
+        .duration(overlay_transition_speed)
+        .style("opacity", 1);;
 }
 function info_off() {
     document.getElementById("overlay").style.display = "none";
@@ -165,6 +256,12 @@ function info_off() {
         .transition()
         .style("opacity", 0);
     d3.select("#overlaytext4")
+        .transition()
+        .style("opacity", 0);
+    d3.select("#overlaytext5")
+        .transition()
+        .style("opacity", 0);
+    d3.select("#overlaytext6")
         .transition()
         .style("opacity", 0);
     d3.select("#highlight_middle")

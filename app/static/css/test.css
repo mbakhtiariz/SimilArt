@@ -17,9 +17,10 @@ body {
 }
 
 * {
-    font-family: "Copperplate Gothic Light"; /* change the font here for everything! */
-    /*font-family: sans-serif;*/
+    /*font-family: "Copperplate Gothic Light";  change the font here for everything! */
+    font-family: sans-serif;
     /*font-family: arial, "Lato", sans-serif;*/
+    /*font-family: "Times New Roman";*/
 }
 
 #time_filter_values {

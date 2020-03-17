@@ -38,17 +38,22 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
-			var modalImg = document.getElementById("img01");
+			const modalImg = document.getElementById("img01");
+			const old_src = modalImg.src;
+			const old_innerHtml = document.getElementById('popup_information').innerHTML;
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
-			
-			if (d3.event.ctrlKey) {	
+
+			if (d3.event.ctrlKey) {
 
 				document.getElementById('popup_information').innerHTML = "<span style='color:darkgrey;'>" + artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").</span><br><br><br /><span style='color:darkgrey; font-size:0.7em'>" + "<em>General Type:&nbsp" + general_type + "<br>" + "<em>Artwork Type:&nbsp " + artwork_type + "<br>" + "<em>Dominant Color:&nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; stroke: silver; stroke-width: 1px;" /></svg>' + "&nbsp(" + dominant_color + ")</em></span>";
 
 
 				var modal = document.getElementById("myModal");
-				modal.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+				modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+				modalImg.onerror = function() {
+					modalImg.src = url;
+				}
 				modal.style.display = "block";
 
 				// Get the <span> element that closes the modal
@@ -56,18 +61,22 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 				// When the user clicks on <span> (x), close the modal
 				span.onclick = function() {
 					modal.style.display = "none";
+					modalImg.src = old_src;
+					document.getElementById('popup_information').innerHTML = old_innerHtml;
 				}
 				// When the user clicks anywhere outside of the modal, close it
 				window.onclick = function(event) {
 					if (event.target == modal) {
 						modal.style.display = "none";
+						modalImg.src = old_src;
+						document.getElementById('popup_information').innerHTML = old_innerHtml;
 					}
 				}
 			}
 			else{
 
 				handle_stacks();
-				
+
 				// change middle_image variable and call function, both from test.html;
 				middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
 				d3.select('image#center').transition()
@@ -90,8 +99,8 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		    if (length_artist_name > 5)
 		    	artist_full_name = artist_full_name.replace(/\s/g,'');
 
-        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" + 
-        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') + 
+        	tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" +
+        		artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') +
 				"</b> (" + creation_year + "). " + "<em>Similarity:</em>&nbsp" + similarity + "%");
         	return tooltip.style("visibility", "visible");
         	}, time_till_tooltip_appearance);

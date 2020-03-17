@@ -41,17 +41,20 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("filter", "url(#glow)")
 		.on('click', function() {
 
-			var modalImg = document.getElementById("img01");
+			const modalImg = document.getElementById("img01");
+			const old_src = modalImg.src;
+			const old_innerHtml = document.getElementById('popup_information').innerHTML;
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
-			
-			if (d3.event.ctrlKey) {	
+			if (d3.event.ctrlKey) {
 
 				document.getElementById('popup_information').innerHTML = "<span style='color:darkgrey;'>" + artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").</span><br><br><br /><span style='color:darkgrey; font-size:0.7em'>" + "<em>General Type:&nbsp" + general_type + "<br>" + "<em>Artwork Type:&nbsp " + artwork_type + "<br>" + "<em>Dominant Color:&nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; stroke: silver; stroke-width: 1px;" /></svg>' + "&nbsp(" + dominant_color + ")</em></span>";
 
-
 				var modal = document.getElementById("myModal");
-				modal.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+				modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+				modalImg.onerror = function() {
+					modalImg.src = url;
+				}
 				modal.style.display = "block";
 
 				// Get the <span> element that closes the modal
@@ -59,11 +62,15 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 				// When the user clicks on <span> (x), close the modal
 				span.onclick = function() {
 					modal.style.display = "none";
+					modalImg.src = old_src;
+					document.getElementById('popup_information').innerHTML = old_innerHtml;
 				}
 				// When the user clicks anywhere outside of the modal, close it
 				window.onclick = function(event) {
 					if (event.target == modal) {
 						modal.style.display = "none";
+						modalImg.src = old_src;
+						document.getElementById('popup_information').innerHTML = old_innerHtml;
 					}
 				}
 			}
@@ -137,7 +144,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("width", img_width)
 		.attr("height", img_height)
 		.style("stroke", hexColor);
-	
+
 	imageGroup.call(
 		d3.drag()
 		.on("drag", dragged)

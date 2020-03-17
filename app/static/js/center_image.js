@@ -91,7 +91,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 		.attr("filter", "url(#glow)")
 		.attr("id", 'center')
 		.on('click', function(){
-			// if (d3.event.ctrlKey) {	
+			// if (d3.event.ctrlKey) {
 				var modal = document.getElementById("myModal");
 				modal.style.display = "block";
 

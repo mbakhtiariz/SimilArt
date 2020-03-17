@@ -41,20 +41,46 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 			var modalImg = document.getElementById("img01");
 			modalImg.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
 
-			handle_stacks();
 			
-            // change middle_image variable and call function, both from test.html;
-			middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
-            d3.select('image#center').transition()
-				.duration(removal_transition_speed_middle_image)
-				.style('opacity', 0)
-				.remove();
-			d3.select('rect#center').remove();
-			d3.select('rect#border').remove();
-        	set_center(center, middle_image);
-			// handle_stacks();
-			change_similar_images();
-			// change_dissimilar_images();
+			if (d3.event.ctrlKey) {	
+
+				document.getElementById('popup_information').innerHTML = "<span style='color:darkgrey;'>" + artwork_name + ".<br /><br />" + artist_full_name + " (" + creation_year + ").</span><br><br><br /><span style='color:darkgrey; font-size:0.7em'>" + "<em>General Type:&nbsp" + general_type + "<br>" + "<em>Artwork Type:&nbsp " + artwork_type + "<br>" + "<em>Dominant Color:&nbsp" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; stroke: silver; stroke-width: 1px;" /></svg>' + "&nbsp(" + dominant_color + ")</em></span>";
+
+
+				var modal = document.getElementById("myModal");
+				modal.src = data[imageElem.attr('href').replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')]['image_url'];
+				modal.style.display = "block";
+
+				// Get the <span> element that closes the modal
+				var span = document.getElementsByClassName("close")[0];
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function() {
+					modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				}
+			}
+			else{
+
+				handle_stacks();
+				
+				// change middle_image variable and call function, both from test.html;
+				middle_image = img.src.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.')
+				d3.select('image#center').transition()
+					.duration(removal_transition_speed_middle_image)
+					.style('opacity', 0)
+					.remove();
+				d3.select('rect#center').remove();
+				d3.select('rect#border').remove();
+				set_center(center, middle_image);
+				// handle_stacks();
+				change_similar_images();
+				// change_dissimilar_images();
+			}
         })
         .on("mouseover", function(){
         	timer_tooltip = setTimeout(function () {

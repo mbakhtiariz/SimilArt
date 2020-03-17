@@ -13,7 +13,7 @@ info_overlay.append("text")
     .attr("text-anchor", "middle")
     .attr("id", "overlaytext1b")
     .attr("class", "overlaytext")
-    .text("Click to expand")
+    .text("CTRL+Click to expand")
     .style("opacity", 0);
 info_overlay.append("rect")
     .attr("id", "highlight_center")

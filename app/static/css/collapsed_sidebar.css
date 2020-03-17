@@ -10,7 +10,8 @@
   transition: 0.5s;
   padding-top: 60px;
 
-  color: #818181;
+  /*color: #818181;*/
+  color: white;
 }
 
 .sidebar a {

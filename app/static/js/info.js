@@ -72,6 +72,13 @@ info_overlay.append("text")
     .attr("class", "overlaytext")
     .attr("x", 20)
     .attr("y", 110)
+    .text("Expand each artwork with CTRL+Click")
+    .style("opacity", 0)
+info_overlay.append("text")
+    .attr("id", "overlaytext3d")
+    .attr("class", "overlaytext")
+    .attr("x", 20)
+    .attr("y", 130)
     .text("Cluster artworks by dragging")
     .style("opacity", 0);
 info_overlay.append("text")
@@ -218,6 +225,10 @@ function info_on() {
     d3.select("#overlaytext3c")
         .transition()
         .duration(overlay_transition_speed)
+        .style("opacity", 1)
+    d3.select("#overlaytext3d")
+        .transition()
+        .duration(overlay_transition_speed)
         .style("opacity", 1);
     d3.select("#overlaytext4")
         .transition()
@@ -230,7 +241,7 @@ function info_on() {
     d3.select("#overlaytext6")
         .transition()
         .duration(overlay_transition_speed)
-        .style("opacity", 1);;
+        .style("opacity", 1);
 }
 function info_off() {
     document.getElementById("overlay").style.display = "none";
@@ -253,6 +264,9 @@ function info_off() {
         .transition()
         .style("opacity", 0);
     d3.select("#overlaytext3c")
+        .transition()
+        .style("opacity", 0);
+    d3.select("#overlaytext3d")
         .transition()
         .style("opacity", 0);
     d3.select("#overlaytext4")

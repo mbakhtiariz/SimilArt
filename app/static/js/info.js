@@ -46,6 +46,13 @@ info_overlay.append("text")
     .style("font-weight", "bold")
     .style("opacity", 0);
 info_overlay.append("text")
+    .attr("id", "overlaytext2b")
+    .attr("class", "overlaytext")
+    .attr("x", middle_x+10)
+    .attr("y", middle_y+45)
+    .text("Color indicates similarity to center artwork")
+    .style("opacity", 0);
+info_overlay.append("text")
     .attr("id", "overlaytext3")
     .attr("class", "overlaytext")
     .attr("x", 20)
@@ -112,6 +119,10 @@ function info_on() {
         .transition()
         .duration(overlay_transition_speed)
         .style("opacity", 1);
+    d3.select("#overlaytext2b")
+        .transition()
+        .duration(overlay_transition_speed)
+        .style("opacity", 1);
     d3.select("#overlaytext3")
         .transition()
         .duration(overlay_transition_speed)
@@ -138,6 +149,9 @@ function info_off() {
         .transition()
         .style("opacity", 0);
     d3.select("#overlaytext2")
+        .transition()
+        .style("opacity", 0);
+    d3.select("#overlaytext2b")
         .transition()
         .style("opacity", 0);
     d3.select("#overlaytext3")

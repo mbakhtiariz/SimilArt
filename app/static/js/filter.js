@@ -15,7 +15,7 @@ time_values_section.style.position = 'absolute';
 time_values_section.style.top = '60px';
 time_values_section.style.left = ((0.5 * svgwidth) - (0.5 * time_values_section.clientWidth)).toString() + "px";
 
-const filtering_cat_section = document.getElementById("cat_div");
+const filtering_cat_section = document.getElementById("cat_container");
 filtering_cat_section.style.position = 'absolute';
 filtering_cat_section.style.top = '60px';
 // filtering_cat_section.style.left = filter_cat_padding_left;
@@ -46,7 +46,7 @@ var sliderRange = d3
             d3.selectAll("g#middle_image")
             .style("opacity", 0)
             .remove();
-            
+
             handle_stacks();
             change_similar_images(plot_dissimilar=true);
         } else {

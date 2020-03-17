@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/collapsed_sidebar.css">
     <link rel="stylesheet" type="text/css" href="../static/css/autocomplete.css">
     <link rel="stylesheet" type="text/css" href="../static/css/checkbox.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/selection.css">
 
     <script src="../static/js/collapsed_sidebar.js"></script>
 
@@ -132,21 +133,23 @@
         <div id="time_filter_values"></div>
 
         <!-- category filter: -->
-        <div id="cat_div">
-            <label for="general_cats", style="color:whitesmoke"> Filter category:</label>
-            <select id="general_cats" name="general_cats" style="background-color: #212121; color:whitesmoke", onchange="change_category()">
-                <option>all</option>
-                <option>print</option>
-                <option>photograph</option>
-                <option>sculpture</option>
-                <option>design</option>
-                <option>weapons and armor</option>
-                <option>drawing</option>
-                <option>painting</option>
-                <option>craft</option>
-                <option>installation</option>
-                <option>textile</option>
-            </select>
+        <div id="cat_container" style="width: 300px">
+            <div for="general_cats" style="position: absolute; color: white;"> Filter category:</div>
+            <div id="cat_div" style="width: 150px;">
+                <select id="general_cats" name="general_cats" onchange="change_category()">
+                    <option>all</option>
+                    <option>print</option>
+                    <option>photograph</option>
+                    <option>sculpture</option>
+                    <option>design</option>
+                    <option>weapons and armor</option>
+                    <option>drawing</option>
+                    <option>painting</option>
+                    <option>craft</option>
+                    <option>installation</option>
+                    <option>textile</option>
+                </select>
+            </div>
         </div>
     </div>
 </body>
@@ -238,6 +241,8 @@
 <script src="../static/js/loading.js"></script>
 <!-- Import for autocompletion of search bar -->
 <script src="../static/js/autocomplete.js"></script>
+<!-- Import for custom selection for category -->
+<script src="../static/js/selection.js"></script>
 
 
 <script type="text/javascript">
@@ -245,7 +250,7 @@
     // Container for the loading screen
     loading = d3.select("#container").append("div")
         .attr("id", "loading");
-    
+
     // Display the loading screen
     loading_screen(loading, tmp_ids);
 

@@ -10,7 +10,8 @@
   transition: 0.5s;
   padding-top: 60px;
 
-  color: #818181;
+  /*color: #818181;*/
+  color: white;
 }
 
 .sidebar a {
@@ -22,8 +23,9 @@
   transition: 0.3s;
 }
 
+
 .sidebar a:hover {
-  /* color: #f1f1f1; */
+  color: #f1f1f1;
 }
 
 #search_results {

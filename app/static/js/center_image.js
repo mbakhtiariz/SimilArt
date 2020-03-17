@@ -31,7 +31,6 @@ function set_center(center_obj, img_id) {
 }
 
 function set_center_main(center_obj, img_id, img_width, img_height) {
-	var img = new Image();
 	toString(img_id);
 	const url = "static/subset/" + img_id + ".jpg";
 
@@ -53,7 +52,7 @@ function set_center_main(center_obj, img_id, img_width, img_height) {
 
 	// Change image to alternate image if full resolution url does not exist
 	modalImg.onerror = function() {
-		modalImg.src = img.src;
+		modalImg.src = url;
 	}
 
 	// Change information of pop up middle image

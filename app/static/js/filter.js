@@ -83,4 +83,7 @@ function filter_similars(){
         handle_stacks();
         change_similar_images();
     }
+    else{
+        change_similar_images();
+    }
 }

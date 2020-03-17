@@ -1,7 +1,7 @@
 var info_overlay = d3.select("#overlay")
     .append("svg")
     .attr("preserveAspectRatio", "none")
-    .attr("viewBox", "0 0 " + svgwidth + " " + svgheight)
+    .attr("viewBox", "0 0 " + svgwidth + " " + svgheight + 100)
 info_overlay.append("text")
     .attr("text-anchor", "middle")
     .attr("id", "overlaytext1")
@@ -27,6 +27,15 @@ info_overlay.append("rect")
     .attr("height", middle_height)
     .attr("x", middle_x)
     .attr("y", middle_y)
+    .style("opacity", 0);
+info_overlay.append("rect")
+    .attr("id", "highlight_filter")
+    .attr("class", "highlight")
+    .attr("width", svgwidth)
+    .attr("height", 140)
+    .attr("x", 0)
+    .attr("y", svgheight-40)
+    // .style("border-bottom", "none")
     .style("opacity", 0);
 info_overlay.append("text")
     .attr("id", "overlaytext2")
@@ -58,6 +67,14 @@ info_overlay.append("text")
     .attr("y", 110)
     .text("Cluster artworks by dragging")
     .style("opacity", 0);
+info_overlay.append("text")
+    .attr("id", "overlaytext4")
+    .attr("class", "overlaytext")
+    .attr("x", 20)
+    .attr("y", svgheight-15)
+    .text("Filter your artworks here")
+    .style("font-weight", "bold")
+    .style("opacity", 0);
 
 
 function info_on() {
@@ -74,6 +91,9 @@ function info_on() {
         .transition()
         .style("opacity", 1);
     d3.select("#highlight_middle")
+        .transition()
+        .style("opacity", 1);
+    d3.select("#highlight_filter")
         .transition()
         .style("opacity", 1);
     d3.select("#overlaytext1")
@@ -104,6 +124,10 @@ function info_on() {
         .transition()
         .duration(overlay_transition_speed)
         .style("opacity", 1);
+    d3.select("#overlaytext4")
+        .transition()
+        .duration(overlay_transition_speed)
+        .style("opacity", 1);
 }
 function info_off() {
     document.getElementById("overlay").style.display = "none";
@@ -125,10 +149,16 @@ function info_off() {
     d3.select("#overlaytext3c")
         .transition()
         .style("opacity", 0);
+    d3.select("#overlaytext4")
+        .transition()
+        .style("opacity", 0);
     d3.select("#highlight_middle")
         .transition()
         .style("opacity", 0);
     d3.select("#highlight_center")
+        .transition()
+        .style("opacity", 0);
+    d3.select("#highlight_filter")
         .transition()
         .style("opacity", 0);
 }

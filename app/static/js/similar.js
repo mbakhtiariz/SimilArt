@@ -66,6 +66,9 @@ function change_similar_images(plot_dissimilar=false) {
                 .remove();
                 change_dissimilar_images();
             }
+            else{
+                plot_dissimilar_images(images_ids_subset, transition=false);
+            }
         } catch (exception){
             handle_stacks();
             change_similar_images(plot_dissimilar=plot_dissimilar);

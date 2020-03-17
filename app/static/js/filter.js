@@ -85,11 +85,6 @@ function change_category(){
 }
 
 function filter_similars(){
-    if (document.getElementById("similar_too").checked){
-        handle_stacks();
-        change_similar_images();
-    }
-    else{
-        change_similar_images();
-    }
+    handle_stacks();
+    change_similar_images();
 }

@@ -1,3 +1,6 @@
+const cat_label = document.getElementById("cat_label");
+cat_label.style.left = Math.max((150 - cat_label.clientWidth) - 10, 0).toString() + "px";
+
 var x, i, j, selElmnt, a, b, c;
 var selected_height = 0;
 /* Look for any elements with the class "custom-select": */

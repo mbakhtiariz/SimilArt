@@ -31,10 +31,9 @@ body {
     color: #56b8cf;
 }
 
-.label {
+.label, #cat_label {
     position:absolute;
     color:white;
-    background-color:green;
 }
 
 #page {

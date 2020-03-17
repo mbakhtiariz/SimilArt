@@ -48,8 +48,7 @@ for (i = 0; i < x.length; i++) {
     e.stopPropagation();
     closeAllSelect(this);
     this.nextSibling.classList.toggle("select-hide");
-	console.log(b);
-	b.style.top = "-" + b.clientHeight.toString() + "px";
+	b.style.top = "-" + (b.clientHeight-1).toString() + "px";
     this.classList.toggle("select-arrow-active");
   });
 }

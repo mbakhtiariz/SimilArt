@@ -30,7 +30,7 @@ var sliderRange = d3
     .default([-2500, 2017])
     .step(1)
     .ticks(20)
-    .handle('M -8, 0 a .025,.025 0 1,1 10,0 a 0.25,0.25 0 1,1 -10,0')
+    .handle('M -8, 0 a .025,.025 0 1,1 15,0 a 0.25,0.25 0 1,1 -15,0')
     // slider color:
     .fill('#56B8CF')
     .on('drag', function () {

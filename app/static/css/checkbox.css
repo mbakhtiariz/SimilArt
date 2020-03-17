@@ -38,7 +38,8 @@
 
 /* When the checkbox is checked, add a blue background */
 .checkbox input:checked ~ .checkmark {
- background-color: #56B8CF;
+ /*background-color: #56B8CF;*/
+ /*background-color: rgba(0, 0, 0, 0.1);*/
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -59,7 +60,7 @@
  top: 4px;
  width: 5px;
  height: 10px;
- border: solid white;
+ border: solid black;
  border-width: 0 3px 3px 0;
  -webkit-transform: rotate(45deg);
  -ms-transform: rotate(45deg);

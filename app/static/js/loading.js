@@ -55,6 +55,7 @@ function loading_screen(container, ids) {
 		.append("span")
 			.attr("id", "loading-text-text")
 			.style("line-height", (2*im_height).toString()+"px")
+			.style("font-family","Copperplate Gothic Light, Times New Roman, \"Lato\", sans-serif")
 			.text("OmniArt Exploration");
 
 	// Add flipboxes around the center

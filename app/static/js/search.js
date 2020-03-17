@@ -31,7 +31,7 @@ search_results_area.append("rect")
     .attr("height", search_img_size)
     .attr("pointer-events", "visible")
     .style("fill", "none")
-    .style("stroke-width", 5)
+    .style("stroke-width", 2)
     .style("stroke", "grey")
     .style("opacity", 0.6);
 
@@ -190,7 +190,7 @@ function handle_search() {
             .attr("height", search_img_size)
             .attr("pointer-events", "visible")
             .style("fill", "none")
-            .style("stroke-width", 3)
+            .style("stroke-width", 2)
             .style("stroke", "grey")
             .style("opacity", 0.6);
         document.getElementById("search_results_header").innerHTML = "Search Results:";

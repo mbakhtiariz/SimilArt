@@ -39,6 +39,7 @@ function redo() {
             sim_score, creation_year, general_type, artwork_type, dominant_color);
     }
     // change_dissimilar_images();
+    plot_dissimilar_images(images_ids_subset, transition=false);
 }
 
 function undo() {
@@ -80,6 +81,7 @@ function undo() {
             sim_score, creation_year, general_type, artwork_type, dominant_color);
     }
     // change_dissimilar_images();
+    plot_dissimilar_images(images_ids_subset, transition=false);
 
 }
 

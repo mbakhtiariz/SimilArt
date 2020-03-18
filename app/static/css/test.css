@@ -28,7 +28,10 @@ body {
 }
 
 #time_filter_values span {
-    color: #cd940f;
+    color: #F7B801;
+    /* darkviolet; */
+    /* #a641c1; */
+    /* #56b8cf; */
 }
 
 .label, #cat_label {

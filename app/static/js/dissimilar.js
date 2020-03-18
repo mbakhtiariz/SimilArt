@@ -67,8 +67,8 @@ function plot_dissimilar_images(images_ids_subset, transition=true) {
 var grid_dissimilar = [];
 function calculate_dissimilar_grid() {
     let num_locs = 0; // Keep track of how many locations *should* be in `grid_dissimilar`
-    for (var i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size) {
-        for (var j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size) {
+    for (var i = 0; i < svgwidth - dissimilar_image_size; i += dissimilar_image_size+3.5) {
+        for (var j = 0; j < svgheight - dissimilar_image_size; j += dissimilar_image_size+3.5) {
 
             // skip middle section and randomize button
             if ((i + dissimilar_image_size > (middle_x - 5) && i < (middle_x + middle_width + 5)) &&

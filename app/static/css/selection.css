@@ -5,7 +5,8 @@
 #cat_div {
  position: relative;
  background-color:
-  white;
+ #e7Dfdd;
+  /* white; */
  /* #56B8CF; */
  left: 150px;
  top: -3px;
@@ -59,8 +60,8 @@
 /* Style items (options): */
 #cat_div .select-items {
  position: absolute;
- background-color: 
- white;
+ background-color: #e7Dfdd;
+ /* white; */
  /* #56B8CF; */
  left: 0;
  right: 0;

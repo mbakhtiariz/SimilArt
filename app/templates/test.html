@@ -84,7 +84,8 @@
             <label for="search_cat" class="select_btn_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px;font-size: medium; font-weight: bolder;" >Based on:</label>
             <br>
             <div id="search_cats_container" style="width:210px">
-                <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;">
+                <!-- <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: white;"> -->
+                    <select id="search_cat" class="btn" name="search_cat" style="margin-left: 20px;margin-right: 20px;background-color: #e7Dfdd;">
                     <option>Art name</option>
                     <option>Artist full name</option>
                 </select>
@@ -101,7 +102,7 @@
 
         <!-- <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;"> -->
         <!-- <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: whitesmoke;color:#111;"> -->
-        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #e7Dfdd;color:#111;">
+        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #e7Dfdd;color:#111;"> <!-- Light redish gray -->
             <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> kylian.vangeijtenbeek [at] gmail [dot] com</p>
@@ -131,7 +132,8 @@
 
         <!-- check box to add filter on similar area: -->
         <div id="similar_too_div">
-            <label class="checkbox" for="similar_too" style="color:whitesmoke"> Filter similarity area
+            <!-- <label class="checkbox" for="similar_too" style="color:whitesmoke"> Filter similarity area -->
+            <label class="checkbox" for="similar_too" style="color:#e7Dfdd"> Filter similarity area
                 <input type="checkbox" id="similar_too" name="similar_too" value="similar_too" onclick="filter_similars()">
                 <span class="checkmark"></span>
             </label><br>
@@ -170,20 +172,20 @@
     const dissimilar_image_size = 100;
     const time_till_tooltip_appearance = 500;
     const time_till_loading_appearance = 1500;
-    const stroke_color_images_high_similarity = [86,184,207];  // filter cyan blue
+    const stroke_color_images_high_similarity = [86,184,207];  // Moderate cyan
+    const stroke_color_images_low_similarity =  [204,0,0];  //  Boston University Red
 
-
-    const stroke_color_images_low_similarity =  [205,0,0];  // filter cyan blue
-
+    // Possible colors
     // [125, 131, 255]; //color blind blue
     // [80, 197, 183]; //  color blind green
-    
     // [51,96,255]; //iulia blue
     // [160,255,112]; //  iulia's green
     //[255,0,0]; // red
-    // [86,184,207];  // filter cyan blue
+    // [86,184,207];  // Moderate cyan
     //[139, 0, 0];//dark red
     // [210,180,140];//wheat
+    // [204,0,0];  //  Boston University Red
+
     const removal_transition_speed = 500;
     const appearance_transition_speed = 500;
     const overlay_transition_speed = 1000;

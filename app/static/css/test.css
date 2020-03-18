@@ -24,11 +24,14 @@ body {
 }
 
 #time_filter_values {
-    color: white;
+    color: #e7Dfdd;
+    /* white; */
 }
 
 #time_filter_values span {
-    color: #F7B801;
+    color: #F7B801;/*:Vivid orange*/
+
+    /* other colors: */
     /* darkviolet; */
     /* #a641c1; */
     /* #56b8cf; */
@@ -36,7 +39,8 @@ body {
 
 .label, #cat_label {
     position:absolute;
-    color:white;
+    color:#e7Dfdd;
+    /* white; */
 }
 
 #page {
@@ -61,7 +65,8 @@ body {
     /* #FBC02D; */
     /* #2e2e2e; */
             /*#1b1b1b;*/
-    stroke: whitesmoke;
+    stroke: #e7Dfdd;
+    /* whitesmoke; */
     /* wheat; */
     /* #FBC02D; */
      /* #515251; */
@@ -129,7 +134,8 @@ body {
     position: absolute;
 }
 #loading-text-text {
-    color: white;
+    color: #e7Dfdd;
+    /* white; */
     font-size: 60px;
 }
 #tooltip {
@@ -139,7 +145,8 @@ body {
     padding: 2px;
     font-size: 12px;
     text-align: center;
-    background: white;
+    background: #e7Dfdd;
+    /* white; */
     opacity: 0.8;
     border: 0px;
     border-radius: 4px;
@@ -152,7 +159,8 @@ body {
     padding: 2px;
     font-size: 14px;
     text-align: center;
-    background: white;
+    background: #e7Dfdd;
+    /* white; */
     opacity: 0.8;
     border: 0px;
     border-radius: 4px;
@@ -192,7 +200,8 @@ body {
   }
 
 #popup_information {
-    color:white;
+    color:#e7Dfdd;
+    /* white; */
     padding: 3em;
     flex: 382 1 auto;
 }
@@ -251,11 +260,13 @@ body {
 .overlaytext {
     font-size: 18px;
     opacity:, 0;
-    fill: white;
+    fill: #e7Dfdd;
+    /* white; */
 }
 
 .highlight {
-    stroke: white;
+    stroke: #e7Dfdd;
+    /* white; */
     stroke-width: 5;
     stroke-opacity: 0.6;
     fill: none;

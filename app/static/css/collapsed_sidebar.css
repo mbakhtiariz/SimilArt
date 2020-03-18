@@ -11,7 +11,8 @@
   padding-top: 60px;
 
   /*color: #818181;*/
-  color: white;
+  color: #e7Dfdd;
+  /* white; */
 }
 
 .sidebar a {
@@ -33,24 +34,6 @@
     height: 300px;
 }
 
-/*
-.sidebar .drop_btn {
-  text-decoration: none;
-  font-size: 1rem;
-  color: #818181;
-  background-color: azure;
-  display: block;
-  transition: 0.3s;
-  align-self: left;
-} */
-
-/* .sidebar .btn:hover {
-  background-color: #d88562;
-} */
-
-/* .sidebar .drop_btn:hover {
-  background-color: white;
-} */
 
 .sidebar .closebtn {
   position: absolute;
@@ -60,10 +43,6 @@
   font-size: 36px;
   margin-left: 0px;
 }
-
-/* .sidebar .closebtn:hover {
-  background-color: #111;
-} */
 
 
 .openbtn {
@@ -75,10 +54,6 @@
   padding: 10px 15px;
   border: none;
 }
-
-/* .openbtn:hover {
-  background-color: #444;
-} */
 
 .menu_main {
   transition: margin-left .5s;
@@ -95,7 +70,7 @@
 
 .sidebar .btn:hover{
   /* color:#17a2b8; */
-  background-color:#F7B801;
+  background-color:#F7B801; /*Vivid orange*/
   /* #a239ca; */
   /* darkviolet; */
   /* #a641c1; */
@@ -103,23 +78,3 @@
    /* #00BCD4; */
   /* #17a2b8; */
 }
-/* .sidebar .start_year_label{
-  margin-left: 30px;
-  margin-top: 7px;
-}
-
-.sidebar .end_year_label{
-  margin-left: 30px;
-}
-
-.sidebar .start_year{
-  margin-left: 30px;
-}
-
-.sidebar .end_year{
-  margin-left: 30px;
-} */
-
-/* .sidebar .search_key, .search_key_label{
-  margin-left: 30px;
-} */

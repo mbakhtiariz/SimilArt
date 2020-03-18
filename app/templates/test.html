@@ -62,7 +62,8 @@
         </div>
 
         <!-- about us side bar -->
-        <div id="about_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #D2B48C; color:#111;">
+        <!-- <div id="about_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #D2B48C; color:#111;"> -->
+        <div id="about_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #e7Dfdd; color:#111;">
             <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">WHAT IS OMNIART?</h4>
             <p type="text" style="margin-left: 20px;margin-top: 18px;margin-right: 20px; font-size: small;">
             OmniArt is a large scale artistic benchmark dataset aggregated from multiple collections around the world.
@@ -78,7 +79,8 @@
 
         <!-- sidebar that appears after clicking on search buttun -->
         <!-- <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; "> -->
-        <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; color:whitesmoke; ">
+        <!-- <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: darkred; color:whitesmoke; "> -->
+            <div id="search_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #e7Dfdd; color:#111; ">
             <label for="search_cat" class="select_btn_label" style="margin-left: 20px;margin-top: 18px; margin-right: 20px;font-size: medium; font-weight: bolder;" >Based on:</label>
             <br>
             <div id="search_cats_container" style="width:210px">
@@ -98,7 +100,8 @@
         </div>
 
         <!-- <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #005588;color:whitesmoke;"> -->
-        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: whitesmoke;color:#111;">
+        <!-- <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: whitesmoke;color:#111;"> -->
+        <div id="contact_mySidebar" class="sidebar" style="margin-left: 250px; background-color: #e7Dfdd;color:#111;">
             <h4 style="margin-left: 20px;margin-top: 18px; margin-right: 20px; font-size: medium; font-weight: bolder;">Emails:</h4>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Masoumeh Bakhtiarizibari: <br> mbakhtiariz [at] gmail [dot] com</p>
             <p style="margin-left: 25px;margin-top: 18px;margin-right: 20px; font-size: small;">Kylian van Geijtenbeek: <br> kylian.vangeijtenbeek [at] gmail [dot] com</p>
@@ -167,16 +170,18 @@
     const dissimilar_image_size = 100;
     const time_till_tooltip_appearance = 500;
     const time_till_loading_appearance = 1500;
-    const stroke_color_images_high_similarity =[86,184,207];
-    // [34, 193, 195];
-    // 
+    const stroke_color_images_high_similarity = [86,184,207];  // filter cyan blue
 
-    const stroke_color_images_low_similarity = [255,0,0];
-    // [133,147,152];
-    // [253, 187, 45];
-    //  
 
-    // [86,184,207];  // filter blue
+    const stroke_color_images_low_similarity =  [205,0,0];  // filter cyan blue
+
+    // [125, 131, 255]; //color blind blue
+    // [80, 197, 183]; //  color blind green
+    
+    // [51,96,255]; //iulia blue
+    // [160,255,112]; //  iulia's green
+    //[255,0,0]; // red
+    // [86,184,207];  // filter cyan blue
     //[139, 0, 0];//dark red
     // [210,180,140];//wheat
     const removal_transition_speed = 500;

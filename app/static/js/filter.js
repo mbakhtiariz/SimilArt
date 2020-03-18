@@ -32,7 +32,9 @@ var sliderRange = d3
     .ticks(20)
     .handle('M -8, 0 a .025,.025 0 1,1 15,0 a 0.25,0.25 0 1,1 -15,0')
     // slider color:
-    .fill('#56B8CF')
+    // .fill('#56B8CF')
+    // .fill('#a641c1')
+    .fill('#F7B801')
     .on('drag', function () {
         let start_time = parseInt(sliderRange.value()[0]);
         start_time = Math.abs(start_time) == start_time ? start_time.toString()+" AD" : Math.abs(start_time).toString()+" BC";

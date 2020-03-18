@@ -29,7 +29,8 @@ body {
 }
 
 #time_filter_values span {
-    color: #F7B801;/*:Vivid orange*/
+    color: #a78d65;
+    /* #F7B801;:Vivid orange */
 
     /* other colors: */
     /* darkviolet; */
@@ -65,7 +66,9 @@ body {
     /* #FBC02D; */
     /* #2e2e2e; */
             /*#1b1b1b;*/
-    stroke: #e7Dfdd;
+    stroke:#e7Dfdd;
+    /* #a78d65; */
+     
     /* whitesmoke; */
     /* wheat; */
     /* #FBC02D; */

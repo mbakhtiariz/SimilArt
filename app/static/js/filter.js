@@ -34,7 +34,8 @@ var sliderRange = d3
     // slider color:
     // .fill('#56B8CF') // Moderate Cyan
     // .fill('#a641c1') //: purple
-    .fill('#F7B801') //: Vivid orange
+    // .fill('#F7B801') //: Vivid orange
+    .fill('#a78d65')//kylian's search
     .on('drag', function () {
         let start_time = parseInt(sliderRange.value()[0]);
         start_time = Math.abs(start_time) == start_time ? start_time.toString()+" AD" : Math.abs(start_time).toString()+" BC";

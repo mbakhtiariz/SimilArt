@@ -231,7 +231,7 @@ function slider(orientation, scale) {
       .attr('focusable', 'true')
       .attr('tabindex', 0)
       // .attr('fill', 'white')
-      .attr('fill', '#e7Dfdd;')
+      .attr('fill', '#e7Dfdd')
       .attr('stroke', '#777')
       // .on('keydown', function(d, i) {
       //   var change = step || (domain[1] - domain[0]) / KEYBOARD_NUMBER_STEPS;
@@ -332,7 +332,8 @@ function slider(orientation, scale) {
 
     context
       .selectAll('.axis text')
-      .attr('fill', '#aaa')
+      // .attr('fill', '#aaa')
+      .attr('fill', '#e7Dfdd')
       .attr(y, k * 20)
       .attr(
         'dy',

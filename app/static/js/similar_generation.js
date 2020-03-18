@@ -504,6 +504,8 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			img_width = similar_image_size * ratio;
 			img_height = similar_image_size;
 		};
+		img_width += 3.5;
+		img_height += 3.5;
 
 		let direction = directions[dirIdx];
 

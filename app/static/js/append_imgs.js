@@ -21,8 +21,6 @@ function middleImageHelper(url, position, img, artwork_name, artist_full_name,
 		img_width = similar_image_size * ratio;
 		img_height = similar_image_size;
 	};
-	img_width -= 3.5;
-	img_height -= 3.5;
 
 	var middleGroup = middle.append("g")
         .datum({position: position, height: img_height, width: img_width})

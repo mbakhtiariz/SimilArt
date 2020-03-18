@@ -440,7 +440,9 @@ function load_images(path, ids) {
 
 // Main function for calculating new image positions and adding them
 // locations is empty list
-function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, imgSize) {
+function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, imgSize, plot_id) {
+	// Check if we still allow this function to plot, similarity_plotter_id is global for the only plotter that should plot
+	if (plot_id != similarity_plotter_id) return
 	// Center image position
 	const center_x = center["x"],
 		center_y = center["y"],
@@ -480,7 +482,8 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 
 	var failCounter = 0;
 	for (var i=1; i<img_ids.length; i++) {
-
+		// Check if we still allow this function to plot, similarity_plotter_id is global for the only plotter that should plot
+		if (plot_id != similarity_plotter_id) return
 		// Get the image
 		let img_id = img_ids[i];
 		let sim_score = sim_scores[i];
@@ -514,16 +517,16 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id, sim_score);
 		}
 
-		if (direction == "up" && y < furthest["up"]) {
+		if (direction == "up" && y <= furthest["up"]) {
 			furthest["up"] = y;
 			dirIdx = (dirIdx + 1) % 4;
-		} else if (direction == "down" && y+img_height > furthest["down"]) {
+		} else if (direction == "down" && y+img_height >= furthest["down"]) {
 			furthest["down"] = y+img_height;
 			dirIdx = (dirIdx + 1) % 4;
-		} else if (direction == "left" && x < furthest["left"]) {
+		} else if (direction == "left" && x <= furthest["left"]) {
 			furthest["left"] = x;
 			dirIdx = (dirIdx + 1) % 4;
-		} else if (direction == "right" && x+img_width > furthest["right"]) {
+		} else if (direction == "right" && x+img_width >= furthest["right"]) {
 			furthest["right"] = y+img_width;
 			dirIdx = (dirIdx + 1) % 4;
 		}
@@ -536,8 +539,8 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 // This function first loads the images, then calls the main function
 // In practise, only this one should be called to use the image loading
 // locations is empty list
-function similar_layout(container, img_ids, center, outer, data, sim_scores, locations, img_size) {
+function similar_layout(container, img_ids, center, outer, data, sim_scores, locations, img_size, plot_id) {
 	load_images("static/subset/", img_ids).then(imgs => {
-		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, img_size);
+		similar_layout_main(container, img_ids, imgs, center, outer, data, sim_scores, locations, img_size, plot_id);
 	});
 }

@@ -1,5 +1,7 @@
 function appendDraggableImage(url, position, i_list, artwork_name, artist_full_name,
-		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
+		similarity, creation_year, general_type, artwork_type, dominant_color, plot_id, transition=true) {
+	// Check if still allowed to plot, or if other plot_dissimilar_images() has been called
+	if (plot_id != exploration_plotter_id) return
 	var img = new Image();
 	img.onload = function () {
 		appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
@@ -23,6 +25,8 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		img_width = dissimilar_image_size * ratio;
 		img_height = dissimilar_image_size;
 	};
+	img_width -= 3.5;
+	img_height -= 3.5;
 
 	var imageGroup = svg.append("g")
 		.datum({position: position, height: img_height, width: img_width, i_list: i_list})

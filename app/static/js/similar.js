@@ -38,6 +38,15 @@ function change_similar_images(plot_dissimilar=false) {
     }, time_till_loading_appearance);
 
     nearest_neighbors(middle_image, nr_similar_images, start_time, end_time, category).then(() => {
+        similarity_plotter_id += 1; // Increase plotter ID for the similar_layout function
+        const plot_id = similarity_plotter_id;
+        // Remove all current images
+        d3.selectAll("g#middle_image")
+            .transition()
+            .duration(removal_transition_speed)
+            .style("opacity", 0)
+            .remove();
+
         clearTimeout(timer_loading);
         d3.selectAll("#filter_loading")
         .transition()
@@ -49,12 +58,12 @@ function change_similar_images(plot_dissimilar=false) {
         try{
             const center_x = parseFloat(d3.select("image#center").attr("x"));
             const center_y = parseFloat(d3.select("image#center").attr("y"));
-            const center_width = parseFloat(d3.select("image#center").attr("width"));
-            const center_height = parseFloat(d3.select("image#center").attr("height"));
+            const center_width = parseFloat(d3.select("image#center").attr("width"))+3.5;
+            const center_height = parseFloat(d3.select("image#center").attr("height"))+3.5;
             const center_info = {"x": center_x, "y": center_y, "width": center_width, "height": center_height};
             const outer = {"x": 20, "y": 20, "width": middle_width-40, "height": middle_height-40};
             var similar_locs = [];
-            similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size);
+            similar_layout(middle, nearest_ids, center_info, outer, data, sim_scores_nearest, similar_locs, similar_image_size, plot_id);
             selected_locs_dict[middle_image.toString()] = similar_locs;
             selected_nearest_ids_dict[middle_image.toString()] = nearest_ids;
 

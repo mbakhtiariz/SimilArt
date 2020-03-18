@@ -461,6 +461,11 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 	add_border(borders, "top", center_x, center_y, center_x+center_width, center_y);
 	add_border(borders, "right", center_x+center_width, center_y, center_x+center_width, center_y+center_height);
 	add_border(borders, "bottom", center_x, center_y+center_height, center_x+center_width, center_y+center_height);
+	// Add outer borders just as an extra failsafe
+	add_border(borders, "left", outer_x, outer_y, outer_x, outer_y+outer_height);
+	add_border(borders, "top", outer_x, outer_y, outer_x+outer_width, outer_y);
+	add_border(borders, "right", outer_x+outer_width, outer_y, outer_x+outer_width, outer_y+outer_height);
+	add_border(borders, "bottom", outer_x, outer_y+outer_height, outer_x+outer_width, outer_y+outer_height);
 	var all_borders = JSON.parse(JSON.stringify(borders)); // Make a copy of the borders, no borders are changed in this one
 
 	// Stop after `maxFailCyles` full cycles without being able to place image

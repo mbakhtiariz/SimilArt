@@ -22,6 +22,8 @@ function change_dissimilar_images() {
 }
 
 function plot_dissimilar_images(images_ids_subset, transition=true) {
+    exploration_plotter_id += 1; // Increase plotter ID
+    const plot_id = exploration_plotter_id;
 
     images_ids_subset_int = images_ids_subset.map(Number)
 
@@ -36,6 +38,9 @@ function plot_dissimilar_images(images_ids_subset, transition=true) {
     get_sim_scores(middle_image, images_ids_subset_int).then(() => {
         // --- selecting location of dis-similar layer and plotting those images:
         for (i = 0; i < images_ids_subset.length; i++) {
+            // Check if still allowed to plot, or if other plot_dissimilar_images() has been called
+            if (plot_id != exploration_plotter_id) return
+
             meta_data_painting = data[images_ids_subset[i]]
             artwork_name = meta_data_painting['artwork_name']
             artist_full_name = meta_data_painting['artist_full_name']
@@ -49,14 +54,13 @@ function plot_dissimilar_images(images_ids_subset, transition=true) {
             id_image = images_ids_subset[i].toString()
             if (transition) {
             setTimeout(appendDraggableImage, i * 50, imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                creation_year, general_type, artwork_type, dominant_color, transition);
+                creation_year, general_type, artwork_type, dominant_color, plot_id, transition);
             } else {
                 appendDraggableImage(imgs_path + id_image + ".jpg", dissimilar_locs[i], i,artwork_name, artist_full_name, sim_score,
-                creation_year, general_type, artwork_type, dominant_color, transition);
+                creation_year, general_type, artwork_type, dominant_color, plot_id, transition);
             }
         };
     });
-
 }
 
 // create grid for possible locations of images

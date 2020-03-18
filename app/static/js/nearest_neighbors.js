@@ -37,7 +37,7 @@ function get_sim_scores(id, ind) {
 		});
 	});
 	socket.emit('get_sim_scores', {id: id, ind: ind});
-	
+
 	return promise
 }
 

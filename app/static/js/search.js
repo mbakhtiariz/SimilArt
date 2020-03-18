@@ -32,7 +32,7 @@ search_results_area.append("rect")
     .attr("pointer-events", "visible")
     .style("fill", "none")
     .style("stroke-width", 2)
-    .style("stroke", "grey")
+    .style("stroke", "white")
     .style("opacity", 0.6);
 
 // Add button for scrolling right

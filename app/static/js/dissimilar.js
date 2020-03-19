@@ -27,12 +27,14 @@ function plot_dissimilar_images(images_ids_subset, transition=true) {
 
     images_ids_subset_int = images_ids_subset.map(Number)
 
-    // Remove all current images
-    d3.selectAll("g#outside_image")
-        .transition()
-        .duration(removal_transition_speed)
-        .style("opacity", 0)
-        .remove();
+    if (transition) {
+        // Remove all current images
+        d3.selectAll("g#outside_image")
+            .transition()
+            .duration(removal_transition_speed)
+            .style("opacity", 0)
+            .remove();
+    }
 
     // Wait until similarity found
     get_sim_scores(middle_image, images_ids_subset_int).then(() => {

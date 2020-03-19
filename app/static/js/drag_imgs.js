@@ -13,6 +13,33 @@ function appendDraggableImage(url, position, i_list, artwork_name, artist_full_n
 
 function appendImageHelper(url, position, i_list, img, artwork_name, artist_full_name,
 		similarity, creation_year, general_type, artwork_type, dominant_color, transition=true) {
+	if (!transition) {
+		d3.select("#imrect"+i_list.toString())
+			.on("mouseover", function(d){
+				timer_tooltip = setTimeout(function () {
+
+				// If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
+				length_artist_name = artist_full_name.split(' ').length;
+				if (length_artist_name > 5)
+					artist_full_name = artist_full_name.replace(/\s/g,'');
+
+				tooltip.html(artwork_name.replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ') + ". <b>" +
+					artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') +
+					"</b> (" + creation_year + "). " +
+					// "<br><br>" + "<em>General Type:</em> &nbsp <br>" + general_type +
+					// "<br>" + "<em>Artwork Type:</em> &nbsp <br>" + artwork_type +
+					// "<br>" + "<em>Dominant Color:</em> &nbsp <br>" + '<svg width="15" height="15"><rect width="15" height="15" style="fill:' + dominant_color + '; opacity: 1;" /></svg>' + dominant_color + "<br><br>" +
+					"<em>Similarity:</em>&nbsp" + similarity + "%");
+				return tooltip.style("visibility", "visible");
+				}, time_till_tooltip_appearance);
+			});
+		var rgb = colourGradientor(similarity / 100, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
+		var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+		d3.select("#outline"+i_list.toString())
+			.transition()
+			.duration(500)
+			.style("stroke", hexColor);
+	} else {
 	img_width = img.width;
 	img_height = img.height;
 	var ratio = img_width / img_height;
@@ -38,6 +65,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 		.attr("clip-path", "url(#clip)");
 
 	var rectFill = imageGroup.append("rect")
+		.attr("id", "imrect"+i_list.toString())
 		.attr("width", img_width)
 		.attr("height", img_height)
 		.attr("filter", "url(#glow)")
@@ -142,6 +170,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 	var rgb = colourGradientor(similarity / 100, stroke_color_images_high_similarity, stroke_color_images_low_similarity);
 	var hexColor =  "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
 	var rectOutline = imageGroup.append("rect")
+		.attr("id", "outline"+i_list.toString())
 		.attr("class", "image-outline")
 		.attr("width", img_width)
 		.attr("height", img_height)
@@ -179,6 +208,7 @@ function appendImageHelper(url, position, i_list, img, artwork_name, artist_full
 			.attr("width", img_width)
 			.ease(d3.easeBounce);
     }
+}
 }
 
 function dragged(d) {

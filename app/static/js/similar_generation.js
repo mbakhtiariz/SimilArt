@@ -524,6 +524,7 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			add_rect(borders, all_borders, container, x, y, img_width, img_height, center, data, img_id, sim_score);
 		}
 
+		// Check if further than have been before
 		if (direction == "up" && y <= furthest["up"]) {
 			furthest["up"] = y;
 			dirIdx = (dirIdx + 1) % 4;
@@ -535,6 +536,15 @@ function similar_layout_main(container, img_ids, imgs, center, outer, data, sim_
 			dirIdx = (dirIdx + 1) % 4;
 		} else if (direction == "right" && x+img_width >= furthest["right"]) {
 			furthest["right"] = y+img_width;
+			dirIdx = (dirIdx + 1) % 4;
+		// Check if maximum/minimum has already been reached sometime
+		} else if (direction == "up" && furthest["up"] == 0) {
+			dirIdx = (dirIdx + 1) % 4;
+		} else if (direction == "down" && furthest["down"] == outer_y+outer_height) {
+			dirIdx = (dirIdx + 1) % 4;
+		} else if (direction == "left" && furthest["left"] == 0) {
+			dirIdx = (dirIdx + 1) % 4;
+		} else if (direction == "right" && furthest["right"] == outer_x+outer_width) {
 			dirIdx = (dirIdx + 1) % 4;
 		}
 		// lines = draw_borders(container, borders, lines);

@@ -263,11 +263,19 @@ function set_result_img(id) {
     result_img.src = imgs_path + id + ".jpg";
 
     // Get the metadata
-    let artwork_name = data[id]['artwork_name'];
+    let artwork_name = data[id]['artwork_name'].replace(/^\w/, c => c.toUpperCase()).replace(/\.$/, "").replace(/_/g, ' ');
     let artist_full_name = data[id]['artist_full_name'];
+
+    // If artist name consists of too many parts (> 5), probably string is full of spaces -> remove spaces
+    length_artist_name = artist_full_name.split(' ').length;
+    if (length_artist_name > 5)
+        artist_full_name = artist_full_name.replace(/\s/g,'');
+
+    artist_full_name = artist_full_name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+
     let creation_year = data[id]['creation_year'];
     let num_results = (search_results.length).toString();
     let num_results_str = "Search Results [" + (result_idx+1).toString() + "/" + num_results + "]:";
     document.getElementById("search_results_header").innerHTML = num_results_str;
-    document.getElementById('search_details').innerHTML = "<i>" + artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ")</b>";
+    document.getElementById('search_details').innerHTML = "<i>" + artwork_name + ".</i><br /><br /><b>" + artist_full_name + " (" + creation_year + ").</b>";
 }

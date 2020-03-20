@@ -20,13 +20,6 @@ def index():
 	data = data.set_index('omni_id')
 	data = data.loc[ids].to_json(orient='index')
 
-	ids = json.dumps(ids)
-	return render_template("base.html", data=data, available_ids=ids)
-
-
-@main.route('/test', methods=['GET'])
-def test():
-	current_path = Path.cwd()
 	ids = os.listdir(current_path / Path(r"app/static/subset"))
 	ids = json.dumps([id.split(".")[0] for id in ids[:10000]])
-	return render_template("test.html", tmp_ids=ids)
+	return render_template("base.html", tmp_ids=ids)

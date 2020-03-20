@@ -10,45 +10,33 @@ body {
     bottom: 0;
     left: 0;
     background-color: #212121;
-    /* #2e2e2e; */
-            /*#1b1b1b;*/
     width: 100%;
     height: 100%;
 }
 
 * {
-    /*font-family: "Copperplate Gothic Light";  change the font here for everything! */
     font-family: sans-serif;
-    /*font-family: arial, "Lato", sans-serif;*/
-    /*font-family: "Times New Roman";*/
 }
 
 #time_filter_values {
     color: #e7Dfdd;
-    /* white; */
 }
 
 #time_filter_values span {
     color: #e7Dfdd;
     font-weight: bold;
-    /* #F7B801;:Vivid orange */
-
-    /* other colors: */
-    /* darkviolet; */
-    /* #a641c1; */
-    /* #56b8cf; */
 }
 
 .label, #cat_label {
     position:absolute;
     color:#e7Dfdd;
-    /* white; */
 }
 
 #page {
     display: none;
     opacity: 0;
 }
+
 #loading {
     width: 100%;
     height: 100%;
@@ -56,36 +44,20 @@ body {
     opacity: 1;
     background: none;
 }
+
 .image-outline {
     fill: none;
     stroke: #dce1de;
     stroke-width: 3.5;
 }
+
 .middle {
     fill:
     #212121;
-    /* #FBC02D; */
-    /* #2e2e2e; */
-            /*#1b1b1b;*/
     stroke:#e7Dfdd;
-    /* #a78d65; */
-     
-    /* whitesmoke; */
-    /* wheat; */
-    /* #FBC02D; */
-     /* #515251; */
     stroke-width: 5;
     stroke-linecap: round;
 }
-
-/* .middle-outline{
-    fill: none;
-    stroke: black;
-    opacity: 20%;
-    stroke-width: 20;
-} */
-
-
 
 .button {
     fill: #ffffff;
@@ -133,15 +105,17 @@ body {
 .flip-box-back {
     transform: rotateX(-180deg);
 }
+
 #loading-text-box {
     text-align: center;
     position: absolute;
 }
+
 #loading-text-text {
     color: #e7Dfdd;
-    /* white; */
     font-size: 60px;
 }
+
 #tooltip {
     position: relative;
     text-align: center;
@@ -150,7 +124,6 @@ body {
     font-size: 12px;
     text-align: center;
     background: #e7Dfdd;
-    /* white; */
     opacity: 0.8;
     border: 0px;
     border-radius: 4px;
@@ -164,7 +137,6 @@ body {
     font-size: 14px;
     text-align: center;
     background: #e7Dfdd;
-    /* white; */
     opacity: 0.8;
     border: 0px;
     border-radius: 4px;
@@ -212,18 +184,19 @@ body {
 
 #center_image {
     flex: 618 1 auto;
+    text-align: center;
 }
 
-  /* Add Animation - Zoom in the Modal */
+/* Add Animation - Zoom in the Modal */
 .modal-content {
     animation-name: zoom;
     animation-duration: 0.6s;
-  }
+}
 
 @keyframes zoom {
     from {transform:scale(0)}
     to {transform:scale(1)}
-  }
+}
 
   /* The Close Button */
 .close {
@@ -234,18 +207,16 @@ body {
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
-  }
+}
 
 .close:hover,
 .close:focus {
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
-
-  /* Overlay information help */
-
+/* Overlay information help */
 #overlay {
     position: fixed;
     display: none;
@@ -258,19 +229,16 @@ body {
     background-color: rgba(0,0,0,0.5);
     z-index: 2;
     cursor: pointer;
-  }
-
+}
 
 .overlaytext {
     font-size: 18px;
     opacity:, 0;
     fill: #e7Dfdd;
-    /* white; */
 }
 
 .highlight {
     stroke: #e7Dfdd;
-    /* white; */
     stroke-width: 5;
     stroke-opacity: 0.6;
     fill: none;

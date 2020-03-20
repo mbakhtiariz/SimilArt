@@ -12,7 +12,6 @@ var sim_scores_nearest = []
 function nearest_neighbors(id, n_neighbors, start_time, end_time, category) {
 	var promise = new Promise(function(resolve, reject) {
 		NEIGHBORS_LISTENER = new Listener(function () {
-			// setTimeout(resolve, 10);
 			resolve();
 		});
 	});

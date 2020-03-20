@@ -6,8 +6,6 @@
  position: relative;
  background-color:
  #e7Dfdd;
-  /* white; */
- /* #56B8CF; */
  left: 150px;
  top: -3px;
 
@@ -34,13 +32,11 @@
  width: 0;
  height: 0;
  border: 6px solid transparent;
- /* border-color: #fff transparent transparent transparent; */
  border-color: #111 transparent transparent transparent;
 }
 
 /* Point the arrow upwards when the select box is open (active): */
 #cat_div .select-selected.select-arrow-active:after {
- /* border-color: transparent transparent #fff transparent; */
  border-color: transparent transparent #111 transparent;
  top: 7px;
 }
@@ -48,7 +44,6 @@
 /* style the items (options), including the selected item: */
 #cat_div .select-items div,.select-selected {
  color: #111; 
- /* #ffffff; */
  padding-top: 2px;
  padding-bottom: 2px;
  padding-left: 10px;
@@ -61,8 +56,6 @@
 #cat_div .select-items {
  position: absolute;
  background-color: #e7Dfdd;
- /* white; */
- /* #56B8CF; */
  left: 0;
  right: 0;
  z-index: 99;

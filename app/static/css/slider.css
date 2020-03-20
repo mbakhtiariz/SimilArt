@@ -100,7 +100,6 @@
     left: 0;
     margin-top: 0;
     color: #A641c1;
-    /* #39c9a9; */
     content: attr(data-currency);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%)
@@ -125,7 +124,6 @@
 .selector .ui-slider-handle {
     border-radius: 50%;
     background-color: #A641c1;
-    /* #39c9a9; */
     border: none;
     top: -14px;
     width: 28px;
@@ -161,7 +159,6 @@
     left: 13px;
     margin-top: 0;
     color: #A641c1;
-    /* #39c9a9; */
     content: attr(data-currency);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%)
@@ -171,7 +168,6 @@
     position: relative;
     padding-left: 25px;
     color: #A641c1;
-    /* #39c9a9; */
     cursor: pointer;
     line-height: 28px
 }
@@ -200,7 +196,6 @@
 .selector.open .show-all:after {
     display: none
 }
-
 
 * {
     -webkit-box-sizing: border-box;
